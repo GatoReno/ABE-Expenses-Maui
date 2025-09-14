@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "104449574654",
+    "project_id": "abexp-45259",
+    "storage_bucket": "abexp-45259.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104449574654:android:00d3af340fed80b455c7af",
+        "android_client_info": {
+          "package_name": "com.abe.abexp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-kdYZvxyJygVplTO3sP84B6iRQbheW2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

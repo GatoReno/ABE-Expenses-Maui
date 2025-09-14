@@ -2,6 +2,7 @@
 using AbeXP.Abstractions.Interfaces;
 using AbeXP.Abstractions.Services;
 using AbeXP.ViewModels;
+using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
 
 namespace AbeXP.Extensions;
@@ -16,10 +17,14 @@ public static class ServiceCollectionExtensions
         // ViewModels
         services.AddTransient<LoginViewModel>();
         services.AddTransient<HomeViewModel>();
+        services.AddTransient<ExpenseFormViewModel>();
+        
 
         // Views
         services.AddTransient<LoginView>();
         services.AddTransient<HomeView>();
+        services.AddTransient<ExpenseFormView>();
+        
 
         return services;
     }

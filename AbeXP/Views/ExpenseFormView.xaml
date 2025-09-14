@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AbeXP.Views.ExpenseFormView"
+    Title="Nuevo Gasto">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="15" ColumnDefinitions="Auto,*">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Fecha -->
+            <Label Grid.Row="0" Grid.Column="0" Text="Fecha:" VerticalOptions="Center" />
+            <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding Date, Mode=TwoWay}" />
+
+            <!-- Cantidad -->
+            <Label Grid.Row="1" Grid.Column="0" Text="Cantidad:" VerticalOptions="Center" />
+            <Entry 
+                Grid.Row="1" Grid.Column="1"
+                Placeholder="0.00"
+                Keyboard="Numeric"
+                Text="{Binding Amount, Mode=TwoWay}" />
+
+            <!-- Descripción -->
+            <Label Grid.Row="2" Grid.Column="0" Text="Descripción:" VerticalOptions="Center" />
+            <Entry 
+                Grid.Row="2" Grid.Column="1"
+                Placeholder="Ej: Cena en restaurante"
+                Text="{Binding Description, Mode=TwoWay}" />
+
+            <!-- Tipo de pago -->
+            <Label Grid.Row="3" Grid.Column="0" Text="Tipo de pago:" VerticalOptions="Center" />
+            <Picker 
+                Grid.Row="3" Grid.Column="1"
+                Title="Selecciona un método de pago"
+                ItemsSource="{Binding PaymentTypes}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedPaymentType, Mode=TwoWay}" />
+
+            <!-- Etiquetas -->
+            <Label Grid.Row="4" Grid.Column="0" Text="Etiquetas:" VerticalOptions="Start" />
+            <CollectionView 
+                Grid.Row="4" Grid.Column="1"
+                ItemsSource="{Binding Tags}" 
+                SelectionMode="None"
+                HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout Spacing="10">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Botón Guardar -->
+            <Button 
+                Grid.Row="5" Grid.ColumnSpan="2"
+                Text="Guardar Gasto"
+                Command="{Binding SaveExpenseCommand}"
+                IsEnabled="{Binding IsNotBusy}" />
+
+            <!-- Loading -->
+            <ActivityIndicator 
+                Grid.Row="6" Grid.ColumnSpan="2"
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                HorizontalOptions="Center" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

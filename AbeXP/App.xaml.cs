@@ -1,5 +1,6 @@
 ﻿using AbeXP.Abstractions.Services;
 using AbeXP.ViewModels;
+using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
 
 namespace AbeXP;
@@ -30,7 +31,7 @@ public partial class App : Application
     {
         var authService = new FirebaseAuthService(); // tu implementación de IFibAuthLog
         var loginViewModel = new LoginViewModel(authService);
-        MainPage = new LoginView(loginViewModel);
+        MainPage = new ExpenseFormView(new ExpenseFormViewModel());
         // MainPage = new LoginPage(new LoginViewModel(CrossFingerprint.Current, UserDialogs.Instance));
     }
 
