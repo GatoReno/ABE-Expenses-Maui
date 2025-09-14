@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AbeXP.Views.LoginView"
+    Title="Login">
+
+    <Grid Padding="30" RowSpacing="15" VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- 0: Título -->
+            <RowDefinition Height="Auto"/> <!-- 1: Email -->
+            <RowDefinition Height="Auto"/> <!-- 2: Password -->
+            <RowDefinition Height="Auto"/> <!-- 3: Confirm Password -->
+            <RowDefinition Height="Auto"/> <!-- 4: Username -->
+            <RowDefinition Height="Auto"/> <!-- 5: Botón principal -->
+            <RowDefinition Height="Auto"/> <!-- 6: Switch de modo -->
+            <RowDefinition Height="Auto"/> <!-- 7: ActivityIndicator -->
+            <RowDefinition Height="Auto"/> <!-- 8: Error Message -->
+            <RowDefinition Height="Auto"/> <!-- 9: Recuperar contraseña -->
+        </Grid.RowDefinitions>
+
+        <!-- Título dinámico -->
+        <Label 
+            Grid.Row="0"
+            Text="{Binding TitleText}"
+            FontSize="24"
+            HorizontalOptions="Center" />
+
+        <!-- Email -->
+        <Entry 
+            Grid.Row="1" 
+            Placeholder="Email"
+            Keyboard="Email"
+            Text="{Binding Email, Mode=TwoWay}" />
+
+        <!-- Password -->
+        <Entry 
+            Grid.Row="2"
+            Placeholder="Password"
+            IsPassword="True"
+            Text="{Binding Password, Mode=TwoWay}" />
+
+        <!-- Confirm Password (solo SignUp) -->
+        <Entry 
+            Grid.Row="3"
+            Placeholder="Confirmar Password"
+            IsPassword="True"
+            Text="{Binding ConfirmPassword, Mode=TwoWay}"
+            IsVisible="{Binding IsSignUpMode}" />
+
+        <!-- Username (solo SignUp) -->
+        <Entry 
+            Grid.Row="4"
+            Placeholder="Nombre de usuario"
+            Text="{Binding UserName, Mode=TwoWay}"
+            IsVisible="{Binding IsSignUpMode}" />
+
+        <!-- Botón principal -->
+        <Button 
+            Grid.Row="5"
+            Text="{Binding PrimaryButtonText}"
+            Command="{Binding ExecutePrimaryActionCommand}"
+            IsEnabled="{Binding IsNotBusy}" />
+
+        <!-- Switch de modo -->
+        <Button 
+            Grid.Row="6"
+            Text="{Binding SwitchButtonText}"
+            Command="{Binding SwitchModeCommand}" />
+
+        <!-- ActivityIndicator -->
+        <ActivityIndicator 
+            Grid.Row="7"
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}" 
+            HorizontalOptions="Center" />
+
+        <!-- Mensaje de error -->
+        <Label 
+            Grid.Row="8"
+            Text="{Binding ErrorMessage}"
+            TextColor="Red"
+            FontSize="12"
+            HorizontalOptions="Center" />
+
+        <!-- Botón recuperar contraseña (solo Login) -->
+        <Button 
+            Grid.Row="9"
+            Text="¿Olvidaste tu contraseña?"
+            Command="{Binding RecoverPasswordCommand}"
+            IsVisible="{Binding IsLoginMode}"
+            HorizontalOptions="Center"
+            FontAttributes="Italic"
+            BackgroundColor="Transparent"
+            TextColor="Blue" />
+    </Grid>
+</ContentPage>

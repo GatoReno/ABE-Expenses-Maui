@@ -38,6 +38,9 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -60,6 +63,35 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.86" />
+		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.5.2" />
+		<PackageReference Include="Plugin.Fingerprint_CalcDP_Maui" Version="3.0.0" />
+		<PackageReference Include="FirebaseAuthentication.net" Version="3.7.2" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Views\" />
+	  <None Remove="ViewModels\" />
+	  <None Remove="Extensions\" />
+	  <None Remove="Helpers\" />
+	  <None Remove="Models\" />
+	  <None Remove="Abstractions\" />
+	  <None Remove="Abstractions\Interfaces\" />
+	  <None Remove="Util\" />
+	  <None Remove="Abstractions\Services\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Views\" />
+	  <Folder Include="ViewModels\" />
+	  <Folder Include="Extensions\" />
+	  <Folder Include="Helpers\" />
+	  <Folder Include="Models\" />
+	  <Folder Include="Abstractions\" />
+	  <Folder Include="Abstractions\Interfaces\" />
+	  <Folder Include="Util\" />
+	  <Folder Include="Abstractions\Services\" />
+	</ItemGroup>
 </Project>

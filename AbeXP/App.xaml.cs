@@ -1,12 +1,52 @@
-﻿namespace AbeXP;
+﻿using AbeXP.Abstractions.Services;
+using AbeXP.ViewModels;
+using AbeXP.Views;
+
+namespace AbeXP;
 
 public partial class App : Application
 {
-	public App()
+    private static App instance;
+    public static App Instance { get { return instance; } }
+
+    public App()
 	{
 		InitializeComponent();
 
 		MainPage = new AppShell();
-	}
+
+        bool isLogged = Preferences.Get("IsLogged", false);
+        if (isLogged)
+        {
+            MainPage = new MainPage();
+        }
+        else
+        {
+            LoginPageNavigation();
+        }
+    }
+
+    public void LoginPageNavigation()
+    {
+        var authService = new FirebaseAuthService(); // tu implementación de IFibAuthLog
+        var loginViewModel = new LoginViewModel(authService);
+        MainPage = new LoginView(loginViewModel);
+        // MainPage = new LoginPage(new LoginViewModel(CrossFingerprint.Current, UserDialogs.Instance));
+    }
+
+    protected override void OnResume()
+    {
+        base.OnResume();
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+    }
+
+    protected override void OnAppLinkRequestReceived(Uri uri)
+    {
+        base.OnAppLinkRequestReceived(uri);
+    }
 }
 

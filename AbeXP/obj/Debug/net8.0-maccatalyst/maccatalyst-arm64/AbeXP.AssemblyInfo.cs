@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AbeXP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+da33f370f0a2d5b8e355d76c422bc6e09f1f0302")]
 [assembly: System.Reflection.AssemblyProductAttribute("AbeXP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AbeXP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

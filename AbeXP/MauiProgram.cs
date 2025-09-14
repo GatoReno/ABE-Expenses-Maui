@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AbeXP.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace AbeXP;
 
@@ -18,8 +19,10 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+        builder.Services.ConfigureViewsAndViewModels();
+//        builder.Services.ConfigureServices();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }
 
