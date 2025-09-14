@@ -1,12 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AbeXP.Views.LoanFormView"
-             Title="LoanFormView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AbeXP.Views.LoanFormView"
+    Title="Nuevo Préstamo">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="10" ColumnSpacing="5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Nombre del deudor -->
+            <Label Grid.Row="0" Text="Nombre deudor" />
+            <Entry Grid.Row="1" Text="{Binding PersonName}" Placeholder="Ej. Juan Pérez"/>
+
+            <!-- Email -->
+            <Label Grid.Row="2" Text="Email (opcional)" />
+            <Entry Grid.Row="3" Text="{Binding Email}" Placeholder="correo@ejemplo.com"/>
+
+            <!-- Cantidad -->
+            <Label Grid.Row="4" Text="Cantidad prestada" />
+            <Entry Grid.Row="5" Text="{Binding Amount}" 
+                   Keyboard="Numeric" Placeholder="Ej. 1000"/>
+
+            <!-- Fecha del préstamo -->
+            <Label Grid.Row="6" Text="Fecha del préstamo" />
+            <DatePicker Grid.Row="7" Date="{Binding DateGiven}" />
+
+            <!-- Fecha sugerida de pago -->
+            <Label Grid.Row="8" Text="Fecha sugerida de pago (opcional)" />
+            <DatePicker Grid.Row="9" Date="{Binding SuggestedPaybackDate}" />
+
+            <!-- Estado -->
+            <StackLayout Grid.Row="10" Orientation="Horizontal" Spacing="10">
+                <Label Text="Pagado" VerticalOptions="Center"/>
+                <Switch IsToggled="{Binding IsPaid}" />
+            </StackLayout>
+
+            <!-- Notas -->
+            <Label Grid.Row="11" Text="Notas" />
+            <Editor Grid.Row="12" Text="{Binding Notes}" Placeholder="Detalles adicionales" HeightRequest="100"/>
+
+            <!-- Botón Guardar -->
+            <Button Grid.Row="13"
+                    Text="Guardar préstamo"
+                    Command="{Binding SaveLoanCommand}"
+                    BackgroundColor="DarkGreen"
+                    TextColor="White"
+                    Margin="0,20,0,0"/>
+        </Grid>
+    </ScrollView>
 </ContentPage>

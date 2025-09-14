@@ -1,37 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:viewmodels="clr-namespace:AbeXP.ViewModels"
+    xmlns:models="clr-namespace:AbeXP.Models"
+    xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
              x:Class="AbeXP.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+     <ContentPage.Resources>
+        <!-- DataTemplate para Expense -->
+        <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:Expense">
+            <Frame Margin="5" Padding="10" BorderColor="#CCC">
+                <VerticalStackLayout>
+                    <Label Text="{Binding Description}" FontAttributes="Bold" />
+                    <Label Text="{Binding Amount, StringFormat='Monto: {0:C}'}" />
+                </VerticalStackLayout>
+            </Frame>
+        </DataTemplate>
 
-            <Label
-                Text="Hello, World!"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+        <!-- DataTemplate para Loan -->
+        <DataTemplate x:Key="LoanTemplate" x:DataType="models:Loan">
+            <Frame Margin="5" Padding="10" BorderColor="#CCC">
+                <VerticalStackLayout>
+                    <Label Text="{Binding PersonName}" FontAttributes="Bold" />
+                    <Label Text="{Binding Amount, StringFormat='Préstamo: {0:C}'}" />
+                    <Label Text="{Binding IsPaid, StringFormat='Pagado: {0}'}" />
+                </VerticalStackLayout>
+            </Frame>
+        </DataTemplate>
 
-            <Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+        <!-- Selector -->
+        <selectors:TransactionTemplateSelector x:Key="TransactionTemplateSelector"
+                                               ExpenseTemplate="{StaticResource ExpenseTemplate}"
+                                               LoanTemplate="{StaticResource LoanTemplate}" />
+    </ContentPage.Resources>
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
-        </VerticalStackLayout>
-    </ScrollView>
 
+     <Grid RowDefinitions="Auto,*" Padding="10">
+
+        <!-- Filtros -->
+        <HorizontalStackLayout Spacing="10" Grid.Row="0">
+            <Picker Title="Tipo"
+                    ItemsSource="{Binding Filters}"
+                    SelectedItem="{Binding SelectedFilter}" />
+            <DatePicker Date="{Binding SelectedDate}" />
+            <Button Text="Aplicar" Command="{Binding ApplyFiltersCommand}" />
+        </HorizontalStackLayout>
+
+        <!-- Lista agrupada -->
+        <CollectionView Grid.Row="1"
+                        IsGrouped="True"
+                        ItemsSource="{Binding Transactions}"
+                        ItemTemplate="{StaticResource TransactionTemplateSelector}">
+
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="viewmodels:TransactionGroup">
+                    <Label Text="{Binding DateString}"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           BackgroundColor="#EEE"
+                           Padding="5" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>
 

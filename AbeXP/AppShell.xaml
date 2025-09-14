@@ -17,5 +17,9 @@
         Title="Login"
         ContentTemplate="{DataTemplate views:LoginView}"/>
 
+      <ShellContent
+        Title="XP"
+        ContentTemplate="{DataTemplate views:TransactionListPage}"/>
+
 </Shell>
 

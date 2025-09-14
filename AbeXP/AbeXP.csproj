@@ -83,6 +83,7 @@
 	  <None Remove="Util\" />
 	  <None Remove="Abstractions\Services\" />
 	 
+	  <None Remove="Views\Templates\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Views\" />
@@ -94,6 +95,7 @@
 	  <Folder Include="Abstractions\Interfaces\" />
 	  <Folder Include="Util\" />
 	  <Folder Include="Abstractions\Services\" />
+	  <Folder Include="Views\Templates\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />
