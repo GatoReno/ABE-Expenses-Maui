@@ -1,20 +1,25 @@
 ﻿using AbeXP.Abstractions.Services;
+using AbeXP.Interfaces;
 using AbeXP.ViewModels;
 using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AbeXP;
 
 public partial class App : Application
 {
+    public static IAlertService Alert;
     private static App instance;
     public static App Instance { get { return instance; } }
 
-    public App()
+    public App(IServiceProvider serviceProvider)
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
+        Alert = serviceProvider.GetService<IAlertService>();
+
+        MainPage = new AppShell();
 
         bool isLogged = Preferences.Get("IsLogged", false);
         if (isLogged)

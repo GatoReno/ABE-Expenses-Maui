@@ -20,7 +20,8 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
         builder.Services.ConfigureViewsAndViewModels();
-//        builder.Services.ConfigureServices();
+		builder.Services.ConfigureServices();
+        //        builder.Services.ConfigureServices();
 
         return builder.Build();
 	}
