@@ -2,7 +2,6 @@
 using AbeXP.Extensions;
 using AbeXP.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Java.Time;
 using Microcharts;
 using SkiaSharp;
 using System.Collections.ObjectModel;
@@ -15,10 +14,12 @@ namespace AbeXP.ViewModels
         public FinantialChartsViewModel()
         {
             FillExpenses();
-            CreateExpensesLineChart();
+            RefreshCharts();
 
 
         }
+
+        #region PROPERTIES
 
         // data
         [ObservableProperty]
@@ -27,7 +28,10 @@ namespace AbeXP.ViewModels
         // charts
         [ObservableProperty]
         public Chart _expensesLineChart;
-
+        [ObservableProperty]
+        public Chart _paymentsTypeDonutChart;
+        [ObservableProperty]
+        public Chart _tagsBarChart;
         [ObservableProperty]
         public TimePeriod _period = TimePeriod.ThreeDays;
 
@@ -40,6 +44,21 @@ namespace AbeXP.ViewModels
         public DateTime _maxEndDateAllowed = DateTime.Now.LastDayOfCurrentMonth();
         [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+        #endregion
+
+
+
+        private void RefreshCharts()
+        {
+            CreateExpensesLineChart();
+            CreatePaymentTypesPieChart();
+            CreateTagsBarChart();
+        }
+
+        partial void OnPeriodChanged(TimePeriod period)
+        {
+            CreateExpensesLineChart();
+        }
 
 
         private void CreateExpensesLineChart()
@@ -69,20 +88,64 @@ namespace AbeXP.ViewModels
                 LineSize = 2,
                 PointMode = PointMode.Circle,
                 PointSize = 5,
+                BackgroundColor = SKColors.Transparent,
+                LabelOrientation = Orientation.Vertical
+            };
+        }
+
+        private void CreatePaymentTypesPieChart()
+        {
+            var grouped = Expenses
+            .GroupBy(e => e.PaymentTypeId)
+            .Select(g => new
+            {
+                g.Key,
+                Total = g.Sum(e => e.Amount)
+            });
+
+            var entries = grouped.Select(g => new ChartEntry((float)g.Total)
+            {
+                Label = g.Key,
+                ValueLabel = g.Total.ToString("C"),
+                Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}")
+            }).ToArray();
+
+            PaymentsTypeDonutChart = new DonutChart
+            {
+                Entries = entries,
+                HoleRadius = 0.6f,
                 BackgroundColor = SKColors.Transparent
             };
         }
 
-        private void RefreshCharts()
+        private void CreateTagsBarChart()
         {
-            CreateExpensesLineChart();
-        }
+            var grouped = Expenses
+                .SelectMany(e => e.TagIds.Select(tagId => new { TagId = tagId, e.Amount }))
+                .GroupBy(x => x.TagId)
+                .Select(g => new
+                {
+                    g.Key,
+                    Total = g.Sum(x => x.Amount)
+                });
 
-        partial void OnPeriodChanged(TimePeriod period)
-        {
-            RefreshCharts();
-        }
+            var entries = grouped.Select(g => new ChartEntry((float)g.Total)
+            {
+                Label = g.Key,
+                ValueLabel = g.Total.ToString("C"),
+                Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}"),
+            }).ToArray();
 
+            TagsBarChart = new BarChart
+            {
+                Entries = entries,
+                LabelOrientation = Orientation.Horizontal,
+                ValueLabelOrientation = Orientation.Horizontal,
+                BackgroundColor = SKColors.Transparent,
+                BarAreaAlpha = 0,
+                MaxValue = (float)(entries.Max(e => e.Value) * 1.1f) // small padding above
+            };
+        }
 
         private void FillExpenses()
         {

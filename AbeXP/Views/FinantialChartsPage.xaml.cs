@@ -1,5 +1,5 @@
 using AbeXP.ViewModels;
-using Android.SE.Omapi;
+using Microcharts.Maui;
 using System.ComponentModel;
 
 namespace AbeXP.Views;
@@ -11,21 +11,44 @@ public partial class FinantialChartsPage : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
 
-        vm.PropertyChanged += RedrawCharts;
+        vm.PropertyChanged += HandleChartsEntriesChanged;
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        ((FinantialChartsViewModel)BindingContext).PropertyChanged -= RedrawCharts;
+        ((FinantialChartsViewModel)BindingContext).PropertyChanged -= HandleChartsEntriesChanged;
     }
 
-    private void RedrawCharts(object sender, PropertyChangedEventArgs e)
+    /// <summary>
+    /// Handle the PropertyChanged event of the ViewModel to refresh the charts when their data changes.
+    /// </summary>
+    /// <param name="sender">Triggerer of the event</param>
+    /// <param name="e">Property changed arguments</param>
+    private void HandleChartsEntriesChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(FinantialChartsViewModel.ExpensesLineChart))
+        switch (e.PropertyName)
         {
-            this.ExpensesLineChart.WidthRequest = this.ExpensesLineChart.Width + 1;
-            this.ExpensesLineChart.WidthRequest = this.ExpensesLineChart.Width - 1;
+            case nameof(FinantialChartsViewModel.ExpensesLineChart):
+                RefreshChart(this.ExpensesLineChart);
+                break;
+            case nameof(FinantialChartsViewModel.PaymentsTypeDonutChart):
+                RefreshChart(this.PaymentsTypeDonutChart);
+                break;
+            case nameof(FinantialChartsViewModel.TagsBarChart):
+                RefreshChart(this.TagsBarChart);
+                break;
         }
     }
+
+    /// <summary>
+    /// Forces the specified chart view to refresh its layout and appearance.
+    /// </summary>
+    /// <param name="chartView">The chart view to be refreshed. Cannot be null.</param>
+    private void RefreshChart(ChartView chartView)
+    {
+        chartView.WidthRequest = chartView.Width + 1;
+        chartView.WidthRequest = chartView.Width - 1;
+    }
+
 }

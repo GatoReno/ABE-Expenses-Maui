@@ -12,6 +12,12 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="BannerColor">#4DCA92</Color>
+            <Thickness x:Key="Padding">10</Thickness>
+
+            <Style TargetType="{x:Type micro:ChartView}" >
+                <Setter Property="HeightRequest" Value="400"/>
+                <Setter Property="Margin" Value="0,0,0,20"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -23,7 +29,6 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -51,22 +56,34 @@
             <controls:DatePickerWithIcon Title="Fecha final" Date="{Binding EndDate}" MaxDateAllowed="{Binding MaxEndDateAllowed}" MinDateAllowed="{Binding MinEndDateAllowed}"/>
         </HorizontalStackLayout>
 
-        <StackLayout Grid.Row="2" >
-            <Label HorizontalOptions="Center">Intervalo de tiempo</Label>
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <RadioButton x:Name="rb" GroupName="PeriodGroup" Content="3 días" Value="{x:Static enums:TimePeriod.ThreeDays}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.ThreeDays}}" />
-                <RadioButton GroupName="PeriodGroup" Content="semanal" Value="{x:Static enums:TimePeriod.Week}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Week}}" />
-                <RadioButton GroupName="PeriodGroup" Content="mensual" Value="{x:Static enums:TimePeriod.Month}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Month}}" />
-            </HorizontalStackLayout>
-        </StackLayout>
+        
 
 
-        <!--Line Chart-->
-        <ScrollView Grid.Row="3" HeightRequest="500" VerticalOptions="Start">
-            <Grid>
+        <ScrollView Grid.Row="2"  VerticalOptions="Start" Padding="{StaticResource Padding}">
+            
+            <VerticalStackLayout>
+
+                <!--Expenses by period chart-->
+                <Label FontAttributes="Bold">Gráfico de gastos</Label>
+                <VerticalStackLayout Grid.Row="2" >
+                    <Label HorizontalOptions="Center">Intervalo de tiempo</Label>
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <RadioButton x:Name="rb" GroupName="PeriodGroup" Content="3 días" Value="{x:Static enums:TimePeriod.ThreeDays}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.ThreeDays}}" />
+                        <RadioButton GroupName="PeriodGroup" Content="semanal" Value="{x:Static enums:TimePeriod.Week}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Week}}" />
+                        <RadioButton GroupName="PeriodGroup" Content="mensual" Value="{x:Static enums:TimePeriod.Month}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Month}}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
                 <micro:ChartView x:Name="ExpensesLineChart" Chart="{Binding ExpensesLineChart}"/>
-            </Grid>
 
+                <!--Expenses by payment category chart-->
+                <Label FontAttributes="Bold">Por tipo de pago</Label>
+                <micro:ChartView x:Name="PaymentsTypeDonutChart" Chart="{Binding PaymentsTypeDonutChart}"/>
+
+                <!--Expenses by tags chart-->
+                <Label FontAttributes="Bold">Por etiquetas</Label>
+                <micro:ChartView x:Name="TagsBarChart" Chart="{Binding TagsBarChart}"/>
+            </VerticalStackLayout>
         </ScrollView>
 
 
