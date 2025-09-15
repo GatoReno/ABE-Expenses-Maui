@@ -12,6 +12,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:IsExpenseConverter x:Key="IsExpenseConverter" />
             <converters:IsLoanConverter x:Key="IsLoanConverter" />
+            <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

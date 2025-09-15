@@ -16,10 +16,11 @@ public partial class App : Application
 
 		MainPage = new AppShell();
 
-        bool isLogged = Preferences.Get("IsLogged", false);
+        //bool isLogged = Preferences.Get("IsLogged", false);
+        bool isLogged = Preferences.Get("IsLogged", true);
         if (isLogged)
         {
-            MainPage = new MainPage(new MainPageViewModel());
+            MainPage = new AppShell();
         }
         else
         {

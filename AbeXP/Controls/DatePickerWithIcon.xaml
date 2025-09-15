@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:AbeXP.Util"
+             x:Class="AbeXP.Controls.DatePickerWithIcon"
+             x:Name="datePicker">
+
+    <Grid RowDefinitions="auto,*" HorizontalOptions="Start">
+        <Label Text="{Binding Title, Source={Reference datePicker}}" HorizontalOptions="Center"/>
+        <Border Grid.Row="1"  BackgroundColor="LightGray" HorizontalOptions="Start" Padding="10,0,20,0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40" />
+            </Border.StrokeShape>
+            <Border.Content>
+                <Grid ColumnDefinitions="auto, *" RowDefinitions="auto,*" >
+                    <Label Grid.RowSpan="2" FontFamily="MaterialIconsRegular" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" Date="{Binding Date, Source={Reference datePicker}}" MinimumDate="{Binding MinDateAllowed, Source={Reference datePicker}}" MaximumDate="{Binding MaxDateAllowed, Source={Reference datePicker}}"/>
+                </Grid>
+            </Border.Content>
+        </Border>
+    </Grid>
+</ContentView>

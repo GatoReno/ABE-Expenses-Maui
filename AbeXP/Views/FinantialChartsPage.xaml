@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:utils="clr-namespace:AbeXP.Util"
+             xmlns:controls="clr-namespace:AbeXP.Controls"
+             xmlns:enums="clr-namespace:AbeXP.Common.Enum"
+             x:Class="AbeXP.Views.FinantialChartsPage"
+             Shell.NavBarIsVisible="false"
+             Title="FinantialChartsPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="BannerColor">#4DCA92</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <Grid BackgroundColor="{StaticResource BannerColor}" >
+            <Label FontSize="Small" TextColor="White" VerticalOptions="Center" Text="" />
+        </Grid>
+    </Shell.TitleView>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Expense total-->
+        <Border BackgroundColor="{StaticResource BannerColor}" StrokeThickness="0" HeightRequest="100">
+            <VerticalStackLayout VerticalOptions="Center">
+                <Label Text="Total Expenses" HorizontalOptions="Center" TextColor="White"/>
+                <Label HorizontalOptions="Center" TextColor="White">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="$" TextColor="White" FontSize="20"/>
+                            <Span Text="235,000" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" FontSize="30" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
+        </Border>
+
+
+        <!--Select date range-->
+        <HorizontalStackLayout Grid.Row="1" Padding="20" HorizontalOptions="Center">
+            <controls:DatePickerWithIcon Title="Fecha inicial" Date="{Binding StartDate}" MaxDateAllowed="{Binding MaxStartDateAllowed}" MinDateAllowed="{Binding MinStartDateAllowed}" Margin="0,0,10,0"/>
+            <controls:DatePickerWithIcon Title="Fecha final" Date="{Binding EndDate}" MaxDateAllowed="{Binding MaxEndDateAllowed}" MinDateAllowed="{Binding MinEndDateAllowed}"/>
+        </HorizontalStackLayout>
+
+        <StackLayout Grid.Row="2" >
+            <Label HorizontalOptions="Center">Intervalo de tiempo</Label>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <RadioButton x:Name="rb" GroupName="PeriodGroup" Content="3 días" Value="{x:Static enums:TimePeriod.ThreeDays}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.ThreeDays}}" />
+                <RadioButton GroupName="PeriodGroup" Content="semanal" Value="{x:Static enums:TimePeriod.Week}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Week}}" />
+                <RadioButton GroupName="PeriodGroup" Content="mensual" Value="{x:Static enums:TimePeriod.Month}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Month}}" />
+            </HorizontalStackLayout>
+        </StackLayout>
+
+
+        <!--Line Chart-->
+        <ScrollView Grid.Row="3" HeightRequest="500" VerticalOptions="Start">
+            <Grid>
+                <micro:ChartView x:Name="ExpensesLineChart" Chart="{Binding ExpensesLineChart}"/>
+            </Grid>
+
+        </ScrollView>
+
+
+    </Grid>
+
+</ContentPage>

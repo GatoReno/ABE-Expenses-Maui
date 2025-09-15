@@ -4,6 +4,7 @@ using AbeXP.Abstractions.Services;
 using AbeXP.ViewModels;
 using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
+using CommunityToolkit.Maui;
 
 namespace AbeXP.Extensions;
 
@@ -17,12 +18,14 @@ public static class ServiceCollectionExtensions
         // ViewModels
         services.AddTransient<LoginViewModel>();
         services.AddTransient<HomeViewModel>();
+        services.AddTransient<FinantialChartsViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
         
 
         // Views
         services.AddTransient<LoginView>();
         services.AddTransient<HomeView>();
+        services.AddTransient<FinantialChartsPage>();
         services.AddTransient<ExpenseFormView>();
         
 

@@ -8,12 +8,19 @@
     Shell.FlyoutBehavior="Disabled"
     Title="AbeXP">
 
+
+    <ShellContent
+      Title="FinantialCharts"
+        Route="FinantialChartsPage"
+      ContentTemplate="{DataTemplate views:FinantialChartsPage}"/>
+
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
-      <ShellContent
+    <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate views:LoginView}"/>
 

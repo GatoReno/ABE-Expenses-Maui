@@ -60,6 +60,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="Microcharts.Maui" Version="1.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -86,16 +88,19 @@
 	  <None Remove="Views\Templates\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Views\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Extensions\" />
-	  <Folder Include="Helpers\" />
 	  <Folder Include="Models\" />
 	  <Folder Include="Abstractions\" />
 	  <Folder Include="Abstractions\Interfaces\" />
-	  <Folder Include="Util\" />
 	  <Folder Include="Abstractions\Services\" />
 	  <Folder Include="Views\Templates\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Controls\DatePickerWithIcon.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\FinantialChartsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />
