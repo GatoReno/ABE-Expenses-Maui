@@ -43,6 +43,7 @@ public partial class FinantialChartsPage : ContentPage
 
     /// <summary>
     /// Forces the specified chart view to refresh its layout and appearance.
+    /// Ref. https://github.com/microcharts-dotnet/Microcharts/issues/363
     /// </summary>
     /// <param name="chartView">The chart view to be refreshed. Cannot be null.</param>
     private void RefreshChart(ChartView chartView)
