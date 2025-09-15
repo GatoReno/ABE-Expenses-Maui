@@ -14,7 +14,9 @@ namespace AbeXP.ViewModels
         public FinantialChartsViewModel()
         {
             FillExpenses();
-            RefreshCharts();
+            CreateExpensesLineChart();
+            CreatePaymentTypesPieChart();
+            CreateTagsBarChart();
 
 
         }
@@ -46,21 +48,18 @@ namespace AbeXP.ViewModels
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
         #endregion
 
-
-
-        private void RefreshCharts()
-        {
-            CreateExpensesLineChart();
-            CreatePaymentTypesPieChart();
-            CreateTagsBarChart();
-        }
-
+        /// <summary>
+        /// Triggered when the Period property changes, recreating the expenses line chart to reflect the new grouping.
+        /// </summary>
+        /// <param name="period"></param>
         partial void OnPeriodChanged(TimePeriod period)
         {
             CreateExpensesLineChart();
         }
 
-
+        /// <summary>
+        /// Creates a line chart representing expenses over time, grouped by the selected period (ThreeDays, Week, Month).
+        /// </summary>
         private void CreateExpensesLineChart()
         {
             var groupedDates = Expenses
@@ -93,6 +92,9 @@ namespace AbeXP.ViewModels
             };
         }
 
+        /// <summary>
+        /// Creates a donut chart representing the distribution of expenses by payment types.
+        /// </summary>
         private void CreatePaymentTypesPieChart()
         {
             var grouped = Expenses
@@ -117,7 +119,10 @@ namespace AbeXP.ViewModels
                 BackgroundColor = SKColors.Transparent
             };
         }
-
+       
+        /// <summary>
+        /// Creates a bar chart representing the total expenses associated with each tag.
+        /// </summary>
         private void CreateTagsBarChart()
         {
             var grouped = Expenses

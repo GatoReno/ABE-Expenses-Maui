@@ -57,10 +57,7 @@
         </HorizontalStackLayout>
 
         
-
-
         <ScrollView Grid.Row="2"  VerticalOptions="Start" Padding="{StaticResource Padding}">
-            
             <VerticalStackLayout>
 
                 <!--Expenses by period chart-->
