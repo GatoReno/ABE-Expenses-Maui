@@ -1,5 +1,5 @@
-﻿using System;
-using AbeXP.Abstractions.Interfaces;
+﻿using AbeXP.Abstractions.Interfaces;
+using AbeXP.Common.Constants;
 using Firebase.Auth;
 
 namespace AbeXP.Abstractions.Services
@@ -7,12 +7,12 @@ namespace AbeXP.Abstractions.Services
     public class FirebaseAuthService : IFibAuthLog
     {
         private readonly FirebaseAuthProvider _authProvider;
-        private readonly string ApiKey = Util.Constants.fibkey;
+        private readonly string ApiKey = FirebaseConstants.KEY;
 
         public FirebaseAuthService()
         {
             // Inicializa con tu API Key de Firebase
-            _authProvider = new FirebaseAuthProvider(new FirebaseConfig(Util.Constants.fibkey));
+            _authProvider = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
         }
 
         public async Task<string> SignInWithEmailAndPass(string email, string pass)
