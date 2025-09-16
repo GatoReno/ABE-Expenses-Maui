@@ -7,9 +7,9 @@ namespace AbeXP.Views;
 public partial class FinantialChartsPage : ContentPage
 {
     public FinantialChartsPage(FinantialChartsViewModel vm)
-	{
-		InitializeComponent();
-		BindingContext = vm;
+    {
+        InitializeComponent();
+        BindingContext = vm;
 
         vm.PropertyChanged += HandleChartsEntriesChanged;
     }
@@ -48,8 +48,11 @@ public partial class FinantialChartsPage : ContentPage
     /// <param name="chartView">The chart view to be refreshed. Cannot be null.</param>
     private void RefreshChart(ChartView chartView)
     {
-        chartView.WidthRequest = chartView.Width + 1;
-        chartView.WidthRequest = chartView.Width - 1;
+        chartView.Dispatcher.Dispatch(() =>
+        {
+            chartView.WidthRequest = chartView.Width + 1;
+            chartView.WidthRequest = chartView.Width - 1;
+        });
     }
 
 }
