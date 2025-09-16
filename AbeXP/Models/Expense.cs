@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbeXP.Attributes;
+using System;
 namespace AbeXP.Models
 {
 	public class Expense
@@ -8,6 +9,8 @@ namespace AbeXP.Models
         public decimal Amount { get; set; } // Cantidad gastada
         public string Description { get; set; } = ""; // Detalles adicionales
         public string PaymentTypeId { get; set; } // Referencia al tipo de pago usado
+
+        [FirestoreField("tagsids")]
         public List<string> TagIds { get; set; } = new(); // Referencia a etiquetas asociadas
     }
     public class Tag

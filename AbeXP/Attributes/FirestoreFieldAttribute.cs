@@ -9,7 +9,7 @@ namespace AbeXP.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class FirestoreFieldAttribute : Attribute
     {
-        public string FieldName { get; }
-        public FirestoreFieldAttribute(string fieldName) => FieldName = fieldName;
+        public string Path { get; }
+        public FirestoreFieldAttribute(string path) => Path = path;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AbeXP.Attributes;
+using AbeXP.Common.DTO;
 using Microsoft.Maui.Controls;
 using System;
 using System.Collections;
@@ -14,132 +15,125 @@ namespace AbeXP.Util
 {
     public static class FirestoreMapper
     {
-        public static T? MapToEntity<T>(JsonElement doc) where T : new()
+        public static T Map<T>(object source) where T : new()
         {
-            if (!doc.TryGetProperty("fields", out var fields))
-                return default;
+            if (source == null) return default!;
 
-            return MapFields<T>(fields);
-        }
-
-        public static IEnumerable<T> MapToEntities<T>(JsonElement root) where T : new()
-        {
-            if (root.TryGetProperty("documents", out var docs))
+            if (typeof(T).IsGenericType &&
+                typeof(T).GetGenericTypeDefinition() == typeof(List<>))
             {
-                foreach (var d in docs.EnumerateArray())
+                var itemType = typeof(T).GetGenericArguments()[0];
+
+                if (source is IEnumerable<FirestoreDocument<object>> listDocs)
                 {
-                    if (d.TryGetProperty("fields", out var fields))
-                        yield return MapFields<T>(fields);
+                    var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
+                    foreach (var doc in listDocs)
+                    {
+                        var entity = MapToEntity(itemType, doc.Fields);
+                        list.Add(entity);
+                    }
+                    return (T)list;
+                }
+
+                if (source is IEnumerable<Dictionary<string, FirestoreValue>> listFields)
+                {
+                    var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
+                    foreach (var fields in listFields)
+                    {
+                        var entity = MapToEntity(itemType, fields);
+                        list.Add(entity);
+                    }
+                    return (T)list;
                 }
             }
+            else
+            {
+                // single entity
+                if (source is FirestoreDocument<T> doc)
+                {
+                    return (T)MapToEntity(typeof(T), doc.Fields);
+                }
+                if (source is Dictionary<string, FirestoreValue> fields)
+                {
+                    return (T)MapToEntity(typeof(T), fields);
+                }
+            }
+
+            throw new InvalidOperationException("Unsupported source type for mapping.");
         }
 
-        private static T MapFields<T>(JsonElement fieldsElement) where T : new()
+        private static object MapToEntity(Type type, Dictionary<string, FirestoreValue> fields)
         {
-            var entity = new T();
-            var type = typeof(T);
+            var entity = Activator.CreateInstance(type)!;
 
-            foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var prop in type.GetProperties())
             {
-                var attr = prop.GetCustomAttribute<FirestoreFieldAttribute>()?.FieldName ?? prop.Name.ToLower();
+                var attr = prop.GetCustomAttribute<FirestoreFieldAttribute>();
+                string path = attr?.Path ?? prop.Name.ToLower();
 
-                var path = attr.Split('.');
-                if (TryGetNestedField(fieldsElement, path, out var valueElement))
+                var value = GetNestedValue(fields, path);
+                if (value != null)
                 {
-                    var value = ConvertFirestoreValue(valueElement, prop.PropertyType);
-                    if (value is not null)
-                        prop.SetValue(entity, value);
+                    prop.SetValue(entity, ConvertValue(value, prop.PropertyType));
                 }
             }
 
             return entity;
         }
 
-        private static bool TryGetNestedField(JsonElement current, string[] path, out JsonElement value)
+        private static FirestoreValue GetNestedValue(Dictionary<string, FirestoreValue> fields, string path)
         {
-            value = current;
-            foreach (var part in path)
-            {
-                if (value.ValueKind != JsonValueKind.Object || !value.TryGetProperty(part, out value))
-                    return false;
-            }
-            return true;
-        }
+            var parts = path.Split('.');
+            FirestoreValue? current = null;
+            Dictionary<string, FirestoreValue>? currentDict = fields;
 
-        private static object? ConvertFirestoreValue(JsonElement element, Type targetType)
-        {
-            if (element.ValueKind != JsonValueKind.Object) return null;
-
-            foreach (var prop in element.EnumerateObject())
+            foreach (var part in parts)
             {
-                switch (prop.Name)
+                if (currentDict != null && currentDict.TryGetValue(part, out current))
                 {
-                    case "stringValue": return prop.Value.GetString();
-                    case "integerValue": return Convert.ChangeType(prop.Value.GetString(), targetType);
-                    case "doubleValue": return prop.Value.GetDouble();
-                    case "booleanValue": return prop.Value.GetBoolean();
-                    case "timestampValue": return DateTime.TryParse(prop.Value.GetString(), out var dt) ? dt : null;
-                    case "referenceValue": return prop.Value.GetString();
-
-                    case "arrayValue" when prop.Value.TryGetProperty("values", out var arr):
-                        return ConvertArray(arr, targetType);
-
-                    case "mapValue" when prop.Value.TryGetProperty("fields", out var mapFields):
-                        var subObj = Activator.CreateInstance(targetType);
-                        return subObj is not null ? MapNestedObject(subObj, mapFields) : null;
+                    currentDict = current.MapValue;
+                }
+                else
+                {
+                    return null;
                 }
             }
 
-            return null;
+            return current;
         }
 
-        private static object? ConvertArray(JsonElement arr, Type targetType)
+        private static object ConvertValue(FirestoreValue value, Type targetType)
         {
-            var elemType = targetType.IsArray
-                ? targetType.GetElementType()!
-                : targetType.IsGenericType
-                    ? targetType.GetGenericArguments()[0]
-                    : typeof(object);
+            if (targetType == typeof(string)) return value.StringValue ?? "";
+            if (targetType == typeof(int)) return Convert.ToInt32(value.IntegerValue);
+            if (targetType == typeof(long)) return Convert.ToInt64(value.IntegerValue);
+            if (targetType == typeof(decimal)) return Convert.ToDecimal(value.IntegerValue);
+            if (targetType == typeof(double)) return Convert.ToDouble(value.DoubleValue);
+            if (targetType == typeof(bool)) return Convert.ToBoolean(value.BooleanValue);
+            if (targetType == typeof(DateTime) && value.TimestampValue != null)
+                return DateTime.Parse(value.TimestampValue);
 
-            var listType = typeof(List<>).MakeGenericType(elemType);
-            var list = (IList)Activator.CreateInstance(listType)!;
-
-            foreach (var item in arr.EnumerateArray())
+            // Handle arrays
+            if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(List<>)
+                && value.ArrayValue != null)
             {
-                var elem = ConvertFirestoreValue(item, elemType);
-                if (elem != null) list.Add(elem);
-            }
-
-            if (targetType.IsArray)
-            {
-                var array = Array.CreateInstance(elemType, list.Count);
-                list.CopyTo(array, 0);
-                return array;
-            }
-
-            return list;
-        }
-
-        private static object? MapNestedObject(object target, JsonElement fieldsElement)
-        {
-            var type = target.GetType();
-
-            foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                var attr = prop.GetCustomAttribute<FirestoreFieldAttribute>();
-                if (attr is null) continue;
-
-                var path = attr.FieldName.Split('.');
-                if (TryGetNestedField(fieldsElement, path, out var node))
+                var itemType = targetType.GetGenericArguments()[0];
+                var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
+                foreach (var item in value.ArrayValue.Values)
                 {
-                    var value = ConvertFirestoreValue(node, prop.PropertyType);
-                    if (value != null)
-                        prop.SetValue(target, value);
+                    list.Add(ConvertValue(item, itemType));
                 }
+                return list;
             }
 
-            return target;
+            // Nested object mapping
+            if (value.MapValue != null)
+            {
+                var method = typeof(FirestoreMapper).GetMethod(nameof(MapToEntity), BindingFlags.NonPublic | BindingFlags.Static)!;
+                return method.Invoke(null, new object[] { targetType, value.MapValue })!;
+            }
 
+            return null!;
         }
     }
 }

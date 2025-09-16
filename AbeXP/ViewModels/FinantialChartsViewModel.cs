@@ -4,6 +4,7 @@ using AbeXP.Interfaces;
 using AbeXP.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microcharts;
+using Newtonsoft.Json;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 
@@ -24,7 +25,7 @@ namespace AbeXP.ViewModels
                 CreatePaymentTypesPieChart();
                 CreateTagsBarChart();
             });
-           
+
         }
 
         #region PROPERTIES
@@ -78,8 +79,8 @@ namespace AbeXP.ViewModels
             {
                 Label = Period switch
                 {
-                    TimePeriod.ThreeDays => g.Date.ToString("MM-dd"),
-                    TimePeriod.Week => $"Week of {g.Date:MM-dd}",
+                    TimePeriod.ThreeDays => g.Date.ToString("MMM-dd"),
+                    TimePeriod.Week => $"Week {g.Date:MMM-dd}",
                     TimePeriod.Month => g.Date.ToString("MMM yyyy"),
                     _ => g.Date.ToString("MM-dd")
                 },

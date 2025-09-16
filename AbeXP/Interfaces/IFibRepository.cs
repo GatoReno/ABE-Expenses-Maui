@@ -9,7 +9,7 @@ namespace AbeXP.Interfaces
     public interface IFibRepository<T> where T : class, new()
     {
         Task<T> GetByIdAsync(string id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(DateTime? startDate = null, DateTime? endDate = null, int pageSize = 20, int? pageToken = null);
         Task<string> AddAsync(T entity);
         Task UpdateAsync(string id, T entity);
         Task DeleteAsync(string id);

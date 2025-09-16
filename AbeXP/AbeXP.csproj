@@ -89,7 +89,6 @@
 	  <None Remove="Views\Templates\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Models\" />
 	  <Folder Include="Abstractions\" />
 	  <Folder Include="Abstractions\Interfaces\" />
 	  <Folder Include="Abstractions\Services\" />
