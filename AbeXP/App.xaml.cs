@@ -4,6 +4,7 @@ using AbeXP.ViewModels;
 using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace AbeXP;
 
@@ -14,10 +15,12 @@ public partial class App : Application
     public static App Instance { get { return instance; } }
 
     public App(IServiceProvider serviceProvider)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         Alert = serviceProvider.GetService<IAlertService>();
+        ConfigureCulture(serviceProvider.GetService<ISettingsService>());
+
 
         MainPage = new AppShell();
 
@@ -31,6 +34,13 @@ public partial class App : Application
         {
             LoginPageNavigation();
         }
+    }
+
+    private void ConfigureCulture(ISettingsService settingsService)
+    {
+        var culture = new CultureInfo(settingsService.Culture);
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 
     public void LoginPageNavigation()

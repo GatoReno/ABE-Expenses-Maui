@@ -3,5 +3,6 @@
     public interface ISettingsService
     {
         public string FireBaseRef { get; set; }
+        public string Culture { get; set; }
     }
 }
