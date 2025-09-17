@@ -8,10 +8,6 @@
         public const string REF = "https://abexp-45259-default-rtdb.firebaseio.com/";
 
 		public const string EXPENSES_COLLECTION = "expenses";
-
-		public const string FIREBASE_API_URL = "https://firestore.googleapis.com";
-        public static string CollectionStoreApi(string collection) => $"/v1/projects/{PROJECTID}/databases/(default)/documents/{collection}";
-        public static string RunQueryApi() => $"/v1/projects/{PROJECTID}/databases/(default)/documents:runQuery?key={KEY}";
     }
 }
 

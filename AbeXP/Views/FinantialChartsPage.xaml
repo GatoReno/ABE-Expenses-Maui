@@ -52,7 +52,7 @@
 
 
         <!--Select date range-->
-        <HorizontalStackLayout Grid.Row="1" Padding="{StaticResource Padding}" HorizontalOptions="Center">
+        <HorizontalStackLayout Grid.Row="1" Padding="{StaticResource Padding}" HorizontalOptions="Center"  IsVisible="Collapse">
             <controls:DatePickerWithIcon Title="Fecha inicial" Date="{Binding StartDate}" MaxDateAllowed="{Binding MaxStartDateAllowed}" MinDateAllowed="{Binding MinStartDateAllowed}" Margin="0,0,10,0"/>
             <controls:DatePickerWithIcon Title="Fecha final" Date="{Binding EndDate}" MaxDateAllowed="{Binding MaxEndDateAllowed}" MinDateAllowed="{Binding MinEndDateAllowed}"/>
             

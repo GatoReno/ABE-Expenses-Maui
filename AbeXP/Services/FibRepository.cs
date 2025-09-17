@@ -1,17 +1,7 @@
-﻿using AbeXP.Common.Constants;
-using AbeXP.Common.DTO;
-using AbeXP.Interfaces;
+﻿using AbeXP.Interfaces;
 using AbeXP.Models;
-using AbeXP.Util;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Firebase.Database;
 using Firebase.Database.Query;
-using Google.Cloud.Firestore;
-using Microsoft.Maui.Controls;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using AbeXP.Extensions;
 
 namespace AbeXP.Services

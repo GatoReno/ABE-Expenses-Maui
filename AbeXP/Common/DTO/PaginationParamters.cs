@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AbeXP.Common.DTO
+﻿namespace AbeXP.Common.DTO
 {
-    public record PaginationParamterers
+    public record PaginationParamters
     {
-        public PaginationParamterers()
+        public PaginationParamters()
         {
 
         }
-        public PaginationParamterers(bool allRecords)
+        public PaginationParamters(bool allRecords)
         {
             AllRecords = allRecords;
         }

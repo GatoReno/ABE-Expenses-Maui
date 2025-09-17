@@ -1,8 +1,5 @@
-﻿using System;
-using AbeXP.Common.Constants;
-using AbeXP.Interfaces;
+﻿using AbeXP.Interfaces;
 using Firebase.Database;
-using Google.Cloud.Firestore;
 
 namespace AbeXP.Services
 {

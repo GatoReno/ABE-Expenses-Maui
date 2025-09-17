@@ -1,11 +1,4 @@
-﻿using AbeXP.Common.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AbeXP.Interfaces
+﻿namespace AbeXP.Interfaces
 {
     public interface IFibRepository<T> where T : class, new()
     {
