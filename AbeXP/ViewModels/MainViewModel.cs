@@ -1,39 +1,61 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using AbeXP.Models;
+using AbeXP.Views;
 
 namespace AbeXP.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
-        public ObservableCollection<TransactionGroup> Transactions { get; set; } = new();
+        [ObservableProperty] private List<string> filters = new() { "Todos", "Expenses", "Loans" };
+        [ObservableProperty] private string selectedFilter = "Todos";
+        [ObservableProperty] private DateTime selectedDate = DateTime.Today;
+        [ObservableProperty] private ObservableCollection<TransactionGroup> transactions = new();
 
-        [ObservableProperty] private string selectedFilter = "Todos"; // "Todos", "Expense", "Loan"
-        [ObservableProperty] private DateTime? selectedDate;
+        private List<object> _allItems = new();
 
         public MainPageViewModel()
         {
             LoadMockData();
-            ApplyFilters();
         }
-
-        private ObservableCollection<object> _allItems = new();
 
         private void LoadMockData()
         {
-            // Mock Expenses
-            var expense1 = new Expense { Amount = 100, Description = "Comida", Date = DateTime.Today, PaymentTypeId = "cash" };
-            var expense2 = new Expense { Amount = 50, Description = "Taxi", Date = DateTime.Today.AddDays(-1), PaymentTypeId = "cash" };
+            var expenses = new List<Expense>
+            {
+                new() { Description = "Café", Amount = 45, Date = DateTime.Today },
+                new() { Description = "Supermercado", Amount = 1200, Date = DateTime.Today }
+            };
 
-            // Mock Loans
-            var loan1 = new Loan { PersonName = "Juan Pérez", Amount = 500, DateGiven = DateTime.Today };
-            var loan2 = new Loan { PersonName = "Ana López", Amount = 1200, DateGiven = DateTime.Today.AddDays(-1), IsPaid = true };
+            var loans = new List<Loan>
+            {
+                new() { PersonName = "Juan", Amount = 500, IsPaid = false, DateGiven = DateTime.Today },
+                new() { PersonName = "Ana", Amount = 1500, IsPaid = true, DateGiven = DateTime.Today }
+            };
 
-            _allItems = new ObservableCollection<object> { expense1, expense2, loan1, loan2 };
+            _allItems = expenses.Cast<object>().Concat(loans.Cast<object>()).ToList();
+            ApplyFilters();
         }
 
+        // Botón ➕
+        [RelayCommand]
+        private async Task AddTransactionAsync()
+        {
+            string action = await App.Current.MainPage.DisplayActionSheet(
+                "Agregar Transacción",
+                "Cancelar",
+                null,
+                "Expense",
+                "Loan");
+
+            if (action == "Expense")
+                await Shell.Current.GoToAsync(nameof(ExpenseFormView));
+            else if (action == "Loan")
+                await Shell.Current.GoToAsync(nameof(LoanFormView));
+        }
+
+        // Filtros
         [RelayCommand]
         private void ApplyFilters()
         {
@@ -41,16 +63,17 @@ namespace AbeXP.ViewModels
 
             var filtered = _allItems.AsEnumerable();
 
-            if (SelectedFilter == "Expense")
+            if (SelectedFilter == "Expenses")
                 filtered = filtered.Where(x => x is Expense);
-            else if (SelectedFilter == "Loan")
+            else if (SelectedFilter == "Loans")
                 filtered = filtered.Where(x => x is Loan);
 
-            if (SelectedDate != null)
+            // 🔹 Comparación directa (sin .Value porque SelectedDate es DateTime no nullable)
+            if (SelectedDate != default)
             {
                 filtered = filtered.Where(x =>
-                    (x is Expense e && e.Date.Date == SelectedDate.Value.Date) ||
-                    (x is Loan l && l.DateGiven.Date == SelectedDate.Value.Date));
+                    (x is Expense e && e.Date.Date == SelectedDate.Date) ||
+                    (x is Loan l && l.DateGiven.Date == SelectedDate.Date));
             }
 
             var grouped = filtered
@@ -60,23 +83,19 @@ namespace AbeXP.ViewModels
                 .OrderByDescending(g => g.Key);
 
             foreach (var group in grouped)
-            {
-                var transactionGroup = new TransactionGroup(group.Key, group.ToList());
-                Transactions.Add(transactionGroup);
-            }
+                Transactions.Add(new TransactionGroup(group.Key, group.ToList()));
         }
     }
+
 
     public class TransactionGroup : ObservableCollection<object>
     {
         public DateTime Date { get; private set; }
-
         public string DateString => Date.ToString("dd/MM/yyyy");
 
-        public TransactionGroup(DateTime date, System.Collections.Generic.IEnumerable<object> items) : base(items)
+        public TransactionGroup(DateTime date, IEnumerable<object> items) : base(items)
         {
             Date = date;
         }
     }
 }
-

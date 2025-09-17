@@ -1,45 +1,73 @@
 ﻿<Properties StartupConfiguration="{82D052DF-E9B0-44AF-A028-D5D34021D060}|Default">
-  <MonoDevelop.Ide.ItemProperties.AbeXP PreferredExecutionTarget="Android.Pixel_Fold_API_35" />
+  <MonoDevelop.Ide.ItemProperties.AbeXP PreferredExecutionTarget="Android.Medium_Phone_API_35" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AbeXP/AppShell.xaml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AbeXP/MainPage.xaml">
     <Files>
-      <File FileName="AbeXP/MainPage.xaml.cs" />
-      <File FileName="AbeXP/MainPage.xaml" Line="1" Column="1" />
-      <File FileName="AbeXP/ViewModels/LoginViewModel.cs" Line="8" Column="1" />
-      <File FileName="AbeXP/Extensions/ServiceCollectionExtensions.cs" Line="7" Column="48" />
-      <File FileName="AbeXP/Views/LoginView.xaml" Line="96" Column="26" />
+      <File FileName="AbeXP/MainPage.xaml.cs" Line="9" Column="35" />
+      <File FileName="AbeXP/MainPage.xaml" Line="42" Column="5" />
+      <File FileName="AbeXP/ViewModels/LoginViewModel.cs" Line="21" Column="46" />
+      <File FileName="AbeXP/Extensions/ServiceCollectionExtensions.cs" Line="23" Column="1" />
+      <File FileName="AbeXP/Views/LoginView.xaml" Line="98" Column="1" />
       <File FileName="AbeXP/Views/HomeView.xaml" Line="1" Column="1" />
       <File FileName="AbeXP/ViewModels/HomeViewModel.cs" Line="14" Column="1" />
-      <File FileName="AbeXP/MauiProgram.cs" Line="23" Column="3" />
+      <File FileName="AbeXP/MauiProgram.cs" Line="24" Column="11" />
       <File FileName="AbeXP/Helpers/BoolToTextConverter.cs" Line="21" Column="6" />
-      <File FileName="AbeXP/Views/LoginView.xaml.cs" Line="7" Column="31" />
-      <File FileName="AbeXP/AppShell.xaml" Line="22" Column="1" />
-      <File FileName="AbeXP/App.xaml.cs" Line="27" Column="12" />
-      <File FileName="AbeXP/AppShell.xaml.cs" Line="1" Column="1" />
-      <File FileName="AbeXP/AbeXP.csproj" Line="81" Column="31" />
+      <File FileName="AbeXP/Views/LoginView.xaml.cs" Line="10" Column="8" />
+      <File FileName="AbeXP/AppShell.xaml" Line="23" Column="65" />
+      <File FileName="AbeXP/App.xaml.cs" Line="25" Column="22" />
+      <File FileName="AbeXP/AppShell.xaml.cs" Line="18" Column="1" />
+      <File FileName="AbeXP/AbeXP.csproj" Line="66" Column="71" />
+      <File FileName="AbeXP/App.xaml" Line="14" Column="13" />
+      <File FileName="AbeXP/Resources/Styles/Colors.xaml" Line="1" Column="1" />
+      <File FileName="AbeXP/Models/Expense.cs" Line="37" Column="6" />
+      <File FileName="AbeXP/Abstractions/Interfaces/IFibAuthLog.cs" Line="2" Column="1" />
+      <File FileName="AbeXP/Util/Constants.cs" Line="9" Column="1" />
+      <File FileName="AbeXP/Abstractions/Services/FirebaseAuthService.cs" Line="7" Column="37" />
+      <File FileName="AbeXP/Views/TransactionListPage.xaml" Line="13" Column="1" />
+      <File FileName="AbeXP/ViewModels/TransactionListViewModel.cs" Line="1" Column="1" />
+      <File FileName="AbeXP/Platforms/Android/AndroidManifest.xml" />
+      <File FileName="AbeXP/Views/ExpenseFormView.xaml" Line="83" Column="1" />
+      <File FileName="AbeXP/ViewModels/ExpenseFormViewModel.cs" Line="63" Column="1" />
+      <File FileName="AbeXP/Views/ExpenseFormView.xaml.cs" Line="8" Column="40" />
+      <File FileName="AbeXP/Views/HomeView.xaml.cs" Line="1" Column="1" />
+      <File FileName="AbeXP/Views/TransactionListPage.xaml.cs" Line="5" Column="28" />
+      <File FileName="AbeXP/Views/LoanFormView.xaml" Line="5" Column="19" />
+      <File FileName="AbeXP/ViewModels/LoanFormViewModel.cs" Line="28" Column="30" />
+      <File FileName="AbeXP/ViewModels/MainViewModel.cs" Line="100" Column="6" />
+      <File FileName="AbeXP/ViewModels/SettingsViewModel.cs" Line="1" Column="1" />
+      <File FileName="AbeXP/Helpers/IsExpenseConverter.cs" Line="10" Column="29" />
+      <File FileName="AbeXP/Views/Templates/TransactionTemplateSelector.cs" Line="23" Column="1" />
+      <File FileName="AbeXP/Properties/launchSettings.json" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="AbeXP" expanded="True">
-            <Node name="AbeXP">
-              <Node name="Dependencies" expanded="True" />
+          <Node name="AbeXP">
+            <Node name="AbeXP" expanded="True">
               <Node name="Extensions" expanded="True" />
               <Node name="Helpers" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Util" expanded="True" />
               <Node name="ViewModels" expanded="True" />
-              <Node name="Views" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Templates" expanded="True" />
+                <Node name="LoginView.xaml" expanded="True" />
+              </Node>
               <Node name="App.xaml" expanded="True" />
-              <Node name="AppShell.xaml" selected="True" />
+              <Node name="AppShell.xaml" expanded="True" />
+              <Node name="MainPage.xaml" expanded="True" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.Pixel_Fold_API_35" />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.Medium_Phone_API_35" />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="34.0.113" />
 </Properties>
