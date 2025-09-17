@@ -98,7 +98,7 @@ namespace AbeXP.ViewModels
 
                 TotalExpenses = Expenses?.Sum(e => e.Amount);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 App.Alert.ShowAlert("Error", "Could not load charts.");
             }
@@ -205,7 +205,7 @@ namespace AbeXP.ViewModels
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColors.Transparent,
                 BarAreaAlpha = 0,
-                MaxValue = (float)(entries.Max(e => e.Value) * 1.1f), // small padding above
+                MaxValue = entries.Any() ? (float)(entries.Max(e => e.Value) * 1.1f) : 0f, // small padding above
                 LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
             };
         }
@@ -220,13 +220,7 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                var request = new SearchParameters
-                {
-                    StartDate = StartDate,
-                    EndDate = EndDate
-                };
-
-                var expenses = await _expenseRepository.GetAllAsync(request);
+                var expenses = await _expenseRepository.GetAllAsync();
                 Expenses = new ObservableCollection<Expense>(expenses);
             }
             catch (Exception ex)

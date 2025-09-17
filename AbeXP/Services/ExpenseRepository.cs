@@ -11,10 +11,11 @@ namespace AbeXP.Services
 {
     class ExpenseRepository : FibRepository<Expense>, IExpenseRepository
     {
-        public ExpenseRepository(IFibInstance fibInstance)
-            : base(FirebaseConstants.EXPENSES_COLLECTION)
+        public IFibInstance _db { get; set; }
+        public ExpenseRepository(IFibInstance fibInstance, string collection)
+            : base(fibInstance, collection)
         {
-
+            _db = fibInstance;
         }
     }
 }

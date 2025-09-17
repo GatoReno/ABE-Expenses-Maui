@@ -6,17 +6,15 @@ using Google.Cloud.Firestore;
 
 namespace AbeXP.Services
 {
-	public sealed class FibInstance(ISettingsService settingsService) : IFibInstance
-	{
+    public sealed class FibInstance(ISettingsService settingsService) : IFibInstance
+    {
         private readonly ISettingsService _settingsService = settingsService;
-        private FirestoreDb _instance;
+        private FirebaseClient? _instance;
 
-        public FirestoreDb GetInstance()
+        public FirebaseClient GetInstance()
         {
-            if (_instance == null)
-            {
-                _instance = FirestoreDb.Create(FirebaseConstants.PROJECTID);
-            }
+            if (_instance is null)
+                _instance = new FirebaseClient(_settingsService.FireBaseRef);
 
             return _instance;
         }

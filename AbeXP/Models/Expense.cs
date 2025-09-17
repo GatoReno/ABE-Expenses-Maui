@@ -2,15 +2,12 @@
 using System;
 namespace AbeXP.Models
 {
-	public class Expense
+	public class Expense : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString(); // Identificador único
         public DateTime Date { get; set; } = DateTime.Now; // Fecha y hora del gasto
         public decimal Amount { get; set; } // Cantidad gastada
         public string Description { get; set; } = ""; // Detalles adicionales
         public string PaymentTypeId { get; set; } // Referencia al tipo de pago usado
-
-        [FirestoreField("tagsids")]
         public List<string> TagIds { get; set; } = new(); // Referencia a etiquetas asociadas
     }
     public class Tag

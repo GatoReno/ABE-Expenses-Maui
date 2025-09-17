@@ -45,7 +45,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAlertService, AlertService>();
         services.AddSingleton<IFibInstance, FibInstance>();
         services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<IExpenseRepository, ExpenseRepository>();
+        services.AddSingleton<IExpenseRepository, ExpenseRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new ExpenseRepository(fibInstanceService, FirebaseConstants.EXPENSES_COLLECTION);
+        });
 
         return services;
     }

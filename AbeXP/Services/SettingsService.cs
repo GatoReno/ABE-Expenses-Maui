@@ -6,7 +6,7 @@ namespace AbeXP.Services
     class SettingsService : ISettingsService
     {
         private const string _fireBaseRef = "FireBaseRef";
-        private const string _fireBaseRefDefault = FirebaseConstants.DOMAIN;
+        private const string _fireBaseRefDefault = FirebaseConstants.REF;
 
         public string FireBaseRef
         {

@@ -10,6 +10,6 @@ namespace AbeXP.Interfaces
 {
     public interface IFibInstance
     {
-        FirestoreDb GetInstance();
+        FirebaseClient GetInstance();
     }
 }
