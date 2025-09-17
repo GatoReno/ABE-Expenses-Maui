@@ -95,6 +95,9 @@
 	  <Folder Include="Views\Templates\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Controls\ButtonWithContent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\DatePickerWithIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

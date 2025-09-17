@@ -1,8 +1,10 @@
-﻿using AbeXP.Common.Enum;
+﻿using AbeXP.Common.DTO;
+using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microcharts;
 using Newtonsoft.Json;
 using SkiaSharp;
@@ -18,14 +20,7 @@ namespace AbeXP.ViewModels
         {
             _expenseRepository = expenseRepository;
 
-
-            GetExpenses().ContinueWith((t) =>
-            {
-                CreateExpensesLineChart();
-                CreatePaymentTypesPieChart();
-                CreateTagsBarChart();
-            });
-
+            GetExpenses();
         }
 
         #region PROPERTIES
@@ -33,6 +28,10 @@ namespace AbeXP.ViewModels
         // data
         [ObservableProperty]
         public ObservableCollection<Expense> _expenses;
+        public bool IsDarkMode => Application.Current.RequestedTheme == AppTheme.Dark;
+
+        [ObservableProperty]
+        public bool _isBusy;
 
         // charts
         [ObservableProperty]
@@ -54,6 +53,24 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
 
+        // total
+        [ObservableProperty]
+        public decimal? _totalExpenses;
+
+
+        // titles
+        [ObservableProperty]
+        public string _totalExpensesTitle = "Gasto total";
+        [ObservableProperty]
+        public string _expensesChartsTitle = "Gráfico de gastos";
+        [ObservableProperty]
+        public string _timePeriodTitle = "Intervalo de tiempo";
+        [ObservableProperty]
+        public string _paymentTypeChartTitle = "Por tipo de pago";
+        [ObservableProperty]
+        public string _tagsTypeChartTitle = "Por etiquetas";
+
+
         #endregion
 
         /// <summary>
@@ -64,6 +81,33 @@ namespace AbeXP.ViewModels
         {
             CreateExpensesLineChart();
         }
+
+
+        /// <summary>
+        /// Triggered when the Expenses property changes, refresh all the charts with the new data
+        /// </summary>
+        /// <param name="value"></param>
+        partial void OnExpensesChanged(ObservableCollection<Expense> value)
+        {
+            IsBusy = true;
+            try
+            {
+                CreateExpensesLineChart();
+                CreatePaymentTypesPieChart();
+                CreateTagsBarChart();
+
+                TotalExpenses = Expenses?.Sum(e => e.Amount);
+            }
+            catch (Exception)
+            {
+                App.Alert.ShowAlert("Error", "Could not load charts.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
 
         /// <summary>
         /// Creates a line chart representing expenses over time, grouped by the selected period (ThreeDays, Week, Month).
@@ -85,6 +129,7 @@ namespace AbeXP.ViewModels
                     _ => g.Date.ToString("MM-dd")
                 },
                 ValueLabel = g.Total.ToString("C"),
+                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 Color = SKColors.DeepSkyBlue
             }).ToArray();
 
@@ -96,7 +141,8 @@ namespace AbeXP.ViewModels
                 PointMode = PointMode.Circle,
                 PointSize = 5,
                 BackgroundColor = SKColors.Transparent,
-                LabelOrientation = Orientation.Vertical
+                LabelOrientation = Orientation.Vertical,
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
             };
         }
 
@@ -117,6 +163,7 @@ namespace AbeXP.ViewModels
             {
                 Label = g.Key,
                 ValueLabel = g.Total.ToString("C"),
+                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}")
             }).ToArray();
 
@@ -124,7 +171,8 @@ namespace AbeXP.ViewModels
             {
                 Entries = entries,
                 HoleRadius = 0.6f,
-                BackgroundColor = SKColors.Transparent
+                BackgroundColor = SKColors.Transparent,
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
             };
         }
 
@@ -145,6 +193,7 @@ namespace AbeXP.ViewModels
             var entries = grouped.Select(g => new ChartEntry((float)g.Total)
             {
                 Label = g.Key,
+                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 ValueLabel = g.Total.ToString("C"),
                 Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}"),
             }).ToArray();
@@ -156,21 +205,50 @@ namespace AbeXP.ViewModels
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColors.Transparent,
                 BarAreaAlpha = 0,
-                MaxValue = (float)(entries.Max(e => e.Value) * 1.1f) // small padding above
+                MaxValue = (float)(entries.Max(e => e.Value) * 1.1f), // small padding above
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
             };
         }
 
+
+        /// <summary>
+        /// Get all expenses from the repository and populate the Expenses collection.
+        /// </summary>
+        /// <returns></returns>
         private async Task GetExpenses()
         {
+            IsBusy = true;
             try
             {
-                var expenses = await _expenseRepository.GetAllAsync();
+                var request = new SearchParameters
+                {
+                    StartDate = StartDate,
+                    EndDate = EndDate
+                };
+
+                var expenses = await _expenseRepository.GetAllAsync(request);
                 Expenses = new ObservableCollection<Expense>(expenses);
             }
             catch (Exception ex)
             {
                 App.Alert.ShowAlert("Error", "Could not load expenses data.");
             }
+            finally
+            { 
+                IsBusy = false; 
+            }
         }
+
+
+        /// <summary>
+        /// Handles the search command to filter expenses based on the selected date range.
+        /// </summary>
+        /// <returns></returns>
+        [RelayCommand]
+        private async Task Search()
+        {
+            await GetExpenses();
+        }
+
     }
 }

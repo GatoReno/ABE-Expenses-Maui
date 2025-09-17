@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AbeXP"
              xmlns:converters="clr-namespace:AbeXP.Helpers"
+             
              x:Class="AbeXP.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -10,9 +11,12 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />                 
             </ResourceDictionary.MergedDictionaries>
+
+            <x:String x:Key="MaterialIconsRegular">MaterialIconsRegular</x:String>
             <converters:IsExpenseConverter x:Key="IsExpenseConverter" />
             <converters:IsLoanConverter x:Key="IsLoanConverter" />
             <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

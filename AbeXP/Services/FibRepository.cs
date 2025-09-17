@@ -47,14 +47,14 @@ namespace AbeXP.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(DateTime? startDate = null, DateTime? endDate = null, int pageSize = 20, int? pageToken = null)
+        public async Task<IEnumerable<T>> GetAllAsync(SearchParameters request)
         {
             var query = new
             {
                 structuredQuery = new
                 {
                     from = new[] { new { collectionId = _collection } },
-                    where = (startDate != null && endDate != null) ? new
+                    where = (request.StartDate != null && request.EndDate != null) ? new
                     {
                         compositeFilter = new
                         {
@@ -65,21 +65,21 @@ namespace AbeXP.Services
                                 fieldFilter = new {
                                     field = new { fieldPath = "date" },
                                     op = "GREATER_THAN_OR_EQUAL",
-                                    value = new { timestampValue = startDate.Value.ToUniversalTime().ToString("O") }
+                                    value = new { timestampValue = request.StartDate.Value.ToUniversalTime().ToString("O") }
                                 }
                             },
                             new {
                                 fieldFilter = new {
                                     field = new { fieldPath = "date" },
                                     op = "LESS_THAN_OR_EQUAL",
-                                    value = new { timestampValue = endDate.Value.ToUniversalTime().ToString("O") }
+                                    value = new { timestampValue = request.EndDate.Value.ToUniversalTime().ToString("O") }
                                 }
                             }
                             }
                         }
                     } : null,
-                    limit = pageSize,
-                    offset = pageToken ?? 0
+                    limit = request.Pagination?.PageSize,
+                    offset = request.Pagination?.Skip
                 }
             };
 

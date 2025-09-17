@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AbeXP.Controls.ButtonWithContent"
+             x:Name="this">
+
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
+            <Grid BindingContext="{x:Reference this}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}"/>
+                <ContentPresenter Grid.Row="1" HorizontalOptions="Center" HeightRequest="{Binding Path=Height}"/>
+            </Grid>
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
+</ContentView>
