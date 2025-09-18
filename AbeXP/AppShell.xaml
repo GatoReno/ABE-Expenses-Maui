@@ -5,27 +5,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AbeXP"
     xmlns:views="clr-namespace:AbeXP.Views"
+    xmlns:utils="clr-namespace:AbeXP.Util"
+    xmlns:finantialChartsViews="clr-namespace:AbeXP.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="AbeXP">
 
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage">
+
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Home}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <ShellContent
+            Title="Gráficas"
+            Route="FinantialChartsPage"
+            ContentTemplate="{DataTemplate finantialChartsViews:FinantialChartsPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Bar_chart}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+
+    </TabBar>
+
+    <!--<ShellContent
+      Title="Login"
+      ContentTemplate="{DataTemplate views:LoginView}"/>
 
     <ShellContent
-   Title="FinantialCharts"
-     Route="FinantialChartsPage"
-   ContentTemplate="{DataTemplate views:FinantialChartsPage}"/>
-
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:LoginView}"/>
-
-    <ShellContent
-        Title="XP"
-        ContentTemplate="{DataTemplate views:TransactionListPage}"/>
+      Title="XP"
+      ContentTemplate="{DataTemplate views:TransactionListPage}"/>-->
 
 </Shell>
 

@@ -29,5 +29,10 @@ namespace AbeXP.Extensions
         {
             return new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
         }
+
+        public static bool IsMoreThanOneMonthApart(this DateTime d1, DateTime d2)
+        {
+            return d1.Year != d2.Year || d1.Month != d2.Month;
+        }
     }
 }

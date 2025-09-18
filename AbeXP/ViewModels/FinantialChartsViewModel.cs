@@ -19,7 +19,6 @@ namespace AbeXP.ViewModels
         public FinantialChartsViewModel(IExpenseRepository expenseRepository)
         {
             _expenseRepository = expenseRepository;
-
             GetExpenses();
         }
 
@@ -30,20 +29,20 @@ namespace AbeXP.ViewModels
         public IReadOnlyCollection<Expense> Expenses
         {
             get { return expenses; }
-            set 
-            { 
+            set
+            {
                 expenses = value;
 
                 FilterExpenses();
             }
         }
 
-
-
-
         [ObservableProperty]
         public ObservableCollection<Expense> _expensesFiltered;
         public bool IsDarkMode => Application.Current.RequestedTheme == AppTheme.Dark;
+
+        [ObservableProperty]
+        public bool _expensesMoreThanOneMonth;
 
         [ObservableProperty]
         public bool _isBusy;
@@ -64,13 +63,15 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public DateTime _minStartDateAllowed = DateTime.MinValue;
         [ObservableProperty]
-        public DateTime _maxEndDateAllowed = DateTime.Now.LastDayOfCurrentMonth();
-        [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+        [ObservableProperty]
+        public DateTime _maxEndDateAllowed = DateTime.Now.LastDayOfCurrentMonth();
 
         // total
         [ObservableProperty]
-        public decimal? _totalExpenses;
+        public decimal? _totalExpensesAmount;
+        [ObservableProperty]
+        public int _totalExpensesCount;
 
 
         // titles
@@ -113,7 +114,7 @@ namespace AbeXP.ViewModels
                 CreatePaymentTypesPieChart();
                 CreateTagsBarChart();
 
-                TotalExpenses = ExpensesFiltered?.Sum(e => e.Amount);
+                TotalExpensesAmount = ExpensesFiltered?.Sum(e => e.Amount);
             }
             catch (Exception ex)
             {
@@ -169,12 +170,12 @@ namespace AbeXP.ViewModels
         private void CreatePaymentTypesPieChart()
         {
             var grouped = ExpensesFiltered
-            .GroupBy(e => e.PaymentTypeId)
-            .Select(g => new
-            {
-                g.Key,
-                Total = g.Sum(e => e.Amount)
-            });
+                .GroupBy(e => e.PaymentTypeId)
+                .Select(g => new
+                {
+                    g.Key,
+                    Total = g.Sum(e => e.Amount)
+                });
 
             var entries = grouped.Select(g => new ChartEntry((float)g.Total)
             {
@@ -232,7 +233,7 @@ namespace AbeXP.ViewModels
         /// Get all expenses from the repository and populate the Expenses collection.
         /// </summary>
         /// <returns></returns>
-        private async Task GetExpenses()
+        public async Task GetExpenses()
         {
             IsBusy = true;
             try
@@ -245,8 +246,8 @@ namespace AbeXP.ViewModels
                 App.Alert.ShowAlert("Error", "Could not load expenses data.");
             }
             finally
-            { 
-                IsBusy = false; 
+            {
+                IsBusy = false;
             }
         }
 
@@ -258,8 +259,34 @@ namespace AbeXP.ViewModels
         [RelayCommand]
         private async Task FilterExpenses()
         {
-            ExpensesFiltered = new ObservableCollection<Expense>(Expenses.Where(e => e.Date >= StartDate && e.Date <= EndDate));
 
+            var filterItems = Expenses.Where(e => e.Date >= StartDate && e.Date <= EndDate).ToList();
+
+            // If no expenses found, add a placeholder expense so the charts can still render (it throws exceptions)
+            if (!filterItems.Any())
+            {
+                filterItems.Add(new Expense
+                {
+                    Amount = 0,
+                    Date = DateTime.Now,
+                    Description = "No expenses found",
+                    PaymentTypeId = "N/A",
+                    TagIds = new List<string> { "N/A" }
+                });
+
+                TotalExpensesCount = 0;
+            }
+            else
+            {
+                TotalExpensesCount = filterItems.Count;
+            }
+
+            ExpensesFiltered = new ObservableCollection<Expense>(filterItems);
+
+            var minDate = ExpensesFiltered.MinBy(e => e.Date).Date;
+            var maxDate = ExpensesFiltered.MaxBy(e => e.Date).Date;
+
+            ExpensesMoreThanOneMonth = minDate.IsMoreThanOneMonthApart(maxDate);
             await Task.CompletedTask;
         }
 
