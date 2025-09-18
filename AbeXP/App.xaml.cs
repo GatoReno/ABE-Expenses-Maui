@@ -4,49 +4,45 @@ using AbeXP.ViewModels;
 using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Globalization;
 
 namespace AbeXP;
 
 public partial class App : Application
 {
+    private readonly IServiceProvider _serviceProvider;
     public static IAlertService Alert;
     private static App instance;
     public static App Instance { get { return instance; } }
 
     public App(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         InitializeComponent();
+        ConfigureCulture();
 
-        Alert = serviceProvider.GetService<IAlertService>();
-        ConfigureCulture(serviceProvider.GetService<ISettingsService>());
+        instance = this;
+        Alert = _serviceProvider.GetService<IAlertService>();
 
-
-        MainPage = new AppShell();
-
-        //bool isLogged = Preferences.Get("IsLogged", false);
         bool isLogged = Preferences.Get("IsLogged", true);
         if (isLogged)
         {
-            MainPage = new AppShell();
+            MainPage = new AppShell(_serviceProvider);
         }
         else
         {
-            LoginPageNavigation();
+            MainPage = _serviceProvider.GetService<LoginView>();
         }
     }
 
-    private void ConfigureCulture(ISettingsService settingsService)
+    private void ConfigureCulture()
     {
-        var culture = new CultureInfo(settingsService.Culture);
+        var settings = _serviceProvider.GetService<ISettingsService>();
+
+        var culture = new CultureInfo(settings.Culture);
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
-    }
-
-    public void LoginPageNavigation()
-    {
-        MainPage = new AppShell();
-        // MainPage = new LoginPage(new LoginViewModel(CrossFingerprint.Current, UserDialogs.Instance));
     }
 
     protected override void OnResume()
