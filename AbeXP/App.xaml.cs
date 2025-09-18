@@ -45,9 +45,7 @@ public partial class App : Application
 
     public void LoginPageNavigation()
     {
-        var authService = new FirebaseAuthService(); // tu implementación de IFibAuthLog
-        var loginViewModel = new LoginViewModel(authService);
-        MainPage = new MainPage(new MainPageViewModel());
+        MainPage = new AppShell();
         // MainPage = new LoginPage(new LoginViewModel(CrossFingerprint.Current, UserDialogs.Instance));
     }
 

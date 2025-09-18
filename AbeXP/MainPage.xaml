@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                 xmlns:viewmodels="clr-namespace:AbeXP.ViewModels"
-    xmlns:models="clr-namespace:AbeXP.Models"
-    xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
+             xmlns:viewmodels="clr-namespace:AbeXP.ViewModels"
+             xmlns:models="clr-namespace:AbeXP.Models"
+             xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
              x:Class="AbeXP.MainPage">
 
-     <ContentPage.Resources>
+    <ContentPage.Resources>
         <!-- DataTemplate para Expense -->
         <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:Expense">
             <Frame Margin="5" Padding="10" BorderColor="#CCC">
@@ -33,10 +33,13 @@
                                                ExpenseTemplate="{StaticResource ExpenseTemplate}"
                                                LoanTemplate="{StaticResource LoanTemplate}" />
     </ContentPage.Resources>
-
-
-     <Grid RowDefinitions="Auto,*" Padding="10">
-
+        <ContentPage.ToolbarItems>
+        <ToolbarItem Text="＋"
+                     Priority="0"
+                     Order="Primary"
+                     Command="{Binding AddTransactionCommand}" />
+    </ContentPage.ToolbarItems>
+    <Grid RowDefinitions="Auto,*" Padding="10">
         <!-- Filtros -->
         <HorizontalStackLayout Spacing="10" Grid.Row="0">
             <Picker Title="Tipo"
@@ -51,7 +54,6 @@
                         IsGrouped="True"
                         ItemsSource="{Binding Transactions}"
                         ItemTemplate="{StaticResource TransactionTemplateSelector}">
-
             <CollectionView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="viewmodels:TransactionGroup">
                     <Label Text="{Binding DateString}"
@@ -62,6 +64,7 @@
                 </DataTemplate>
             </CollectionView.GroupHeaderTemplate>
         </CollectionView>
+
+       
     </Grid>
 </ContentPage>
-
