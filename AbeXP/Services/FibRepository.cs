@@ -41,7 +41,7 @@ namespace AbeXP.Services
                 .DeleteAsync();
         }
 
-        public async Task<T?> GetByIdAsync(string id)
+        public async Task<T> GetByIdAsync(string id)
         {
             return await _firebaseClient
                 .Child(_collection)
@@ -49,7 +49,7 @@ namespace AbeXP.Services
                 .OnceSingleAsync<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyCollection<T>> GetAllAsync()
         {
             var items = await _firebaseClient
                 .Child(_collection)

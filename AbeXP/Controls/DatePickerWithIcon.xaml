@@ -14,9 +14,9 @@
             
             <Border.Content>
                 <Grid ColumnDefinitions="auto, *" RowDefinitions="auto,*" >
-                    <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20"/>
-                    <DatePicker Grid.Column="1" Grid.Row="1" Date="{Binding Date, Source={Reference datePicker}}" MinimumDate="{Binding MinDateAllowed, Source={Reference datePicker}}" MaximumDate="{Binding MaxDateAllowed, Source={Reference datePicker}}"/>
-                </Grid>
+                    <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20" TextColor="{StaticResource White}"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" Date="{Binding Date, Source={Reference datePicker}}" MinimumDate="{Binding MinDateAllowed, Source={Reference datePicker}}" MaximumDate="{Binding MaxDateAllowed, Source={Reference datePicker}}" TextColor="{StaticResource White}"/>
+                </Grid> 
             </Border.Content>
         </Border>
     </Grid>

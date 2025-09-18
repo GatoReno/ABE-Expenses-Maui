@@ -26,8 +26,23 @@ namespace AbeXP.ViewModels
         #region PROPERTIES
 
         // data
+        private IReadOnlyCollection<Expense> expenses;
+        public IReadOnlyCollection<Expense> Expenses
+        {
+            get { return expenses; }
+            set 
+            { 
+                expenses = value;
+
+                FilterExpenses();
+            }
+        }
+
+
+
+
         [ObservableProperty]
-        public ObservableCollection<Expense> _expenses;
+        public ObservableCollection<Expense> _expensesFiltered;
         public bool IsDarkMode => Application.Current.RequestedTheme == AppTheme.Dark;
 
         [ObservableProperty]
@@ -60,7 +75,9 @@ namespace AbeXP.ViewModels
 
         // titles
         [ObservableProperty]
-        public string _totalExpensesTitle = "Gasto total";
+        public string _totalExpensesTitle = "Total";
+        [ObservableProperty]
+        public string _countExpensesTitle = " gastos";
         [ObservableProperty]
         public string _expensesChartsTitle = "Gráfico de gastos";
         [ObservableProperty]
@@ -87,7 +104,7 @@ namespace AbeXP.ViewModels
         /// Triggered when the Expenses property changes, refresh all the charts with the new data
         /// </summary>
         /// <param name="value"></param>
-        partial void OnExpensesChanged(ObservableCollection<Expense> value)
+        partial void OnExpensesFilteredChanged(ObservableCollection<Expense> value)
         {
             IsBusy = true;
             try
@@ -96,7 +113,7 @@ namespace AbeXP.ViewModels
                 CreatePaymentTypesPieChart();
                 CreateTagsBarChart();
 
-                TotalExpenses = Expenses?.Sum(e => e.Amount);
+                TotalExpenses = ExpensesFiltered?.Sum(e => e.Amount);
             }
             catch (Exception ex)
             {
@@ -114,7 +131,7 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateExpensesLineChart()
         {
-            var groupedDates = Expenses
+            var groupedDates = ExpensesFiltered
                .GroupBy(e => e.Date.GetPeriodStart(Period))
                .OrderBy(g => g.Key)
                .Select(g => new { Date = g.Key, Total = g.Sum(e => e.Amount) });
@@ -151,7 +168,7 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreatePaymentTypesPieChart()
         {
-            var grouped = Expenses
+            var grouped = ExpensesFiltered
             .GroupBy(e => e.PaymentTypeId)
             .Select(g => new
             {
@@ -181,7 +198,7 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateTagsBarChart()
         {
-            var grouped = Expenses
+            var grouped = ExpensesFiltered
                 .SelectMany(e => e.TagIds.Select(tagId => new { TagId = tagId, e.Amount }))
                 .GroupBy(x => x.TagId)
                 .Select(g => new
@@ -221,7 +238,7 @@ namespace AbeXP.ViewModels
             try
             {
                 var expenses = await _expenseRepository.GetAllAsync();
-                Expenses = new ObservableCollection<Expense>(expenses);
+                Expenses = expenses;
             }
             catch (Exception ex)
             {
@@ -239,9 +256,11 @@ namespace AbeXP.ViewModels
         /// </summary>
         /// <returns></returns>
         [RelayCommand]
-        private async Task Search()
+        private async Task FilterExpenses()
         {
-            await GetExpenses();
+            ExpensesFiltered = new ObservableCollection<Expense>(Expenses.Where(e => e.Date >= StartDate && e.Date <= EndDate));
+
+            await Task.CompletedTask;
         }
 
     }

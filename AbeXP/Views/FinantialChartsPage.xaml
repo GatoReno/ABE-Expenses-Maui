@@ -15,7 +15,7 @@
             <Thickness x:Key="Padding">10</Thickness>
 
             <!--Style for the charts-->
-            <Style TargetType="{x:Type micro:ChartView}" >
+            <Style TargetType="{x:Type controls:ChartViewRefreshable}" >
                 <Setter Property="HeightRequest" Value="400"/>
                 <Setter Property="Margin" Value="0,20,0,20"/>
             </Style>
@@ -36,14 +36,22 @@
         </Grid.RowDefinitions>
 
         <!--Expense total-->
-        <Border BackgroundColor="{StaticResource BannerColor}" StrokeThickness="0" HeightRequest="100">
+        <Border BackgroundColor="{StaticResource BannerColor}" StrokeThickness="0" Padding="5, 15, 5, 15">
             <VerticalStackLayout VerticalOptions="Center">
                 <Label Text="{Binding TotalExpensesTitle}" HorizontalOptions="Center" TextColor="White"/>
                 <Label HorizontalOptions="Center" TextColor="White">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="$" TextColor="White" FontSize="20"/>
+                            <Span Text="$" TextColor="White" FontSize="23"/>
                             <Span Text="{Binding TotalExpenses}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" FontSize="30" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label HorizontalOptions="Center" TextColor="White" Margin="0,10,0,0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding ExpensesFiltered.Count}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" FontSize="16" />
+                            <Span Text="{Binding CountExpensesTitle}" TextColor="White" FontSize="16"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -52,14 +60,14 @@
 
 
         <!--Select date range-->
-        <HorizontalStackLayout Grid.Row="1" Padding="{StaticResource Padding}" HorizontalOptions="Center"  IsVisible="Collapse">
+        <HorizontalStackLayout Grid.Row="1" Padding="{StaticResource Padding}" HorizontalOptions="Center" >
             <controls:DatePickerWithIcon Title="Fecha inicial" Date="{Binding StartDate}" MaxDateAllowed="{Binding MaxStartDateAllowed}" MinDateAllowed="{Binding MinStartDateAllowed}" Margin="0,0,10,0"/>
             <controls:DatePickerWithIcon Title="Fecha final" Date="{Binding EndDate}" MaxDateAllowed="{Binding MaxEndDateAllowed}" MinDateAllowed="{Binding MinEndDateAllowed}"/>
             
-            <!--search button-->
-            <controls:ButtonWithContent Margin="15,0,0,-15" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center"  Command="{Binding SearchCommand}" x:Name="btnSearch">
+            <!--search button, show loading spinner when busy-->
+            <controls:ButtonWithContent Margin="15,0,0,-15" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center"  Command="{Binding FilterExpensesCommand}" x:Name="btnSearch">
                 <Grid BackgroundColor="Transparent">
-                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20"/>
+                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
                     <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
                 </Grid>
             </controls:ButtonWithContent>
@@ -78,15 +86,15 @@
                         <RadioButton GroupName="PeriodGroup" Content="mensual" Value="{x:Static enums:TimePeriod.Month}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Month}}" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
-                <micro:ChartView x:Name="ExpensesLineChart" Chart="{Binding ExpensesLineChart}"/>
+                <controls:ChartViewRefreshable Chart="{Binding ExpensesLineChart}"/>
 
                 <!--Expenses by payment category chart-->
                 <Label FontAttributes="Bold" Text="{Binding PaymentTypeChartTitle}"/>
-                <micro:ChartView x:Name="PaymentsTypeDonutChart" Chart="{Binding PaymentsTypeDonutChart}"/>
+                <controls:ChartViewRefreshable Chart="{Binding PaymentsTypeDonutChart}"/>
 
                 <!--Expenses by tags chart-->
                 <Label FontAttributes="Bold" Text="{Binding TagsTypeChartTitle}"/>
-                <micro:ChartView x:Name="TagsBarChart" Chart="{Binding TagsBarChart}"/>
+                <controls:ChartViewRefreshable Chart="{Binding TagsBarChart}"/>
             </VerticalStackLayout>
         </ScrollView>
 
