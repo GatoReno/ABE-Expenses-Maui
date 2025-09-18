@@ -7,10 +7,9 @@ public partial class AppShell : Shell
 	public AppShell(IServiceProvider sp)
 	{
         InitializeComponent();
-        //sp.GetService<FinantialChartsPage>();
-        //Routing.RegisterRoute(nameof(ExpenseFormView), typeof(ExpenseFormView));
-        //Routing.RegisterRoute(nameof(LoanFormView), typeof(LoanFormView));
-        //Routing.RegisterRoute(nameof(TransactionListPage), typeof(TransactionListPage));
+        Routing.RegisterRoute(nameof(ExpenseFormView), typeof(ExpenseFormView));
+        Routing.RegisterRoute(nameof(LoanFormView), typeof(LoanFormView));
+        Routing.RegisterRoute(nameof(TransactionListPage), typeof(TransactionListPage));
 
     }
 }
