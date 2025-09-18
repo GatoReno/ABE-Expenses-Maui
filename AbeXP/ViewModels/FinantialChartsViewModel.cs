@@ -233,7 +233,7 @@ namespace AbeXP.ViewModels
         /// Get all expenses from the repository and populate the Expenses collection.
         /// </summary>
         /// <returns></returns>
-        public async Task GetExpenses()
+        private async Task GetExpenses()
         {
             IsBusy = true;
             try
