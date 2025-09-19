@@ -24,8 +24,8 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-        builder.Services.ConfigureViewsAndViewModels();
 		builder.Services.ConfigureServices();
+        builder.Services.ConfigureViewsAndViewModels();
         //        builder.Services.ConfigureServices();
 
         return builder.Build();

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:AbeXP.ViewModels"
+             xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:models="clr-namespace:AbeXP.Models"
              xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
              x:Class="AbeXP.MainPage">
@@ -33,12 +34,18 @@
                                                ExpenseTemplate="{StaticResource ExpenseTemplate}"
                                                LoanTemplate="{StaticResource LoanTemplate}" />
     </ContentPage.Resources>
-        <ContentPage.ToolbarItems>
+    
+    <ContentPage.ToolbarItems>
         <ToolbarItem Text="＋"
                      Priority="0"
                      Order="Primary"
-                     Command="{Binding AddTransactionCommand}" />
+                     Command="{Binding AddTransactionCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Add_circle}" Size="25" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
+    
     <Grid RowDefinitions="Auto,*" Padding="10">
         <!-- Filtros -->
         <HorizontalStackLayout Spacing="10" Grid.Row="0">
@@ -65,6 +72,6 @@
             </CollectionView.GroupHeaderTemplate>
         </CollectionView>
 
-       
+
     </Grid>
 </ContentPage>

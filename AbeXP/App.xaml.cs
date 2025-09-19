@@ -1,7 +1,6 @@
 ﻿using AbeXP.Abstractions.Services;
 using AbeXP.Interfaces;
 using AbeXP.ViewModels;
-using AbeXP.ViewModels.AbeXP.ViewModels;
 using AbeXP.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,5 +1,4 @@
 ﻿using AbeXP.ViewModels;
-using AbeXP.ViewModels.AbeXP.ViewModels;
 
 namespace AbeXP.Views;
 
