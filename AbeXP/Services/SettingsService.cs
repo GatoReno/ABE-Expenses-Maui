@@ -25,5 +25,16 @@ namespace AbeXP.Services
             get => Preferences.Get(_culture, _cultureDefault);
             set => Preferences.Set(_culture, value);
         }
+
+
+        // Authtoken
+        private const string _authAccessToken = "AuthAccessToken";
+        private const string _authAccessTokenDefault = default;
+
+        public string AuthAccessToken
+        {
+            get => Preferences.Get(_authAccessToken, _authAccessTokenDefault);
+            set => Preferences.Set(_authAccessToken, value);
+        }
     }
 }
