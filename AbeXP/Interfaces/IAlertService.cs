@@ -1,4 +1,6 @@
-﻿namespace AbeXP.Interfaces
+﻿using CommunityToolkit.Maui.Core;
+
+namespace AbeXP.Interfaces
 {
     public interface IAlertService
     {
@@ -11,5 +13,7 @@
         /// <param name="callback">Action to perform afterwards.</param>
         void ShowConfirmation(string title, string message, Action<bool> callback,
                               string accept = "Yes", string cancel = "No");
+
+        void ShowToast(string message, ToastDuration duration = ToastDuration.Short, double fontsize = 14, CancellationToken cancellationToken = default);
     }
 }
