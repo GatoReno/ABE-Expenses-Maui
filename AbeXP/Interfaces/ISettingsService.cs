@@ -4,5 +4,6 @@
     {
         public string FireBaseRef { get; set; }
         public string Culture { get; set; }
+        public string AuthAccessToken { get; set; }
     }
 }
