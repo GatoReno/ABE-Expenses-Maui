@@ -1,4 +1,6 @@
 ﻿using AbeXP.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace AbeXP.Services
 {
@@ -15,6 +17,7 @@ namespace AbeXP.Services
         {
             return Application.Current!.MainPage!.DisplayAlert(title, message, accept, cancel);
         }
+
 
 
         // ----- "Fire and forget" calls -----
@@ -42,5 +45,15 @@ namespace AbeXP.Services
                 callback(answer);
             });
         }
+
+        public void ShowToast(string message, ToastDuration duration = ToastDuration.Long, double fontsize = 14, CancellationToken cancellationToken = default)
+        {
+            Application.Current!.MainPage!.Dispatcher.Dispatch(async () =>
+            {
+                var toast = Toast.Make(message, duration, fontsize);
+                await toast.Show(cancellationToken);
+            });
+        }
+
     }
 }
