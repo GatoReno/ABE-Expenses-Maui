@@ -1,0 +1,74 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+		<EditText
+            android:id="@+id/txtLoanPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Person Name"
+            android:inputType="textPersonName" />
+
+		<EditText
+            android:id="@+id/txtLoanEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+		<EditText
+            android:id="@+id/txtLoanAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Amount"
+            android:inputType="numberDecimal" />
+
+		<EditText
+            android:id="@+id/edtLoanDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Loan Date"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="date" />
+
+		<EditText
+			android:id="@+id/edtPaymentDate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Select Payment Date"
+			android:focusable="false"
+			android:clickable="true"
+			android:inputType="date" />
+
+		<CheckBox
+            android:id="@+id/chkIsPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid?" />
+
+		<EditText
+            android:id="@+id/txtLoanNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Notes"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
+
+
+		<!-- Save button -->
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/btnSaveLoan"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Save"
+			style="@style/Widget.MaterialComponents.Button"
+			android:layout_marginTop="16dp"/>
+
+	</LinearLayout>
+</ScrollView>

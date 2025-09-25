@@ -75,6 +75,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\layout\dialog_add_item.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\expense_tab.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\loan_tab.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\widget_layout.xml" />
+	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
+	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
+	  <None Remove="Platforms\Android\Resources\xml\my_widget_provider.xml" />
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Extensions\" />
@@ -106,6 +113,14 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.Fragment.Ktx">
+	    <Version>1.8.9</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.Google.Android.Material">
+	    <Version>1.12.0.5</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>
