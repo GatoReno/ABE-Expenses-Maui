@@ -10,8 +10,10 @@
 	<ListView
         android:id="@+id/quickexpense_list"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="match_parent"
+		android:minHeight="200dp"
         android:dividerHeight="1dp"
+		android:layout_weight="1"
         android:background="@android:color/transparent" />
 
 	<Button
