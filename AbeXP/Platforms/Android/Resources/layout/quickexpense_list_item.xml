@@ -42,14 +42,33 @@
 
 	</LinearLayout>
 
-	<!-- Amount -->
-	<TextView
-		android:id="@+id/txtAmount"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="$0.00"
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 		android:gravity="center_vertical|end"
-		android:textColor="@android:color/holo_green_dark"
-		android:textSize="16sp"
-		android:textStyle="bold" />
+        android:layout_weight="1">
+
+		<!-- Amount -->
+		<TextView
+			android:id="@+id/txtAmount"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="$0.00"
+			
+			android:textColor="@android:color/holo_green_dark"
+			android:textSize="16sp"
+			android:textStyle="bold" />
+
+		<!--Payment type-->
+		<TextView
+			android:id="@+id/txtPaymentType"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="12sp" />
+
+
+	</LinearLayout>
 </LinearLayout>
+

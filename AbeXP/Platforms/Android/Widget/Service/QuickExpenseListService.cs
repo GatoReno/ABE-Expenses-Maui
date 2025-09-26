@@ -69,6 +69,9 @@ namespace AbeXP.Platforms.Android.Widget.Service
                 // Date
                 rv.SetTextViewText(Resource.Id.txtDate, item.Date.ToString("yyyy-MM-dd"));
 
+                // Payment type
+                rv.SetTextViewText(Resource.Id.txtPaymentType, item.PaymentMethod);
+
                 return rv;
             }
 
