@@ -9,6 +9,7 @@ namespace AbeXP.Models
         public string Description { get; set; } = ""; // Detalles adicionales
         public string PaymentTypeId { get; set; } // Referencia al tipo de pago usado
         public List<string> TagIds { get; set; } = new(); // Referencia a etiquetas asociadas
+        
     }
     public class Tag
     {
@@ -33,6 +34,7 @@ namespace AbeXP.Models
         public DateTime? SuggestedPaybackDate { get; set; } // Fecha sugerida de pago
         public bool IsPaid { get; set; } = false; // Estado del préstamo
         public string Notes { get; set; } = ""; // Detalles adicionales
+        public string UserId { get; set; }
     }
 
 }

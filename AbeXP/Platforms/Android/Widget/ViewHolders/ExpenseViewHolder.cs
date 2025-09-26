@@ -1,20 +1,24 @@
-﻿using AbeXP.Interfaces;
+﻿using AbeXP.Common.Constants;
+using AbeXP.Interfaces;
 using AbeXP.Models;
-using AbeXP.Platforms.Android.Widget.ViewHolders;
+using AbeXP.Platforms.Android.Widget.Service;
 using Android.App;
+using Android.Appwidget;
+using Android.Content;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.TextField;
 using View = Android.Views.View;
 
 
-namespace AbeXP.Platforms.Android.Widget
+namespace AbeXP.Platforms.Android.Widget.ViewHolders
 {
     internal class ExpenseViewHolder : ExpenditureBaseViewHolder
     {
 
-        private Expense expense = new Expense();
         private readonly IExpenseRepository _expenseRepository;
+        private DateTime expenseDate = DateTime.Now;
+        
 
         public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository) : base(itemView)
         {
@@ -88,9 +92,12 @@ namespace AbeXP.Platforms.Android.Widget
 
                 try
                 {
-                    MapExpense();
-                    await _expenseRepository.AddAsync(expense);
+                    var expense = MapExpense();
 
+                    var expenseIndexed = new ExpenseIndexed(expense);
+                    await _expenseRepository.AddAsync(expenseIndexed);
+
+                    NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, "Success", ToastLength.Short).Show();
                 }
                 catch (Exception ex)
@@ -99,7 +106,7 @@ namespace AbeXP.Platforms.Android.Widget
                 }
                 finally
                 {
-                    await Task.Delay(2000);
+                    await Task.Delay(1000);
                     FinishActivity();
                 }
 
@@ -110,15 +117,18 @@ namespace AbeXP.Platforms.Android.Widget
         private void SetupDatePicker()
         {
             var edtExpenseDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
+            edtExpenseDate.Text = expenseDate.ToString(DateConstants.WidgetDateFormat);
             edtExpenseDate.Click += (s, e) =>
             {
-                ShowDatePicker(ItemView.Context, edtExpenseDate, (date) => expense.Date = date);
+                ShowDatePicker(ItemView.Context, edtExpenseDate, (date) => expenseDate = date);
             };
 
         }
 
-        private void MapExpense()
+        private Expense MapExpense()
         {
+            var expense = new Expense();
+
             var edtDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
             var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseAmount);
             var ddlPaymentType = ItemView.FindViewById<MaterialAutoCompleteTextView>(Resource.Id.ddlPaymentType);
@@ -143,6 +153,8 @@ namespace AbeXP.Platforms.Android.Widget
                                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                                 .ToList();
 
+            expense.Date = expenseDate;
+            return expense;
         }
     }
 }

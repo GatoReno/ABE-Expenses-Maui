@@ -3,6 +3,9 @@ using AbeXP.Abstractions.Services;
 using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Services;
+using AbeXP.UseCases;
+using AbeXP.UseCases.Interfaces;
+using AbeXP.UseCases.Plugins;
 using AbeXP.ViewModels;
 using AbeXP.Views;
 using CommunityToolkit.Maui;
@@ -46,6 +49,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAlertService, AlertService>();
         services.AddSingleton<IFibInstance, FibInstance>();
         services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<IUserSession, UserSession>();
         services.AddSingleton<IExpenseRepository, ExpenseRepository>(sp =>
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
@@ -57,6 +61,9 @@ public static class ServiceCollectionExtensions
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
             return new LoanRepository(fibInstanceService, FirebaseConstants.LOANS_COLLECTION);
         });
+
+        // Use cases
+        services.AddTransient<IGetExpendituresUseCase, GetExpendituresUseCase>();
 
         return services;
     }

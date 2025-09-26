@@ -10,6 +10,20 @@
         android:layout_height="wrap_content">
 
 
+		<!--Description-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+			android:hint="Description">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/txtExpenseDescription"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
+
 		<!--Date-->
 		<com.google.android.material.textfield.TextInputLayout
 			android:layout_width="match_parent"
@@ -55,21 +69,6 @@
 
 		</com.google.android.material.textfield.TextInputLayout>
 
-		<!--Description-->
-		<com.google.android.material.textfield.TextInputLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Description">
-
-			<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/txtExpenseDescription"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:inputType="text"/>
-		</com.google.android.material.textfield.TextInputLayout>
-
-
 		<!--Tags-->
 		<com.google.android.material.textfield.TextInputLayout
 			android:id="@+id/layoutTags"
@@ -90,6 +89,7 @@
 		<!-- Save button -->
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/btnSaveExpense"
+			android:textColor="@android:color/white"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="Save"

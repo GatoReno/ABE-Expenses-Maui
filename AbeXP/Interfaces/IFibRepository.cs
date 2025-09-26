@@ -1,4 +1,6 @@
-﻿namespace AbeXP.Interfaces
+﻿using AbeXP.Models;
+
+namespace AbeXP.Interfaces
 {
     public interface IFibRepository<T> where T : class, new()
     {
@@ -7,6 +9,7 @@
         Task DeleteAsync(string id);
         Task<T> GetByIdAsync(string id);
         Task<IReadOnlyCollection<T>> GetAllAsync();
+        Task<IReadOnlyCollection<T>> GetAllAsync(IndexItemRequest indexItemParamaters);
     }
 
 }

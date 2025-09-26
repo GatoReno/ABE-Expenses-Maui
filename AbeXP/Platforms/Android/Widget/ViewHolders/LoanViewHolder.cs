@@ -1,19 +1,19 @@
-﻿using AbeXP.Interfaces;
+﻿using AbeXP.Common.Constants;
+using AbeXP.Interfaces;
 using AbeXP.Models;
-using AbeXP.Platforms.Android.Widget.ViewHolders;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.CheckBox;
 using Google.Android.Material.TextField;
 using View = Android.Views.View;
 
-namespace AbeXP.Platforms.Android.Widget
+namespace AbeXP.Platforms.Android.Widget.ViewHolders
 {
     internal class LoanViewHolder : ExpenditureBaseViewHolder
     {
         private readonly ILoanRepository _loanRepository;
         private DateTime dateGiven = DateTime.Now;
-        private DateTime datePayment = DateTime.Now;
+        private DateTime datePayment = DateTime.Now.AddDays(10);
 
         public LoanViewHolder(View itemView, ILoanRepository loanRepository) : base(itemView)
         {
@@ -33,6 +33,9 @@ namespace AbeXP.Platforms.Android.Widget
             var edtLoanDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtLoanDate);
             var edtPaymentDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtPaymentDate);
 
+            edtLoanDate.Text = dateGiven.ToString(DateConstants.WidgetDateFormat);
+            edtPaymentDate.Text = datePayment.ToString(DateConstants.WidgetDateFormat);
+
             edtLoanDate.Click += (s, e) => ShowDatePicker(ItemView.Context, edtLoanDate, (date) => dateGiven = date);
             edtPaymentDate.Click += (s, e) => ShowDatePicker(ItemView.Context, edtPaymentDate, (date) => datePayment = date);
 
@@ -51,8 +54,9 @@ namespace AbeXP.Platforms.Android.Widget
                 try
                 {
                     var loan = MapLoan();
-                    await _loanRepository.AddAsync(loan);
+                    await _loanRepository.AddAsync(new LoanIndexed(loan));
 
+                    NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, "Success", ToastLength.Short).Show();
                 }
                 catch (Exception ex)
@@ -61,7 +65,7 @@ namespace AbeXP.Platforms.Android.Widget
                 }
                 finally
                 {
-                    await Task.Delay(2000);
+                    await Task.Delay(1000);
                     FinishActivity();
                 }
 

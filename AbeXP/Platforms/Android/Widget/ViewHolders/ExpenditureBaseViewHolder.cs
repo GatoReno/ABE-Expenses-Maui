@@ -1,4 +1,6 @@
-﻿using Android.App;
+﻿using AbeXP.Common.Constants;
+using Android.App;
+using Android.Appwidget;
 using Android.Content;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -27,7 +29,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 
             void OnDatePickerChange(object? sender, DateSetEventArgs args)
             {
-                editText.Text = args.Date.ToString("yyyy-MM-dd");
+                editText.Text = args.Date.ToString(DateConstants.IndexDateFormat);
                 onDateChanged?.Invoke(args.Date);
             }
 
@@ -41,10 +43,43 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         /// </summary>
         protected void FinishActivity()
         {
-            if (ItemView.Context is Activity ac)
+            var activity = GetActivity();
+            if (activity != null)
             {
-                ac.Finish();
+                activity.Finish();
             }
+        }
+
+
+        /// <summary>
+        /// Triggers the widget to update the list of items
+        /// </summary>
+        protected void NotifyWidgetUpdate()
+        {
+            var activity = GetActivity();
+            var appWidgetManager = AppWidgetManager.GetInstance(activity);
+
+            var componentName = new ComponentName(activity, Java.Lang.Class.FromType(typeof(QuickExpenseWidgetProvider)));
+            var appWidgetIds = appWidgetManager.GetAppWidgetIds(componentName);
+
+            //var views = new RemoteViews(activity.PackageName, Resource.Layout.quickexpense_widget_layout);
+            //appWidgetManager.UpdateAppWidget(appWidgetIds, views); // views is a RemoteViews that you need to build
+            appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetIds, Resource.Id.quickexpense_list);
+        }
+
+        protected Activity GetActivity()
+        {
+            var context = ItemView.Context;
+
+            while (context is ContextWrapper wrapper)
+            {
+                if (wrapper is Activity activity)
+                    return activity;
+
+                context = wrapper.BaseContext;
+            }
+
+            return default;
         }
 
     }

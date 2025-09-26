@@ -6,7 +6,7 @@ using AndroidX.ViewPager2.Widget;
 using Google.Android.Material.Tabs;
 using Button = Android.Widget.Button;
 
-namespace AbeXP.Platforms.Android
+namespace AbeXP.Platforms.Android.Widget
 {
     [Activity(Theme = "@style/Theme.TransparentDialog",
     Exported = true,

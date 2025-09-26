@@ -1,10 +1,10 @@
 ﻿using AbeXP.Interfaces;
-using AbeXP.Platforms.Android.Widget;
+using AbeXP.Platforms.Android.Widget.ViewHolders;
 using Android.Content;
 using Android.Views;
 using AndroidX.RecyclerView.Widget;
 
-namespace AbeXP.Platforms.Android
+namespace AbeXP.Platforms.Android.Widget
 {
     public class AddItemPagerAdapter : RecyclerView.Adapter
     {
