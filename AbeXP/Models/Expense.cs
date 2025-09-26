@@ -34,7 +34,6 @@ namespace AbeXP.Models
         public DateTime? SuggestedPaybackDate { get; set; } // Fecha sugerida de pago
         public bool IsPaid { get; set; } = false; // Estado del préstamo
         public string Notes { get; set; } = ""; // Detalles adicionales
-        public string UserId { get; set; }
     }
 
 }

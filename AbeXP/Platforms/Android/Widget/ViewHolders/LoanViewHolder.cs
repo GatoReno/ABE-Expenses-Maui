@@ -1,6 +1,7 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.UseCases.Plugins;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.CheckBox;
@@ -12,12 +13,17 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
     internal class LoanViewHolder : ExpenditureBaseViewHolder
     {
         private readonly ILoanRepository _loanRepository;
+        private readonly IUserSession _userSession;
         private DateTime dateGiven = DateTime.Now;
         private DateTime datePayment = DateTime.Now.AddDays(10);
 
-        public LoanViewHolder(View itemView, ILoanRepository loanRepository) : base(itemView)
+        public LoanViewHolder(View itemView, ILoanRepository loanRepository, IUserSession userSession) : base(itemView)
         {
+            // TODO: we should create a single Use Case and inject it instead, to create the loan
             _loanRepository = loanRepository;
+            _userSession = userSession;
+
+
             InitializeComponents();
         }
 
@@ -54,6 +60,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                 try
                 {
                     var loan = MapLoan();
+                    loan.UserId = _userSession.UserId; // Todo: this could be avoided here and set it in the User case to be created
                     await _loanRepository.AddAsync(new LoanIndexed(loan));
 
                     NotifyWidgetUpdate();

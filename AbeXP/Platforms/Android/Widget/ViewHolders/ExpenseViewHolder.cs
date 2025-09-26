@@ -1,10 +1,8 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
-using AbeXP.Platforms.Android.Widget.Service;
+using AbeXP.UseCases.Plugins;
 using Android.App;
-using Android.Appwidget;
-using Android.Content;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.TextField;
@@ -17,12 +15,15 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
     {
 
         private readonly IExpenseRepository _expenseRepository;
+        private readonly IUserSession _userSession;
         private DateTime expenseDate = DateTime.Now;
         
 
-        public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository) : base(itemView)
+        public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository, IUserSession userSession) : base(itemView)
         {
+            // TODO: we should create a single Use Case and inject it instead, to create the expense
             _expenseRepository = expenseRepository;
+            _userSession = userSession;
 
             InitializeComponents();
         }
@@ -93,7 +94,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                 try
                 {
                     var expense = MapExpense();
-
+                    expense.UserId = _userSession.UserId;  // Todo: this could be avoided here and set it in the User case to be created
                     var expenseIndexed = new ExpenseIndexed(expense);
                     await _expenseRepository.AddAsync(expenseIndexed);
 

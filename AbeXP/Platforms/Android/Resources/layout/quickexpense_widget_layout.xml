@@ -7,6 +7,27 @@
     android:background="@android:color/white"
     android:padding="8dp">
 
+	<!-- Header -->
+	<TextView
+        android:id="@+id/txtHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quick Expenses"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal" />
+
+	<!-- Empty view -->
+	<TextView
+        android:id="@+id/txtEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No expenses yet"
+        android:textColor="#666"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="16dp" />
+
 	<ListView
         android:id="@+id/quickexpense_list"
         android:layout_width="match_parent"

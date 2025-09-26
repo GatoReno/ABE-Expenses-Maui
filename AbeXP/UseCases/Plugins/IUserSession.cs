@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.UseCases.Plugins
 {
-    internal interface IUserSession
+    public interface IUserSession
     {
         string UserId {  get; }
     }

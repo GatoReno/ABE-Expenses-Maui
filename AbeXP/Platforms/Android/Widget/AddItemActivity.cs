@@ -1,4 +1,5 @@
 ﻿using AbeXP.Interfaces;
+using AbeXP.UseCases.Plugins;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -34,12 +35,13 @@ namespace AbeXP.Platforms.Android.Widget
             // get repository from MAUI DI
             var expenseRepository = MauiApplication.Current.Services.GetService<IExpenseRepository>();
             var loanRepository = MauiApplication.Current.Services.GetService<ILoanRepository>();
+            var userSession = MauiApplication.Current.Services.GetService<IUserSession>();
 
             // tab titles
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
 
-            var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository);
+            var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository, userSession);
             viewPager.Adapter = adapter;
 
             var titles = new[] { "Expense", "Loan" };

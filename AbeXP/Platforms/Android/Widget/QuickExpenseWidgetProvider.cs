@@ -22,6 +22,8 @@ namespace AbeXP.Platforms.Android.Widget
 
                 var views = new RemoteViews(context.PackageName, Resource.Layout.quickexpense_widget_layout);
                 views.SetRemoteAdapter(Resource.Id.quickexpense_list, intent);
+                views.SetEmptyView(Resource.Id.quickexpense_list, Resource.Id.txtEmpty);
+
 
                 // PendingIntent for Add button
                 var addIntent = new Intent(context, typeof(AddItemActivity));
