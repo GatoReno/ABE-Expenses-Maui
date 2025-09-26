@@ -53,7 +53,7 @@ namespace AbeXP.Platforms.Android
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-
+        
         }
 
 

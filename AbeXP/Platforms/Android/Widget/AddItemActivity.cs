@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
+using AndroidX.ViewPager.Widget;
 using AndroidX.ViewPager2.Widget;
 using Google.Android.Material.Tabs;
 using Button = Android.Widget.Button;
@@ -29,9 +30,6 @@ namespace AbeXP.Platforms.Android
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.dialog_add_item);
-
-            // Make the dialog bigger
-            Window?.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
 
             SetupTabs();
         }
