@@ -75,6 +75,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <!--<None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />-->
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Extensions\" />
