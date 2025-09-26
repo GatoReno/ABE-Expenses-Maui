@@ -30,18 +30,17 @@ namespace AbeXP.Platforms.Android
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.dialog_add_item);
 
-
-            // get repository from MAUI DI
-            var repo = MauiApplication.Current.Services.GetService<IExpenseRepository>();
-
-            Toast.MakeText(this, @$"Is repo null {(repo == null ? "yes" : "no")}", ToastLength.Short).Show();
-
             // Make the dialog bigger
             Window?.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
 
+            SetupTabs();
+        }
 
-            
-            
+        private void SetupTabs()
+        {
+            // get repository from MAUI DI
+            var repo = MauiApplication.Current.Services.GetService<IExpenseRepository>();
+
             // tab titles
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
@@ -56,7 +55,7 @@ namespace AbeXP.Platforms.Android
             mediator.Attach();
         }
 
-        
+
     }
 
     // small class that implements the Java callback interface

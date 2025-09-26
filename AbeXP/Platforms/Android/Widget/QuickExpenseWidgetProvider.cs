@@ -5,7 +5,7 @@ using Android.Widget;
 
 namespace AbeXP.Platforms.Android
 {
-    [BroadcastReceiver(Label = "MyWidget")]
+    [BroadcastReceiver(Label = "Quick Expenses")]
     [IntentFilter(new[] { AppWidgetManager.ActionAppwidgetUpdate })]
     [MetaData("android.appwidget.provider", Resource = "@xml/my_widget_provider")]
     public class MyWidgetProvider : AppWidgetProvider
