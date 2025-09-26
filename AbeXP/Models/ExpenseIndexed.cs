@@ -21,6 +21,6 @@ namespace AbeXP.Models
             UserId = expense.UserId;
         }
 
-        public string UserId_Datetime => $"{UserId}_{Date.ToString(DateConstants.IndexDateFormat)}";
+        public string UserId_Date => $"{UserId}_{Date.ToString(DateConstants.IndexDateFormat)}";
     }
 }

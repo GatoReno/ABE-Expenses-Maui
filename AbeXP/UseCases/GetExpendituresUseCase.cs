@@ -32,7 +32,7 @@ namespace AbeXP.UseCases
 
             var expenses = await _expenseRepository.GetAllAsync(new IndexItemRequest
             {
-                OrderBy = nameof(ExpenseIndexed.UserId_Datetime),
+                OrderBy = nameof(ExpenseIndexed.UserId_Date),
                 StartAt = $"{_userSession.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
                 EndAt = $"{_userSession.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
                 LimitTo = request.LimitTo
