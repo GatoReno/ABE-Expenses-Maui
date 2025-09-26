@@ -52,6 +52,12 @@ public static class ServiceCollectionExtensions
             return new ExpenseRepository(fibInstanceService, FirebaseConstants.EXPENSES_COLLECTION);
         });
 
+        services.AddSingleton<ILoanRepository, LoanRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new LoanRepository(fibInstanceService, FirebaseConstants.LOANS_COLLECTION);
+        });
+
         return services;
     }
 }

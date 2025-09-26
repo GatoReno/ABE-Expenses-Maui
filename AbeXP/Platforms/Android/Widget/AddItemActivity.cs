@@ -39,13 +39,14 @@ namespace AbeXP.Platforms.Android
         private void SetupTabs()
         {
             // get repository from MAUI DI
-            var repo = MauiApplication.Current.Services.GetService<IExpenseRepository>();
+            var expenseRepository = MauiApplication.Current.Services.GetService<IExpenseRepository>();
+            var loanRepository = MauiApplication.Current.Services.GetService<ILoanRepository>();
 
             // tab titles
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
 
-            var adapter = new AddItemPagerAdapter(this, repo);
+            var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository);
             viewPager.Adapter = adapter;
 
             var titles = new[] { "Expense", "Loan" };

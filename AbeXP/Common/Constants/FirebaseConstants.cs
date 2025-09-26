@@ -8,6 +8,7 @@
         public const string REF = "https://abexp-45259-default-rtdb.firebaseio.com/";
 
 		public const string EXPENSES_COLLECTION = "expenses";
+		public const string LOANS_COLLECTION = "loans";
     }
 }
 

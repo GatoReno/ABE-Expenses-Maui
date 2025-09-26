@@ -22,12 +22,14 @@ namespace AbeXP.Platforms.Android
     {
         private readonly Context _context;
         private readonly IExpenseRepository _expenseRepository;
+        private readonly ILoanRepository _loanRepository;
         private readonly int[] _layouts;
 
-        public AddItemPagerAdapter(Context c, IExpenseRepository expenseRepository)
+        public AddItemPagerAdapter(Context c, IExpenseRepository expenseRepository, ILoanRepository loanRepository)
         {
             _context = c;
             _expenseRepository = expenseRepository;
+            _loanRepository = loanRepository;
 
             _layouts = new[]
             {
@@ -44,7 +46,7 @@ namespace AbeXP.Platforms.Android
             return viewType switch
             {
                 0 => new ExpenseViewHolder(view, _expenseRepository),
-                1 => new LoanViewHolder(view, _expenseRepository),
+                1 => new LoanViewHolder(view, _loanRepository),
                 _ => throw new ArgumentOutOfRangeException(nameof(viewType))
             };
         }

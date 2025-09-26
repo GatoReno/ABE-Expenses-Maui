@@ -97,7 +97,7 @@ namespace AbeXP.Platforms.Android.Widget
 
                 try
                 {
-                    MapExpense(ItemView);
+                    MapExpense();
                     await _expenseRepository.AddAsync(expense);
 
                     Toast.MakeText(ItemView.Context, "Success", ToastLength.Short).Show();
@@ -126,13 +126,13 @@ namespace AbeXP.Platforms.Android.Widget
 
         }
 
-        private void MapExpense(View view)
+        private void MapExpense()
         {
-            var edtDate = view.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
-            var edtAmount = view.FindViewById<TextInputEditText>(Resource.Id.txtExpenseAmount);
-            var ddlPaymentType = view.FindViewById<MaterialAutoCompleteTextView>(Resource.Id.ddlPaymentType);
-            var edtDescription = view.FindViewById<TextInputEditText>(Resource.Id.txtExpenseDescription);
-            var edtTags = view.FindViewById<TextInputEditText>(Resource.Id.edtTags);
+            var edtDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
+            var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseAmount);
+            var ddlPaymentType = ItemView.FindViewById<MaterialAutoCompleteTextView>(Resource.Id.ddlPaymentType);
+            var edtDescription = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseDescription);
+            var edtTags = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtTags);
 
 
             // Amount

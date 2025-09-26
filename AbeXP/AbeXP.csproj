@@ -78,10 +78,8 @@
 	  <None Remove="Platforms\Android\Resources\layout\dialog_add_item.xml" />
 	  <None Remove="Platforms\Android\Resources\layout\expense_tab.xml" />
 	  <None Remove="Platforms\Android\Resources\layout\loan_tab.xml" />
-	  <None Remove="Platforms\Android\Resources\layout\widget_layout.xml" />
 	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
 	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
-	  <None Remove="Platforms\Android\Resources\xml\my_widget_provider.xml" />
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Extensions\" />
