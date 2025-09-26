@@ -2,7 +2,6 @@
 using AbeXP.Models;
 using AbeXP.Platforms.Android.Widget.ViewHolders;
 using Android.Widget;
-using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.CheckBox;
 using Google.Android.Material.TextField;

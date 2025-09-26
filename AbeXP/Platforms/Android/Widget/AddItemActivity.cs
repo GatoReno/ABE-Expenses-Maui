@@ -1,12 +1,7 @@
 ﻿using AbeXP.Interfaces;
-using AbeXP.Services;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Views;
-using Android.Widget;
-using AndroidX.AppCompat.App;
-using AndroidX.ViewPager.Widget;
 using AndroidX.ViewPager2.Widget;
 using Google.Android.Material.Tabs;
 using Button = Android.Widget.Button;

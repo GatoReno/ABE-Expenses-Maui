@@ -2,18 +2,9 @@
 using AbeXP.Models;
 using AbeXP.Platforms.Android.Widget.ViewHolders;
 using Android.App;
-using Android.Content;
 using Android.Widget;
-using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.TextField;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Android.App.DatePickerDialog;
 using View = Android.Views.View;
 
 

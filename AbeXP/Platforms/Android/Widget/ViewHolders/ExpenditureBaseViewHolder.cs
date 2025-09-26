@@ -2,11 +2,6 @@
 using Android.Content;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Android.App.DatePickerDialog;
 using View = Android.Views.View;
 

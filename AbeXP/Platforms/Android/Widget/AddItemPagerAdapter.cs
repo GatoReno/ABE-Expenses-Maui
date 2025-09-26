@@ -1,20 +1,8 @@
 ﻿using AbeXP.Interfaces;
-using AbeXP.Models;
 using AbeXP.Platforms.Android.Widget;
-using Android.App;
 using Android.Content;
 using Android.Views;
-using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using AndroidX.ViewPager2.Adapter;
-using Google.Android.Material.Button;
-using Google.Android.Material.Dialog;
-using Google.Android.Material.TextField;
-using Java.Util.Zip;
-using System.Collections;
-using static Android.App.DatePickerDialog;
-using static AndroidX.RecyclerView.Widget.RecyclerView;
-using View = Android.Views.View;
 
 namespace AbeXP.Platforms.Android
 {
