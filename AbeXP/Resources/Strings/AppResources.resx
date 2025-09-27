@@ -159,6 +159,9 @@
   <data name="PaymentMethod" xml:space="preserve">
     <value>Método de pago</value>
   </data>
+  <data name="PleaseLoginExpenses" xml:space="preserve">
+    <value>Por favor inicia sesión para ver tus gastos</value>
+  </data>
   <data name="QuickExpenses" xml:space="preserve">
     <value>Gastos rápidos</value>
   </data>

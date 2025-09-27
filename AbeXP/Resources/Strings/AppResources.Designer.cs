@@ -187,6 +187,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Por favor inicia sesión para ver tus gastos.
+        /// </summary>
+        internal static string PleaseLoginExpenses {
+            get {
+                return ResourceManager.GetString("PleaseLoginExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gastos rápidos.
         /// </summary>
         internal static string QuickExpenses {

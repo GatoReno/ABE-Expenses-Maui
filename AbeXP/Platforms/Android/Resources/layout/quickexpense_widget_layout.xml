@@ -16,6 +16,16 @@
         android:textStyle="bold"
         android:gravity="center_horizontal" />
 
+	<!-- Logged-out message -->
+	<TextView
+        android:id="@+id/txtQuickExpenseLoginRequired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#666"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="16dp" />
+
 	<!-- Empty view -->
 	<TextView
         android:id="@+id/txtQuickExpenseEmpty"
@@ -40,6 +50,8 @@
 	<Button
         android:id="@+id/btnQuickexpenseAdd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+		android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"/>
 
 </LinearLayout>
