@@ -9,6 +9,7 @@ namespace AbeXP.Models
         public string Description { get; set; } = ""; // Detalles adicionales
         public string PaymentTypeId { get; set; } // Referencia al tipo de pago usado
         public List<string> TagIds { get; set; } = new(); // Referencia a etiquetas asociadas
+        
     }
     public class Tag
     {
@@ -24,9 +25,8 @@ namespace AbeXP.Models
         public string Details { get; set; } = ""; // Ej: número de tarjeta, banco, etc.
     }
 
-    public class Loan
+    public class Loan : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string PersonName { get; set; } = ""; // Nombre del deudor
         public string Email { get; set; } = ""; // Email del deudor (opcional)
         public decimal Amount { get; set; } // Cantidad prestada

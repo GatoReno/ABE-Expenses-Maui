@@ -75,6 +75,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\layout\dialog_add_item.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\expense_tab.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\loan_tab.xml" />
+	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
+	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
 	  <!--<None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />-->
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
@@ -107,6 +112,27 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.Fragment.Ktx">
+	    <Version>1.8.9</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.Google.Android.Material">
+	    <Version>1.12.0.5</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Resources\Strings\AppResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppResources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Strings\AppResources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

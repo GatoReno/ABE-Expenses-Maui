@@ -59,6 +59,22 @@ namespace AbeXP.Services
             return items;
         }
 
+        public async Task<IReadOnlyCollection<T>> GetAllAsync(IndexItemRequest indexItemParamaters)
+        {
+            var items = _firebaseClient
+                .Child(_collection)
+                .OrderBy(indexItemParamaters.OrderBy)
+                .StartAt(indexItemParamaters.StartAt)
+                .EndAt(indexItemParamaters.EndAt);
+
+            if (indexItemParamaters.LimitTo != null)
+            {
+                items = items.LimitToFirst(indexItemParamaters.LimitTo.Value);
+            }
+
+            return await items.OnceAsync<T>().UnwrapItems<T>();
+        }
+
     }
 
 

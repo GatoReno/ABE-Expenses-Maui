@@ -1,5 +1,6 @@
 ﻿using AbeXP.Abstractions.Services;
 using AbeXP.Interfaces;
+using AbeXP.UseCases.Plugins;
 using AbeXP.ViewModels;
 using AbeXP.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,8 +25,9 @@ public partial class App : Application
         instance = this;
         Alert = _serviceProvider.GetService<IAlertService>();
 
-        bool isLogged = Preferences.Get("IsLogged", true);
-        if (isLogged)
+
+        var userSession = _serviceProvider.GetService<IUserSession>();
+        if (userSession.IsLoggedIn)
         {
             MainPage = new AppShell(_serviceProvider);
         }

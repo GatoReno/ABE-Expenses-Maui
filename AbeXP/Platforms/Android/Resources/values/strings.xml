@@ -1,0 +1,7 @@
+<!-- Resources/values/strings.xml -->
+<resources>
+	<string name="app_name">MyApp</string>
+
+	<!-- your new string -->
+	<string name="select_tags">Select Tags</string>
+</resources>

@@ -1,5 +1,4 @@
-﻿using AbeXP.Common.DTO;
-using AbeXP.Common.Enum;
+﻿using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
