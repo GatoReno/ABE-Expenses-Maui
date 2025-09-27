@@ -80,6 +80,7 @@
 	  <None Remove="Platforms\Android\Resources\layout\loan_tab.xml" />
 	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
 	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
+	  <!--<None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />-->
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Extensions\" />
