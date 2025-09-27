@@ -1,6 +1,7 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Plugins;
 using Android.Widget;
 using Google.Android.Material.Button;
@@ -29,9 +30,37 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 
         private void InitializeComponents()
         {
-
+            SetupLocalization();
             SetupDatePickers();
             SetupSaveButton();
+        }
+
+        private void SetupLocalization()
+        {
+            // Set hints from resources
+            var edtPersonName = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytLoanPersonName);
+            edtPersonName.Hint = AppResources.FullName; // "Nombre completo"
+
+            var edtEmail = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytLoanEmail);
+            edtEmail.Hint = AppResources.Email; // "Correo"
+
+            var edtAmount = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytLoanAmount);
+            edtAmount.Hint = AppResources.Amount; // "Monto"
+
+            var edtLoanDate = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytLoanDate);
+            edtLoanDate.Hint = AppResources.DateGiven; // "Fecha del préstamo"
+
+            var edtPaymentDate = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytPaymentDate);
+            edtPaymentDate.Hint = AppResources.SuggestedPaymentDate; // "Fecha sugerida de pago"
+
+            var chkIsPaid = ItemView.FindViewById<MaterialCheckBox>(Resource.Id.chkIsPaid);
+            chkIsPaid.Text = AppResources.IsPaid; // "¿Ya está pagado?"
+
+            var edtNotes = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytLoanNotes);
+            edtNotes.Hint = AppResources.Note; // "Nota"
+
+            var btnSave = ItemView.FindViewById<MaterialButton>(Resource.Id.btnSaveLoan);
+            btnSave.Text = AppResources.Save; // "Guardar"
         }
 
         private void SetupDatePickers()
@@ -64,11 +93,11 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                     await _loanRepository.AddAsync(new LoanIndexed(loan));
 
                     NotifyWidgetUpdate();
-                    Toast.MakeText(ItemView.Context, "Success", ToastLength.Short).Show();
+                    Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(ItemView.Context, "Error while processing request", ToastLength.Short).Show();
+                    Toast.MakeText(ItemView.Context, AppResources.ErrorWhileProcessingRequest, ToastLength.Short).Show();
                 }
                 finally
                 {

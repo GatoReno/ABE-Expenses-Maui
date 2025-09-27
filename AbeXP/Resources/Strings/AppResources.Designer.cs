@@ -61,6 +61,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nuevo Gasto/Préstamo.
+        /// </summary>
+        internal static string AddExpenseLoan {
+            get {
+                return ResourceManager.GetString("AddExpenseLoan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monto.
         /// </summary>
         internal static string Amount {
@@ -106,6 +115,24 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error al procesar solicitud.
+        /// </summary>
+        internal static string ErrorWhileProcessingRequest {
+            get {
+                return ResourceManager.GetString("ErrorWhileProcessingRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gasto.
+        /// </summary>
+        internal static string Expense {
+            get {
+                return ResourceManager.GetString("Expense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nombre completo.
         /// </summary>
         internal static string FullName {
@@ -120,6 +147,15 @@ namespace AbeXP.Resources.Strings {
         internal static string IsPaid {
             get {
                 return ResourceManager.GetString("IsPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Préstamo.
+        /// </summary>
+        internal static string Loan {
+            get {
+                return ResourceManager.GetString("Loan", resourceCulture);
             }
         }
         
@@ -165,6 +201,15 @@ namespace AbeXP.Resources.Strings {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Éxito.
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

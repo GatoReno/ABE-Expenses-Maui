@@ -12,10 +12,10 @@
 
 		<!--Description-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytExpenseDescription"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Description">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtExpenseDescription"
@@ -26,10 +26,10 @@
 
 		<!--Date-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytExpenseDate"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Date">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/edtExpenseDate"
@@ -42,10 +42,10 @@
 
 		<!--Amount-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytExpenseAmount"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Amount">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtExpenseAmount"
@@ -57,10 +57,10 @@
 
 		<!--Payment type-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytPaymentType"
 			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Payment type">
+			android:layout_height="wrap_content">
 
 			<com.google.android.material.textfield.MaterialAutoCompleteTextView
 				android:id="@+id/ddlPaymentType"
@@ -71,11 +71,10 @@
 
 		<!--Tags-->
 		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/layoutTags"
+			android:id="@+id/lytTags"
 			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Tags">
+			android:layout_height="wrap_content">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/edtTags"
@@ -92,7 +91,6 @@
 			android:textColor="@android:color/white"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Save"
 			style="@style/Widget.MaterialComponents.Button"
 			android:layout_marginTop="16dp"/>
 

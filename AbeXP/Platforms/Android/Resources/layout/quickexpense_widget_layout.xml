@@ -2,45 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/quickexpense_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
     android:padding="8dp">
 
 	<!-- Header -->
 	<TextView
-        android:id="@+id/txtHeader"
+        android:id="@+id/txtQuickExpenseHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quick Expenses"
         android:textSize="16sp"
         android:textStyle="bold"
         android:gravity="center_horizontal" />
 
 	<!-- Empty view -->
 	<TextView
-        android:id="@+id/txtEmpty"
+        android:id="@+id/txtQuickExpenseEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No expenses yet"
         android:textColor="#666"
         android:gravity="center"
         android:visibility="gone"
         android:padding="16dp" />
 
+	<!--List of items-->
 	<ListView
         android:id="@+id/quickexpense_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-		android:minHeight="200dp"
         android:dividerHeight="1dp"
 		android:layout_weight="1"
         android:background="@android:color/transparent" />
 
+	
+	<!--Button to open dialog-->
 	<Button
-        android:id="@+id/quickexpense_add_button"
+        android:id="@+id/btnQuickexpenseAdd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Item" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

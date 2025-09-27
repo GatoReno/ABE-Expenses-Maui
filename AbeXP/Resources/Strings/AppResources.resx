@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddExpenseLoan" xml:space="preserve">
+    <value>Nuevo Gasto/Préstamo</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Monto</value>
   </data>
@@ -132,11 +135,20 @@
   <data name="Email" xml:space="preserve">
     <value>Correo</value>
   </data>
+  <data name="ErrorWhileProcessingRequest" xml:space="preserve">
+    <value>Error al procesar solicitud</value>
+  </data>
+  <data name="Expense" xml:space="preserve">
+    <value>Gasto</value>
+  </data>
   <data name="FullName" xml:space="preserve">
     <value>Nombre completo</value>
   </data>
   <data name="IsPaid" xml:space="preserve">
     <value>¿Ya está pagado?</value>
+  </data>
+  <data name="Loan" xml:space="preserve">
+    <value>Préstamo</value>
   </data>
   <data name="NoExpenses" xml:space="preserve">
     <value>No hay gastos aún</value>
@@ -152,6 +164,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Guardar</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Éxito</value>
   </data>
   <data name="SuggestedPaymentDate" xml:space="preserve">
     <value>Fecha sugerida de pago</value>

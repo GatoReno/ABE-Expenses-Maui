@@ -12,10 +12,10 @@
 
 		<!--Person name-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytLoanPersonName"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Person name">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtLoanPersonName"
@@ -27,10 +27,10 @@
 
 		<!--Email-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytLoanEmail"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Email">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtLoanEmail"
@@ -42,10 +42,10 @@
 
 		<!--Amount-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytLoanAmount"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Amount">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtLoanAmount"
@@ -57,10 +57,10 @@
 
 		<!--Date given-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytLoanDate"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Date given">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/edtLoanDate"
@@ -74,10 +74,10 @@
 
 		<!--Payment date-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytPaymentDate"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Payment date">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/edtPaymentDate"
@@ -94,16 +94,15 @@
 			android:id="@+id/chkIsPaid"
 			android:visibility="visible"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Is paid?" />
+			android:layout_height="wrap_content"/>
 		
 		
 		<!--Notes-->
 		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytLoanNotes"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-			android:hint="Notes">
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/txtLoanNotes"

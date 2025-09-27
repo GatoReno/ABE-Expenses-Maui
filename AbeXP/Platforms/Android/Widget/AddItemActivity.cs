@@ -1,4 +1,5 @@
 ﻿using AbeXP.Interfaces;
+using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Plugins;
 using Android.App;
 using Android.Content.PM;
@@ -44,7 +45,7 @@ namespace AbeXP.Platforms.Android.Widget
             var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository, userSession);
             viewPager.Adapter = adapter;
 
-            var titles = new[] { "Expense", "Loan" };
+            var titles = new[] { AppResources.Expense, AppResources.Loan };
 
             // create and attach the mediator using a C# implementation of the strategy interface
             var mediator = new TabLayoutMediator(tabLayout, viewPager, new TabConfigStrategy(titles));

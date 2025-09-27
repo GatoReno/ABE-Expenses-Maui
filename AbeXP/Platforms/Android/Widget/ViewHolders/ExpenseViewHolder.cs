@@ -1,11 +1,14 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Plugins;
 using Android.App;
+using Android.Content.Res;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.TextField;
+using Java.Util;
 using View = Android.Views.View;
 
 
@@ -17,7 +20,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private readonly IExpenseRepository _expenseRepository;
         private readonly IUserSession _userSession;
         private DateTime expenseDate = DateTime.Now;
-        
+
 
         public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository, IUserSession userSession) : base(itemView)
         {
@@ -30,10 +33,32 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 
         private void InitializeComponents()
         {
+            SetupLocalization();
             SetupDatePicker();
             SetupPaymentType();
             SetupTags();
             SetupSaveButton();
+        }
+
+        private void SetupLocalization()
+        {
+            var edtDescription = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytExpenseDescription);
+            edtDescription.Hint = AppResources.Description;
+
+            var edtDate = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytExpenseDate);
+            edtDate.Hint = AppResources.Date;
+
+            var edtAmount = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytExpenseAmount);
+            edtAmount.Hint = AppResources.Amount;
+
+            var ddlPaymentTypeLayout = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytPaymentType);
+            ddlPaymentTypeLayout.Hint = AppResources.PaymentMethod;
+
+            var edtTagsLayout = ItemView.FindViewById<TextInputLayout>(Resource.Id.lytTags);
+            edtTagsLayout.Hint = AppResources.Tags;
+
+            var btnSave = ItemView.FindViewById<MaterialButton>(Resource.Id.btnSaveExpense);
+            btnSave.Text = AppResources.Save;
         }
 
         private void SetupPaymentType()
@@ -99,11 +124,11 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                     await _expenseRepository.AddAsync(expenseIndexed);
 
                     NotifyWidgetUpdate();
-                    Toast.MakeText(ItemView.Context, "Success", ToastLength.Short).Show();
+                    Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(ItemView.Context, "Error while processing request", ToastLength.Short).Show();
+                    Toast.MakeText(ItemView.Context, AppResources.ErrorWhileProcessingRequest, ToastLength.Short).Show();
                 }
                 finally
                 {
