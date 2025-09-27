@@ -9,5 +9,6 @@ namespace AbeXP.UseCases.Plugins
     public interface IUserSession
     {
         string UserId {  get; }
+        bool IsLoggedIn {  get; }
     }
 }
