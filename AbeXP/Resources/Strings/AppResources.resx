@@ -144,6 +144,9 @@
   <data name="Email" xml:space="preserve">
     <value>Correo</value>
   </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Fecha final</value>
+  </data>
   <data name="ErrorWhileProcessingRequest" xml:space="preserve">
     <value>Error al procesar solicitud</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Guardar</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Fecha inicial</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Éxito</value>

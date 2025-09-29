@@ -21,7 +21,7 @@ namespace AbeXP.ViewModels
         }
 
 
-
+        #region
         [ObservableProperty]
         public bool _isBusy;
 
@@ -47,12 +47,12 @@ namespace AbeXP.ViewModels
         [ObservableProperty] 
         private ObservableCollection<TransactionItem> _transactions = new();
 
-
+        // date pickers
         [ObservableProperty]
         public DateTime _startDate = DateTime.Now.FirstDayOfCurrentMonth();
         [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
-
+        #endregion
 
         /// <summary>
         /// Trigger when the Selected filter for the type of transactions changes
@@ -64,7 +64,10 @@ namespace AbeXP.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Load transactions
+        /// </summary>
+        /// <returns></returns>
         [RelayCommand]
         private async Task LoadTransactionsAsync()
         {
@@ -109,7 +112,9 @@ namespace AbeXP.ViewModels
                 await Shell.Current.GoToAsync(nameof(LoanFormView));
         }
 
-
+        /// <summary>
+        /// Filter transactions based on the selected filter
+        /// </summary>
         [RelayCommand]
         private void ApplyFilters()
         {
