@@ -17,6 +17,7 @@
             <converters:IsLoanConverter x:Key="IsLoanConverter" />
             <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

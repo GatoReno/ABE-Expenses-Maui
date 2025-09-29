@@ -63,7 +63,7 @@ public static class ServiceCollectionExtensions
         });
 
         // Use cases
-        services.AddTransient<IGetExpendituresUseCase, GetExpendituresUseCase>();
+        services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
 
         return services;
     }

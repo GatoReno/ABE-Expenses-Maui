@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbeXP.UseCases.Interfaces
+namespace AbeXP.Common.Enum
 {
-    public interface IUseCase<in T, R>
+    public enum TransactionType
     {
-        Task<R> ExecuteAsync(T request);
+        None,
+        All,
+        Expense,
+        Loan
     }
 }

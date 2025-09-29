@@ -70,11 +70,38 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agregar transacción.
+        /// </summary>
+        internal static string AddTransaction {
+            get {
+                return ResourceManager.GetString("AddTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Todos.
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monto.
         /// </summary>
         internal static string Amount {
             get {
                 return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelar.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
@@ -115,6 +142,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fecha final.
+        /// </summary>
+        internal static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error al procesar solicitud.
         /// </summary>
         internal static string ErrorWhileProcessingRequest {
@@ -129,6 +165,15 @@ namespace AbeXP.Resources.Strings {
         internal static string Expense {
             get {
                 return ResourceManager.GetString("Expense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrar transacciones.
+        /// </summary>
+        internal static string FilterTransactions {
+            get {
+                return ResourceManager.GetString("FilterTransactions", resourceCulture);
             }
         }
         
@@ -160,6 +205,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No hay gastos aún.
         /// </summary>
         internal static string NoExpenses {
@@ -174,6 +228,15 @@ namespace AbeXP.Resources.Strings {
         internal static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontraron transacciones.
+        /// </summary>
+        internal static string NoTransactionsFound {
+            get {
+                return ResourceManager.GetString("NoTransactionsFound", resourceCulture);
             }
         }
         
@@ -214,6 +277,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fecha inicial.
+        /// </summary>
+        internal static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Éxito.
         /// </summary>
         internal static string Success {
@@ -237,6 +309,15 @@ namespace AbeXP.Resources.Strings {
         internal static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sí.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }
