@@ -4,40 +4,55 @@
              xmlns:viewmodels="clr-namespace:AbeXP.ViewModels"
              xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:models="clr-namespace:AbeXP.Models"
+             xmlns:enums="clr-namespace:AbeXP.Common.Enum"
+             xmlns:controls="clr-namespace:AbeXP.Controls"
              xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
              x:Class="AbeXP.MainPage">
 
     <ContentPage.Resources>
-        <!-- DataTemplate para Expense -->
-        <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:Expense">
-            <Frame Margin="5" Padding="10" BorderColor="#CCC">
-                <VerticalStackLayout>
-                    <Label Text="{Binding Description}" FontAttributes="Bold" />
-                    <Label Text="{Binding Amount, StringFormat='Monto: {0:C}'}" />
-                </VerticalStackLayout>
-            </Frame>
-        </DataTemplate>
+        <Thickness x:Key="Padding">10</Thickness>
 
-        <!-- DataTemplate para Loan -->
-        <DataTemplate x:Key="LoanTemplate" x:DataType="models:Loan">
-            <Frame Margin="5" Padding="10" BorderColor="#CCC">
-                <VerticalStackLayout>
-                    <Label Text="{Binding PersonName}" FontAttributes="Bold" />
-                    <Label Text="{Binding Amount, StringFormat='Préstamo: {0:C}'}" />
-                    <Label Text="{Binding IsPaid, StringFormat='Pagado: {0}'}" />
-                </VerticalStackLayout>
-            </Frame>
-        </DataTemplate>
+        <!-- DataTemplate for transactions-->
+        <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:TransactionItem">
+            <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="*,10" Padding="10,5,10,5">
 
-        <!-- Selector -->
-        <selectors:TransactionTemplateSelector x:Key="TransactionTemplateSelector"
-                                               ExpenseTemplate="{StaticResource ExpenseTemplate}"
-                                               LoanTemplate="{StaticResource LoanTemplate}" />
+                <!--Icon-->
+                <Frame Grid.Column="0" WidthRequest="50" HeightRequest="50" CornerRadius="50" Padding="0" Margin="0,0,5,0" IsClippedToBounds="True" BackgroundColor="{StaticResource Gray100}" BorderColor="Transparent">
+                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{Binding Icon}" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="25" TextColor="{StaticResource Gray600}"/>
+                </Frame>
+
+                <!--Description-->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="{Binding TypeDescription}" FontAttributes="Bold" />
+                    <Label Text="{Binding Description}" />
+                    <Label Text="{Binding IsPaid, StringFormat='Pagado: {0}'}" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Loan}">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+
+                <!--Amount and date-->
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
+                    <Label Text="{Binding Amount, StringFormat='{0:C}'}" HorizontalOptions="End" TextColor="Green" FontAttributes="Bold"/>
+                    <Label Text="{Binding Date, StringFormat='{0:dd MMM}'}" HorizontalOptions="End"/>
+                </VerticalStackLayout>
+
+                <!--bottom border-->
+                <BoxView Grid.ColumnSpan="3"
+                         Grid.Row="2"
+                         VerticalOptions="End"
+                         HeightRequest="0.6"
+                         BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}"
+                         Margin="0"/>
+            </Grid>
+        </DataTemplate>
     </ContentPage.Resources>
-    
+
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="＋"
-                     Priority="0"
+        <ToolbarItem Priority="0"
                      Order="Primary"
                      Command="{Binding AddTransactionCommand}">
             <ToolbarItem.IconImageSource>
@@ -45,33 +60,26 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
-    <Grid RowDefinitions="Auto,*" Padding="10">
-        <!-- Filtros -->
-        <HorizontalStackLayout Spacing="10" Grid.Row="0">
-            <Picker Title="Tipo"
-                    ItemsSource="{Binding Filters}"
-                    SelectedItem="{Binding SelectedFilter}" />
-            <DatePicker Date="{Binding SelectedDate}" />
-            <Button Text="Aplicar" Command="{Binding ApplyFiltersCommand}" />
-        </HorizontalStackLayout>
 
-        <!-- Lista agrupada -->
-        <CollectionView Grid.Row="1"
-                        IsGrouped="True"
+    <Grid RowDefinitions="Auto,Auto, *" Padding="10,0,10,10">
+        <!--search button, show loading spinner when busy-->
+        <Grid ColumnDefinitions="auto, auto, *" Grid.Row="1" Padding="{StaticResource Padding}"  >
+            <controls:DatePickerEntry Grid.Column="0" Hint="Fecha inicial" Margin="0,0,5,0"/>
+            <controls:DatePickerEntry Grid.Column="1" Hint="Fecha final"/>
+
+            <!--button shows search icon and loading spinner when busy-->
+            <controls:ButtonWithContent Grid.Column="2" Margin="10,0,0,0" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding FilterExpensesCommand}" x:Name="btnSearch" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+                <Grid>
+                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
+                    <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Grid>
+            </controls:ButtonWithContent>
+        </Grid>
+
+        <!--List of items-->
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Transactions}"
-                        ItemTemplate="{StaticResource TransactionTemplateSelector}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate x:DataType="viewmodels:TransactionGroup">
-                    <Label Text="{Binding DateString}"
-                           FontAttributes="Bold"
-                           FontSize="16"
-                           BackgroundColor="#EEE"
-                           Padding="5" />
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
-        </CollectionView>
-
-
+                        ItemTemplate="{StaticResource ExpenseTemplate}"
+                        Margin="0,10,0,0"/>
     </Grid>
 </ContentPage>

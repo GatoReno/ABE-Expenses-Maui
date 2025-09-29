@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.UseCases.Interfaces
 {
-    internal interface IGetExpendituresUseCase : IUseCase<ExpendituresRequest, IEnumerable<ExpenditureItem>>
+    public interface IGetTransactionsUseCase : IUseCase<TransactionRequest, IEnumerable<TransactionItem>>
     {
     }
 }

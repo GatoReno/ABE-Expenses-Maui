@@ -1,8 +1,10 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.UseCases.Plugins;
+using AbeXP.Util;
 using Firebase.Auth;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace AbeXP.UseCases
 {
-    internal class GetExpendituresUseCase : IGetExpendituresUseCase
+    internal class GetTransactionsUseCase : IGetTransactionsUseCase
     {
         private readonly IExpenseRepository _expenseRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly IUserSession _userSession;
 
-        public GetExpendituresUseCase(IExpenseRepository expenseRepository, ILoanRepository loanRepository, IUserSession userSession)
+        public GetTransactionsUseCase(IExpenseRepository expenseRepository, ILoanRepository loanRepository, IUserSession userSession)
         {
             _expenseRepository = expenseRepository;
             _loanRepository = loanRepository;
@@ -26,7 +28,7 @@ namespace AbeXP.UseCases
         }
 
 
-        public async Task<IEnumerable<ExpenditureItem>> ExecuteAsync(ExpendituresRequest request)
+        public async Task<IEnumerable<TransactionItem>> ExecuteAsync(TransactionRequest request)
         {
 
 
@@ -48,25 +50,30 @@ namespace AbeXP.UseCases
             });
 
 
-            List<ExpenditureItem> expenditureItems = new List<ExpenditureItem>();
-            expenditureItems.AddRange(expenses.Select(ex => new ExpenditureItem
+            List<TransactionItem> transactions = new List<TransactionItem>();
+            transactions.AddRange(expenses.Select(ex => new TransactionItem
             {
                 Amount = ex.Amount,
                 Date = ex.Date,
                 Description = ex.Description,
                 PaymentMethod = ex.PaymentTypeId,
-                Type = "Gasto"  //TODO localize
+                TypeDescription = AppResources.Expense,
+                Type = Common.Enum.TransactionType.Expense,
+                Icon = MaterialIconsRegular.Attach_money
             }));
 
-            expenditureItems.AddRange(loans.Select(ex => new ExpenditureItem
+            transactions.AddRange(loans.Select(ex => new TransactionItem
             {
                 Amount = ex.Amount,
                 Date = ex.DateGiven,
                 Description = ex.PersonName,
-                Type = "Préstamo"  //TODO localize
+                IsPaid = ex.IsPaid ? AppResources.Yes : AppResources.No,
+                TypeDescription = AppResources.Loan,
+                Type = Common.Enum.TransactionType.Loan,
+                Icon = MaterialIconsRegular.Person
             }));
 
-            return expenditureItems.OrderByDescending(exp => exp.Date);
+            return transactions.OrderByDescending(exp => exp.Date);
         }
     }
 }
