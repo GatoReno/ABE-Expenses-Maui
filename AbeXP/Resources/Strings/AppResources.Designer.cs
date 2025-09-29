@@ -70,11 +70,38 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agregar transacción.
+        /// </summary>
+        internal static string AddTransaction {
+            get {
+                return ResourceManager.GetString("AddTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Todos.
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monto.
         /// </summary>
         internal static string Amount {
             get {
                 return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelar.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
@@ -133,6 +160,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtrar transacciones.
+        /// </summary>
+        internal static string FilterTransactions {
+            get {
+                return ResourceManager.GetString("FilterTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nombre completo.
         /// </summary>
         internal static string FullName {
@@ -183,6 +219,15 @@ namespace AbeXP.Resources.Strings {
         internal static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontraron transacciones.
+        /// </summary>
+        internal static string NoTransactionsFound {
+            get {
+                return ResourceManager.GetString("NoTransactionsFound", resourceCulture);
             }
         }
         

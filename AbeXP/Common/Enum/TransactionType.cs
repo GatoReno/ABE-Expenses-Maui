@@ -9,6 +9,7 @@ namespace AbeXP.Common.Enum
     public enum TransactionType
     {
         None,
+        All,
         Expense,
         Loan
     }
