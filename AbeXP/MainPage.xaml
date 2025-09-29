@@ -5,6 +5,7 @@
              xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:models="clr-namespace:AbeXP.Models"
              xmlns:enums="clr-namespace:AbeXP.Common.Enum"
+             xmlns:resources="clr-namespace:AbeXP.Resources.Strings"
              xmlns:controls="clr-namespace:AbeXP.Controls"
              xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
              x:Class="AbeXP.MainPage">
@@ -64,8 +65,8 @@
     <Grid RowDefinitions="Auto,Auto, *" Padding="10,0,10,10" >
         <!--search button, show loading spinner when busy-->
         <Grid ColumnDefinitions="auto, auto, *" Grid.Row="0" >
-            <controls:DatePickerEntry Grid.Column="0" Hint="Fecha inicial" Date="{Binding StartDate}" Margin="0,0,5,0"/>
-            <controls:DatePickerEntry Grid.Column="1" Hint="Fecha final" Date="{Binding EndDate}"/>
+            <controls:DatePickerEntry Grid.Column="0" Hint="{x:Static resources:AppResources.StartDate}" Date="{Binding StartDate}" Margin="0,0,5,0"/>
+            <controls:DatePickerEntry Grid.Column="1" Hint="{x:Static resources:AppResources.EndDate}" Date="{Binding EndDate}"/>
 
             <!--button shows search icon and loading spinner when busy-->
             <controls:ButtonWithContent Grid.Column="2" x:Name="btnSearch" Margin="10,0,0,0" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding LoadTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
