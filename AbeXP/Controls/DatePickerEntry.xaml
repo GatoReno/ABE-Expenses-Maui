@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:AbeXP.Util"
+             x:Class="AbeXP.Controls.DatePickerEntry"
+             x:Name="this">
+
+
+
+    <Border BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}" Padding="5,5,13,5">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="40" />
+        </Border.StrokeShape>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+        </Border.GestureRecognizers>
+
+
+        <Border.Content>
+            <Grid ColumnDefinitions="auto, *" RowDefinitions="auto,*" >
+                
+                <!--Icon-->
+                <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource PrimaryDark}}"/>
+
+                <!--Date picker-->
+                <DatePicker Grid.Column="1" Grid.Row="1" x:Name="DatePicker"  IsVisible="Collapse" PropertyChanged="DatePicker_PropertyChanged" Date="{Binding Date, Source={x:Reference this}}"/>
+
+
+                <Grid Grid.Column="1" Grid.Row="1" Padding="0,0,5,1" RowDefinitions="auto, auto, auto">
+                    <!--hint-->
+                    <Label  Text="{Binding Hint, Source={x:Reference this}}" VerticalOptions="Start" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="12" />
+
+                    <!--border-->
+                    <BoxView Grid.Row="2"
+                         VerticalOptions="End"
+                         HeightRequest="0.7"
+                         BackgroundColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                         HorizontalOptions="Fill" 
+                         Margin="0,-1,0,0"/>
+
+                    <!--date string-->
+                    <Label Grid.Row="1" Text="{Binding Date, Source={x:Reference this}, Converter={StaticResource DateTimeToStringConverter}}" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Margin="0,0,0,1"/>
+                </Grid>
+            </Grid>
+        </Border.Content>
+    </Border>
+</ContentView>

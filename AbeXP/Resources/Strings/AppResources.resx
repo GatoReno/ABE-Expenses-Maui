@@ -150,6 +150,9 @@
   <data name="Loan" xml:space="preserve">
     <value>Préstamo</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="NoExpenses" xml:space="preserve">
     <value>No hay gastos aún</value>
   </data>
@@ -176,5 +179,8 @@
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Etiquetas</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
   </data>
 </root>

@@ -3,39 +3,56 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using AbeXP.Models;
 using AbeXP.Views;
+using AbeXP.UseCases.Interfaces;
 
 namespace AbeXP.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
-        [ObservableProperty] private List<string> filters = new() { "Todos", "Expenses", "Loans" };
-        [ObservableProperty] private string selectedFilter = "Todos";
-        [ObservableProperty] private DateTime selectedDate = DateTime.Today;
-        [ObservableProperty] private ObservableCollection<TransactionGroup> transactions = new();
-
+        private readonly IGetTransactionsUseCase _getTransactionsUseCase;
         private List<object> _allItems = new();
 
-        public MainPageViewModel()
+        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase)
         {
-            LoadMockData();
+            _getTransactionsUseCase = getExpendituresUseCase;
+            LoadTransactions();
         }
 
-        private void LoadMockData()
+
+
+        [ObservableProperty]
+        public bool _isBusy;
+
+        [ObservableProperty] 
+        private List<string> filters = new() { "Todos", "Expenses", "Loans" };
+        
+        [ObservableProperty] 
+        private string selectedFilter = "Todos";
+        
+        [ObservableProperty] 
+        private DateTime selectedDate = DateTime.Today;
+        
+        [ObservableProperty] 
+        private ObservableCollection<TransactionItem> transactions = new();
+
+        
+
+        private async void LoadTransactions()
         {
-            var expenses = new List<Expense>
+            IsBusy = true;
+            try
             {
-                new() { Description = "Café", Amount = 45, Date = DateTime.Today },
-                new() { Description = "Supermercado", Amount = 1200, Date = DateTime.Today }
-            };
-
-            var loans = new List<Loan>
+                var expenses = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest());
+                Transactions =  new ObservableCollection<TransactionItem>(expenses);
+            }
+            catch (Exception ex)
             {
-                new() { PersonName = "Juan", Amount = 500, IsPaid = false, DateGiven = DateTime.Today },
-                new() { PersonName = "Ana", Amount = 1500, IsPaid = true, DateGiven = DateTime.Today }
-            };
-
-            _allItems = expenses.Cast<object>().Concat(loans.Cast<object>()).ToList();
-            ApplyFilters();
+                App.Alert.ShowAlert("Error", "Could not load transactions.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         // Botón ➕
@@ -82,8 +99,8 @@ namespace AbeXP.ViewModels
                     x is Loan l ? l.DateGiven.Date : DateTime.MinValue)
                 .OrderByDescending(g => g.Key);
 
-            foreach (var group in grouped)
-                Transactions.Add(new TransactionGroup(group.Key, group.ToList()));
+            //foreach (var group in grouped)
+                //Transactions.Add(new TransactionGroup(group.Key, group.ToList()));
         }
     }
 

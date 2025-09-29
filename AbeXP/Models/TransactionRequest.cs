@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.Models
 {
-    public class ExpendituresRequest
+    public class TransactionRequest
     {
         public DateTime StartAt { get; set; } = DateTime.Now.FirstDayOfCurrentMonth();
         public DateTime EndAt { get; set; } = DateTime.Now.LastDayOfCurrentMonth();

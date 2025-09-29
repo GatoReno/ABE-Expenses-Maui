@@ -28,14 +28,14 @@ namespace AbeXP.Platforms.Android.Widget.Service
         {
             private readonly Context _context;
 
-            private readonly IGetExpendituresUseCase _getExpendituresUseCase;
-            private List<ExpenditureItem> _items = new();
+            private readonly IGetTransactionsUseCase _getExpendituresUseCase;
+            private List<TransactionItem> _items = new();
 
             public WidgetListFactory(Context context, Intent intent)
             {
                 _context = context;
 
-                _getExpendituresUseCase = MauiApplication.Current.Services.GetService<IGetExpendituresUseCase>();
+                _getExpendituresUseCase = MauiApplication.Current.Services.GetService<IGetTransactionsUseCase>();
             }
 
             public void OnCreate()
@@ -58,7 +58,7 @@ namespace AbeXP.Platforms.Android.Widget.Service
                 var item = _items[position];
 
                 // Type
-                rv.SetTextViewText(Resource.Id.txtType, item.Type);
+                rv.SetTextViewText(Resource.Id.txtType, item.TypeDescription);
 
                 // Description
                 rv.SetTextViewText(Resource.Id.txtDescription, item.Description);
@@ -84,13 +84,13 @@ namespace AbeXP.Platforms.Android.Widget.Service
             {
                 try
                 {
-                    var items =  await _getExpendituresUseCase.ExecuteAsync(new ExpendituresRequest
+                    var items =  await _getExpendituresUseCase.ExecuteAsync(new TransactionRequest
                     {
                         LimitTo = 30
                     });
 
                     // Call your shared repository
-                    _items = new List<ExpenditureItem>(items);
+                    _items = new List<TransactionItem>(items);
                     //_items = new List<string>() { "ejale"};
                 }
                 catch (Exception ex)
