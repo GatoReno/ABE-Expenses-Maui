@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:AbeXP.Util"
+             x:Class="AbeXP.Controls.PickerWithIcon"
+             x:Name="this">
+
+
+
+
+    <Border BackgroundColor="{Binding BackgroundColor, Source={x:Reference this}}" HorizontalOptions="Start" Padding="5,0,10,0">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="40" />
+        </Border.StrokeShape>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+        </Border.GestureRecognizers>
+
+        <Border.Content>
+            <Grid ColumnDefinitions="auto, *">
+                <!--Hidden picker-->
+                <Picker x:Name="Picker" Title="{Binding Title, Source={x:Reference this}}" ItemsSource="{Binding ItemsSource, Source={x:Reference this}}" SelectedItem="{Binding SelectedItem, Source={x:Reference this}}" Opacity="0" HeightRequest="1" WidthRequest="1" />
+
+                <!--Icon-->
+                <Label Grid.Column="0" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Filter_list}"  FontSize="25" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource White}}" VerticalOptions="Center" Padding="2,0,2,0"/>
+                
+                <!--Label-->
+                <Label Grid.Column="1" Text="{Binding SelectedItem, Source={x:Reference Picker}}" VerticalOptions="Center"/>
+            </Grid>
+        </Border.Content>
+    </Border>
+</ContentView>

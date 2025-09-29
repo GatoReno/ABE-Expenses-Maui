@@ -120,8 +120,17 @@
   <data name="AddExpenseLoan" xml:space="preserve">
     <value>Nuevo Gasto/Préstamo</value>
   </data>
+  <data name="AddTransaction" xml:space="preserve">
+    <value>Agregar transacción</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Monto</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Fecha</value>
@@ -141,6 +150,9 @@
   <data name="Expense" xml:space="preserve">
     <value>Gasto</value>
   </data>
+  <data name="FilterTransactions" xml:space="preserve">
+    <value>Filtrar transacciones</value>
+  </data>
   <data name="FullName" xml:space="preserve">
     <value>Nombre completo</value>
   </data>
@@ -158,6 +170,9 @@
   </data>
   <data name="Note" xml:space="preserve">
     <value>Nota</value>
+  </data>
+  <data name="NoTransactionsFound" xml:space="preserve">
+    <value>No se encontraron transacciones</value>
   </data>
   <data name="PaymentMethod" xml:space="preserve">
     <value>Método de pago</value>
