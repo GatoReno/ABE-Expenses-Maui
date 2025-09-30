@@ -50,5 +50,10 @@ namespace AbeXP.Common.Result
         {
             return Result<T>.Fail(errors);
         }
+
+        public static implicit operator Result<T>(List<Error> errors)
+        {
+            return Result<T>.Fail(errors.ToArray());
+        }
     }
 }

@@ -62,8 +62,24 @@ public static class ServiceCollectionExtensions
             return new LoanRepository(fibInstanceService, FirebaseConstants.LOANS_COLLECTION);
         });
 
+        services.AddSingleton<ITagsRepository, TagsRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new TagsRepository(fibInstanceService, FirebaseConstants.TAGS_COLLECTION);
+        });
+
+        services.AddSingleton<IPaymentMethodsRepository, PaymentMethodsRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new PaymentMethodsRepository(fibInstanceService, FirebaseConstants.PAYMENT_METHODS_COLLECTION);
+        });
+
         // Use cases
         services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
+        services.AddTransient<ICreateExpenseUseCase, CreateExpenseUseCase>();
+        services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
+        services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
+        services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();
 
         return services;
     }

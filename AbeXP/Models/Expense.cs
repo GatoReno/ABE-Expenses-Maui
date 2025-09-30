@@ -2,7 +2,7 @@
 using System;
 namespace AbeXP.Models
 {
-	public class Expense : BaseEntity
+	public class Expense : BaseUserOwnerEntity
     {
         public DateTime Date { get; set; } = DateTime.Now; // Fecha y hora del gasto
         public decimal Amount { get; set; } // Cantidad gastada
@@ -18,14 +18,13 @@ namespace AbeXP.Models
         public string ColorHex { get; set; } = "#FFFFFF"; // Opcional: para UI
     }
 
-    public class PaymentType
+    public class PaymentMethod : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = ""; // Ej: "Tarjeta", "Crédito", "Transferencia"
         public string Details { get; set; } = ""; // Ej: número de tarjeta, banco, etc.
     }
 
-    public class Loan : BaseEntity
+    public class Loan : BaseUserOwnerEntity
     {
         public string PersonName { get; set; } = ""; // Nombre del deudor
         public string Email { get; set; } = ""; // Email del deudor (opcional)
