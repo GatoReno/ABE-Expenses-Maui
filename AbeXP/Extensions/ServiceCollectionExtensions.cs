@@ -21,7 +21,6 @@ public static class ServiceCollectionExtensions
     {
         // ViewModels
         services.AddTransient<LoginViewModel>();
-        services.AddSingleton<HomeViewModel>();
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
         services.AddTransient<LoanFormViewModel>();
@@ -30,7 +29,6 @@ public static class ServiceCollectionExtensions
 
         // Views
         services.AddTransient<LoginView>();
-        services.AddTransient<HomeView>();
         services.AddSingleton<MainPage>();
         services.AddTransient<ExpenseFormView>();
         services.AddSingleton<FinantialChartsPage>();
