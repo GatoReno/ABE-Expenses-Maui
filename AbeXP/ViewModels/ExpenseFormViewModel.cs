@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.Extensions;
+using AbeXP.Common.Constants;
 
 namespace AbeXP.ViewModels
 {
@@ -66,7 +67,12 @@ namespace AbeXP.ViewModels
                 if (result.IsSuccessful)
                 {
                     App.Alert.ShowToast("Expense saved successfully.");
-                    await _navigation.PopAsync();
+
+                    var routePramteres = new ShellNavigationQueryParameters()
+                    {
+                        { NavigationConstants.TRIGGER_DASHBOARD_PARAM, true }
+                    };
+                    await _navigation.PopAsync(routePramteres);
                 }
             }
             catch (Exception ex)

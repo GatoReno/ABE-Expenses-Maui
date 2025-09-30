@@ -1,4 +1,5 @@
-﻿using AbeXP.Common.Enum;
+﻿using AbeXP.Common.Constants;
+using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace AbeXP.ViewModels
 {
+    [QueryProperty(nameof(TriggerUpdate), NavigationConstants.TRIGGER_DASHBOARD_PARAM)]
     public partial class MainPageViewModel : ObservableObject
     {
         private readonly IGetTransactionsUseCase _getTransactionsUseCase;
@@ -52,6 +54,20 @@ namespace AbeXP.ViewModels
         public DateTime _startDate = DateTime.Now.FirstDayOfCurrentMonth();
         [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+
+        // navigation params
+        public bool TriggerUpdate
+        {
+            set 
+            {
+                if(value)
+                {
+                    LoadTransactionsAsync();
+                }
+            }
+        }
+
+
         #endregion
 
         /// <summary>

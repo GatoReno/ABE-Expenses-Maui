@@ -1,4 +1,5 @@
-﻿using AbeXP.Interfaces;
+﻿using AbeXP.Common.Constants;
+using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -49,7 +50,12 @@ namespace AbeXP.ViewModels
                 if (result.IsSuccessful)
                 {
                     App.Alert.ShowToast("Loan saved successfully.");
-                    await _navigation.PopAsync();
+
+                    var routePramteres = new ShellNavigationQueryParameters()
+                    {
+                        { NavigationConstants.TRIGGER_DASHBOARD_PARAM, true }
+                    };
+                    await _navigation.PopAsync(routePramteres);
                 }
             }
             catch (Exception ex)

@@ -16,7 +16,7 @@ namespace AbeXP.Services
                     ? "//Login"
                     : "//Main");
 
-        public Task NavigateToAsync(string route, IDictionary<string, object> routeParameters = null)
+        public Task NavigateToAsync(string route, IDictionary<string, object> routeParameters = default)
         {
             var shellNavigation = new ShellNavigationState(route);
 
@@ -25,7 +25,7 @@ namespace AbeXP.Services
                 : Shell.Current.GoToAsync(shellNavigation);
         }
 
-        public Task PopAsync() =>
-            Shell.Current.GoToAsync("..");
+        public Task PopAsync() => Shell.Current.GoToAsync("..");
+        public Task PopAsync(ShellNavigationQueryParameters navigationParameter) => Shell.Current.GoToAsync("..", navigationParameter);
     }
 }
