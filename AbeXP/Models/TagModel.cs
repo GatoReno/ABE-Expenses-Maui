@@ -8,8 +8,8 @@ namespace AbeXP.Models
 {
     public class TagModel : BaseEntity
     {
-        public string Name { get; set; } = "";
-        public string ColorHex { get; set; } = "#FFFFFF";
-        public bool IsSelected { get; set; } = false; // Para la selección en la UI
+        public string Name { get; set; }
+        public string ColorHex { get; set; }
+        
     }
 }

@@ -21,7 +21,7 @@ namespace AbeXP.UseCases
 
         public async Task<Result> ExecuteAsync(Expense expense)
         {
-            await _expenseRepository.AddAsync(expense);
+            await _expenseRepository.AddAsync(new ExpenseIndexed(expense));
             return Result.Ok();
         }
     }

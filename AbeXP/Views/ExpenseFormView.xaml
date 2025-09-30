@@ -47,7 +47,7 @@
             <Picker 
                 Grid.Row="7" 
                 Title="Selecciona un método de pago"
-                ItemsSource="{Binding PaymentTypes}"
+                ItemsSource="{Binding PaymentMethods}"
                 ItemDisplayBinding="{Binding Name}"
                 SelectedItem="{Binding SelectedPaymentType, Mode=TwoWay}" />
 
@@ -57,7 +57,7 @@
                 Grid.Row="9"
                 ItemsSource="{Binding Tags}" 
                 SelectionMode="None"
-                HeightRequest="150">
+                MaximumHeightRequest="300">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <HorizontalStackLayout Spacing="10">

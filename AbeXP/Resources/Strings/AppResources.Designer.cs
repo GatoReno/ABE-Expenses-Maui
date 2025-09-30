@@ -250,6 +250,42 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tarjeta.
+        /// </summary>
+        internal static string PaymentMethod_Card {
+            get {
+                return ResourceManager.GetString("PaymentMethod_Card", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efectivo.
+        /// </summary>
+        internal static string PaymentMethod_Cash {
+            get {
+                return ResourceManager.GetString("PaymentMethod_Cash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque.
+        /// </summary>
+        internal static string PaymentMethod_Check {
+            get {
+                return ResourceManager.GetString("PaymentMethod_Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transferencia.
+        /// </summary>
+        internal static string PaymentMethod_Transference {
+            get {
+                return ResourceManager.GetString("PaymentMethod_Transference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Por favor inicia sesión para ver tus gastos.
         /// </summary>
         internal static string PleaseLoginExpenses {
@@ -300,6 +336,51 @@ namespace AbeXP.Resources.Strings {
         internal static string SuggestedPaymentDate {
             get {
                 return ResourceManager.GetString("SuggestedPaymentDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negocios.
+        /// </summary>
+        internal static string Tag_Business {
+            get {
+                return ResourceManager.GetString("Tag_Business", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comida.
+        /// </summary>
+        internal static string Tag_Food {
+            get {
+                return ResourceManager.GetString("Tag_Food", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compras.
+        /// </summary>
+        internal static string Tag_Shopping {
+            get {
+                return ResourceManager.GetString("Tag_Shopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transporte.
+        /// </summary>
+        internal static string Tag_Transport {
+            get {
+                return ResourceManager.GetString("Tag_Transport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viajes.
+        /// </summary>
+        internal static string Tag_Travel {
+            get {
+                return ResourceManager.GetString("Tag_Travel", resourceCulture);
             }
         }
         

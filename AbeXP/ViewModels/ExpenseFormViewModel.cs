@@ -13,19 +13,11 @@ namespace AbeXP.ViewModels
         private readonly ICreateExpenseUseCase _createExpenseUseCase;
         private readonly INavigationService _navigation;
 
-        public ExpenseFormViewModel(INavigationService navigation, ICreateExpenseUseCase createExpenseUseCase,IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
+        public ExpenseFormViewModel(INavigationService navigation, ICreateExpenseUseCase createExpenseUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
         {
             _navigation = navigation;
             _createExpenseUseCase = createExpenseUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
-
-            // Simulación de datos iniciales
-            //PaymentMethods.Add(new PaymentMethod { Id = "1", Name = "Tarjeta" });
-            //PaymentMethods.Add(new PaymentMethod { Id = "2", Name = "Efectivo" });
-            //PaymentMethods.Add(new PaymentMethod { Id = "3", Name = "Transferencia" });
-            //Tags.Add(new TagModel { Id = "1", Name = "Comida", ColorHex = "#FF5733" });
-            //Tags.Add(new TagModel { Id = "2", Name = "Ropa", ColorHex = "#33FF57" });
-            //Tags.Add(new TagModel { Id = "3", Name = "Transporte", ColorHex = "#3357FF" });
 
             GetCatalogs();
         }
@@ -43,11 +35,13 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         private string selectedPaymentTypeId;
 
+        [ObservableProperty]
+        public ObservableCollection<TagModelItem> _tags;
 
-        public ObservableCollection<TagModel> Tags { get; set; }
-
-        public ObservableCollection<PaymentMethod> PaymentMethods { get; set; }
+        [ObservableProperty]
+        public ObservableCollection<PaymentMethodItem> _paymentMethods;
         #endregion
+
 
         [RelayCommand]
         private async Task SaveExpense()
@@ -77,6 +71,10 @@ namespace AbeXP.ViewModels
         }
 
 
+        /// <summary>
+        /// Get the catalogs for the form
+        /// </summary>
+        /// <returns></returns>
         private async Task GetCatalogs()
         {
             try
@@ -84,8 +82,11 @@ namespace AbeXP.ViewModels
                 var result = await _getTransactionCatalogsUseCase.ExecuteAsync();
                 if (result.IsSuccessful)
                 {
-                    Tags = new ObservableCollection<TagModel>(result.Payload.Tags);
-                    PaymentMethods = new ObservableCollection<PaymentMethod>(result.Payload.PaymentMethods);
+                    var tagItems = result.Payload.Tags.Select(t => new TagModelItem(t));
+                    var paymentMethods = result.Payload.PaymentMethods.Select(pm => new PaymentMethodItem(pm));
+
+                    Tags = new ObservableCollection<TagModelItem>(tagItems);
+                    PaymentMethods = new ObservableCollection<PaymentMethodItem>(paymentMethods);
                 }
             }
             catch (Exception ex)
