@@ -35,13 +35,13 @@ namespace AbeXP.ViewModels
         private string description;
 
         [ObservableProperty]
-        private PaymentMethodItem selectedPaymentType;
+        private PaymentMethod selectedPaymentType;
 
         [ObservableProperty]
         public ObservableCollection<TagModelItem> _tags;
 
         [ObservableProperty]
-        public ObservableCollection<PaymentMethodItem> _paymentMethods;
+        public ObservableCollection<PaymentMethod> _paymentMethods;
 
         [ObservableProperty]
         public bool _isBusy;
@@ -98,10 +98,10 @@ namespace AbeXP.ViewModels
                 if (result.IsSuccessful)
                 {
                     var tagItems = result.Payload.Tags.ToTagModelItemList();
-                    var paymentMethods = result.Payload.PaymentMethods.ToPaymentMethodItemList();
+                    var paymentMethods = result.Payload.PaymentMethods;
 
                     Tags = new ObservableCollection<TagModelItem>(tagItems);
-                    PaymentMethods = new ObservableCollection<PaymentMethodItem>(paymentMethods);
+                    PaymentMethods = new ObservableCollection<PaymentMethod>(paymentMethods);
                 }
             }
             catch (Exception ex)

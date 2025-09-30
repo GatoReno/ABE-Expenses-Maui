@@ -74,8 +74,8 @@ namespace AbeXP.UseCases
                 Amount = ex.Amount,
                 Date = ex.Date,
                 Description = ex.Description,
-                PaymentMethod = PaymentMethodLocalizer.GetPaymentMethodName(paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == ex.PaymentTypeId)?.Name ?? AppResources.NotFound),
-                Tags = request.MapTags ? ex.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(AppResources.NotFound)).ToLocalizeList() : [],
+                PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == ex.PaymentTypeId)?.Name ?? ex.PaymentTypeId,
+                Tags = request.MapTags ? ex.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
                 TypeDescription = AppResources.Expense,
                 Type = Common.Enum.TransactionType.Expense,
                 Icon = MaterialIconsRegular.Attach_money

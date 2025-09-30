@@ -1,4 +1,5 @@
 ﻿using AbeXP.Common.Result;
+using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
@@ -21,10 +22,9 @@ namespace AbeXP.UseCases
 
         public async Task<Result<IEnumerable<PaymentMethod>>> ExecuteAsync()
         {
-
             var result = await _paymentMethodsRepository.GetAllAsync();
 
-            return result.ToList();
+            return result.ToLocalizedList();
         }
     }
 }

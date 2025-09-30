@@ -1,4 +1,5 @@
 ﻿using AbeXP.Common.Result;
+using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
@@ -24,7 +25,7 @@ namespace AbeXP.UseCases
         {
             var tags = await _tagsRepository.GetAllAsync();
 
-            return tags.ToList();
+            return tags.ToLocalizeList();
         }
     }
 }

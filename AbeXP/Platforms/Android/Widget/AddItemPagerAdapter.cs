@@ -1,5 +1,6 @@
 ﻿using AbeXP.Interfaces;
 using AbeXP.Platforms.Android.Widget.ViewHolders;
+using AbeXP.UseCases.Interfaces;
 using AbeXP.UseCases.Plugins;
 using Android.Content;
 using Android.Views;
@@ -10,18 +11,18 @@ namespace AbeXP.Platforms.Android.Widget
     public class AddItemPagerAdapter : RecyclerView.Adapter
     {
         private readonly Context _context;
-        private readonly IExpenseRepository _expenseRepository;
-        private readonly ILoanRepository _loanRepository;
-        private readonly IUserSession _userSession;
+        private readonly ICreateExpenseUseCase _createExpenseUseCase;
+        private readonly ICreateLoanUseCase _createLoanUseCase;
+        private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private readonly IWidgetUpdater _widgetUpdater;
         private readonly int[] _layouts;
 
-        public AddItemPagerAdapter(Context c, IExpenseRepository expenseRepository, ILoanRepository loanRepository, IUserSession userSession, IWidgetUpdater widgetUpdater)
+        public AddItemPagerAdapter(Context c, ICreateExpenseUseCase createExpenseUseCase, ICreateLoanUseCase createLoanUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater)
         {
             _context = c;
-            _expenseRepository = expenseRepository;
-            _loanRepository = loanRepository;
-            _userSession = userSession;
+            _createExpenseUseCase = createExpenseUseCase;
+            _createLoanUseCase = createLoanUseCase;
+            _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
             _widgetUpdater = widgetUpdater;
             _layouts = new[]
             {
@@ -37,8 +38,8 @@ namespace AbeXP.Platforms.Android.Widget
 
             return viewType switch
             {
-                0 => new ExpenseViewHolder(view, _expenseRepository, _userSession, _widgetUpdater),
-                1 => new LoanViewHolder(view, _loanRepository, _userSession, _widgetUpdater),
+                0 => new ExpenseViewHolder(view, _createExpenseUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
+                1 => new LoanViewHolder(view, _createLoanUseCase, _widgetUpdater),
                 _ => throw new ArgumentOutOfRangeException(nameof(viewType))
             };
         }
@@ -47,7 +48,6 @@ namespace AbeXP.Platforms.Android.Widget
         {
         
         }
-
 
         public override int GetItemViewType(int position) => position;
         public override int ItemCount => _layouts.Length;

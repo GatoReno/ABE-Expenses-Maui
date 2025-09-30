@@ -2,7 +2,7 @@
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
-using AbeXP.UseCases.Plugins;
+using AbeXP.UseCases.Interfaces;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.CheckBox;
@@ -13,16 +13,13 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 {
     internal class LoanViewHolder : ExpenditureBaseViewHolder
     {
-        private readonly ILoanRepository _loanRepository;
-        private readonly IUserSession _userSession;
+        private readonly ICreateLoanUseCase _createLoanUseCase;
         private DateTime dateGiven = DateTime.Now;
         private DateTime datePayment = DateTime.Now.AddDays(10);
 
-        public LoanViewHolder(View itemView, ILoanRepository loanRepository, IUserSession userSession, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
+        public LoanViewHolder(View itemView, ICreateLoanUseCase createLoanUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
-            // TODO: we should create a single Use Case and inject it instead, to create the loan
-            _loanRepository = loanRepository;
-            _userSession = userSession;
+            _createLoanUseCase = createLoanUseCase;
 
             InitializeComponents();
         }
@@ -88,23 +85,41 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                 try
                 {
                     var loan = MapLoan();
-                    loan.UserId = _userSession.UserId; // Todo: this could be avoided here and set it in the User case to be created
-                    await _loanRepository.AddAsync(new LoanIndexed(loan));
+                    await _createLoanUseCase.ExecuteAsync(loan);
 
                     NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
+
+                    ResetForm();
                 }
                 catch (Exception ex)
                 {
                     Toast.MakeText(ItemView.Context, AppResources.ErrorWhileProcessingRequest, ToastLength.Short).Show();
                 }
-                finally
-                {
-                    await Task.Delay(1000);
-                    FinishActivity();
-                }
-
             }
+        }
+
+        private void ResetForm()
+        {
+            dateGiven = DateTime.Now;
+            datePayment = DateTime.Now;
+
+            var edtPersonName = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtLoanPersonName);
+            var edtEmail = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtLoanEmail);
+            var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtLoanAmount);
+            var edtLoanDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtLoanDate);
+            var edtPaymentDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtPaymentDate);
+            var edtIsPaid = ItemView.FindViewById<MaterialCheckBox>(Resource.Id.chkIsPaid);
+            var edtNotes = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtLoanNotes);
+
+
+            edtPersonName.Text = string.Empty;
+            edtEmail.Text = string.Empty;
+            edtAmount.Text = string.Empty;
+            edtLoanDate.Text = dateGiven.ToString(DateConstants.WidgetDateFormat);
+            edtPaymentDate.Text = datePayment.ToString(DateConstants.WidgetDateFormat);
+            edtIsPaid.Checked = false;
+            edtNotes.Text = string.Empty;
         }
 
         private Loan MapLoan()

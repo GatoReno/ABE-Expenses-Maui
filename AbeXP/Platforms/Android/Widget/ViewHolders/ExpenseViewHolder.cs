@@ -1,15 +1,13 @@
 ﻿using AbeXP.Common.Constants;
+using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
-using AbeXP.Platforms.Android.Widget.Service;
 using AbeXP.Resources.Strings;
-using AbeXP.UseCases.Plugins;
+using AbeXP.UseCases.Interfaces;
 using Android.App;
-using Android.Content.Res;
 using Android.Widget;
 using Google.Android.Material.Button;
 using Google.Android.Material.TextField;
-using Java.Util;
 using View = Android.Views.View;
 
 
@@ -18,17 +16,27 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
     internal class ExpenseViewHolder : ExpenditureBaseViewHolder
     {
 
-        private readonly IExpenseRepository _expenseRepository;
-        private readonly IUserSession _userSession;
+        private readonly ICreateExpenseUseCase _createExpenseUse;
+        private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private DateTime expenseDate = DateTime.Now;
+        private PaymentMethodModelItem[] paymentMethods;
+        private PaymentMethodModelItem selectedPaymentMethod;
+        private TagModelItem[] tags;
+        private bool[] checkedTags;
+        private List<TagModelItem> selectedTags;
 
-
-        public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository, IUserSession userSession, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
+        public ExpenseViewHolder(View itemView, ICreateExpenseUseCase createExpenseUse, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
-            // TODO: we should create a single Use Case and inject it instead, to create the expense
-            _expenseRepository = expenseRepository;
-            _userSession = userSession;
+            _createExpenseUse = createExpenseUse;
+            _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
 
+            InitializeAsync();
+        }
+
+
+        private async void InitializeAsync()
+        {
+            await LoadData();
             InitializeComponents();
         }
 
@@ -65,41 +73,41 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private void SetupPaymentType()
         {
             var ddlPaymentType = ItemView.FindViewById<MaterialAutoCompleteTextView>(Resource.Id.ddlPaymentType);
-
-            string[] items = new[] { "Card", "Cash", "Transfer" };
-
             var adapter = new ArrayAdapter(
                 ItemView.Context,
                 global::Android.Resource.Layout.SimpleDropDownItem1Line,
-                items
+                paymentMethods
             );
 
             ddlPaymentType.Adapter = adapter;
-            ddlPaymentType.SetText(items[0], false);
+            ddlPaymentType.SetText(paymentMethods[0].Name, false);
+            ddlPaymentType.ItemClick += (s, e) =>
+            {
+                selectedPaymentMethod = paymentMethods[e.Position];
+            };
         }
 
         private void SetupTags()
         {
             var edtTags = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtTags);
 
-            string[] tagOptions = { "Restaurant", "Business", "Travel", "Shopping" };
-            bool[] selected = new bool[tagOptions.Length]; // track checked state
-
+            var tagStringArray = tags.Select(tag => tag.Name).ToArray();
+            checkedTags = tags.Select(tag => tag.IsSelected).ToArray();
             edtTags.Click += (s, e) =>
             {
                 new AlertDialog.Builder(ItemView.Context)
                     .SetTitle("Select Tags")
-                    .SetMultiChoiceItems(tagOptions, selected, (sender, args) =>
+                    .SetMultiChoiceItems(tagStringArray, checkedTags, (sender, args) =>
                     {
-                        selected[args.Which] = args.IsChecked;
+                        checkedTags[args.Which] = args.IsChecked;
                     })
                     .SetPositiveButton("OK", (sender, args) =>
                     {
-                        var chosen = tagOptions
-                            .Where((t, i) => selected[i])
-                            .ToArray();
+                        var chosen = tags
+                            .Where((t, i) => checkedTags[i]);
 
-                        edtTags.Text = string.Join(", ", chosen);
+                        selectedTags = chosen.ToList();
+                        edtTags.Text = string.Join(", ", chosen.Select(tag => tag.Name));
                     })
                     .SetNegativeButton("Cancel", (sender, args) => { })
                     .Show();
@@ -116,25 +124,19 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             // store position if needed
             async void BtnSave_Click(object sender, EventArgs e)
             {
-
                 try
                 {
                     var expense = MapExpense();
-                    expense.UserId = _userSession.UserId;  // Todo: this could be avoided here and set it in the User case to be created
-                    var expenseIndexed = new ExpenseIndexed(expense);
-                    await _expenseRepository.AddAsync(expenseIndexed);
+                    await _createExpenseUse.ExecuteAsync(expense);
 
                     NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
+
+                    ResetForm();
                 }
                 catch (Exception ex)
                 {
                     Toast.MakeText(ItemView.Context, AppResources.ErrorWhileProcessingRequest, ToastLength.Short).Show();
-                }
-                finally
-                {
-                    await Task.Delay(1000);
-                    FinishActivity();
                 }
 
             }
@@ -150,6 +152,32 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
                 ShowDatePicker(ItemView.Context, edtExpenseDate, (date) => expenseDate = date);
             };
 
+        }
+
+        private void ResetForm()
+        {
+            expenseDate = DateTime.Now;
+            selectedPaymentMethod = default;
+            selectedTags = new List<TagModelItem>();
+            if (checkedTags != null)
+            {
+                for (int i = 0; i < checkedTags.Length; i++)
+                {
+                    checkedTags[i] = false;
+                }
+            }
+
+            var edtDescription = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseDescription);
+            var edtDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
+            var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseAmount);
+            var ddlPaymentType = ItemView.FindViewById<MaterialAutoCompleteTextView>(Resource.Id.ddlPaymentType);
+            var edtTags = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtTags);
+
+            edtDescription.Text = string.Empty;
+            edtDate.Text = expenseDate.ToString(DateConstants.WidgetDateFormat);
+            edtAmount.Text = string.Empty;
+            ddlPaymentType.SetText(string.Empty, false);
+            edtTags.Text = string.Empty;
         }
 
         private Expense MapExpense()
@@ -170,18 +198,35 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             }
 
             // Payment type
-            expense.PaymentTypeId = ddlPaymentType.Text ?? "";
+            expense.PaymentTypeId = selectedPaymentMethod?.Id;
 
             // Description
             expense.Description = edtDescription.Text ?? "";
 
             // Tags (assuming comma-separated in the EditText)
-            expense.TagIds = (edtTags.Text ?? "")
-                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                                .ToList();
+            expense.TagIds = selectedTags.Select(tag => tag.Id).ToList();
 
             expense.Date = expenseDate;
             return expense;
         }
+
+
+        private async Task LoadData()
+        {
+            try
+            {
+                var itemsResult = await _getTransactionCatalogsUseCase.ExecuteAsync();
+                if (itemsResult.IsSuccessful)
+                {
+                    paymentMethods = itemsResult.Payload.PaymentMethods.ToPaymentMethodItemList().ToArray();
+                    tags = itemsResult.Payload.Tags.ToTagModelItemList().ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Alert.ShowAlert("Error", "Could not load catalogs.");
+            }
+        }
+
     }
 }
