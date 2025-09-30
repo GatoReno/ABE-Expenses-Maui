@@ -18,12 +18,11 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private DateTime dateGiven = DateTime.Now;
         private DateTime datePayment = DateTime.Now.AddDays(10);
 
-        public LoanViewHolder(View itemView, ILoanRepository loanRepository, IUserSession userSession) : base(itemView)
+        public LoanViewHolder(View itemView, ILoanRepository loanRepository, IUserSession userSession, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
             // TODO: we should create a single Use Case and inject it instead, to create the loan
             _loanRepository = loanRepository;
             _userSession = userSession;
-
 
             InitializeComponents();
         }

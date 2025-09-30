@@ -1,6 +1,7 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Platforms.Android.Widget.Service;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Plugins;
 using Android.App;
@@ -22,7 +23,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private DateTime expenseDate = DateTime.Now;
 
 
-        public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository, IUserSession userSession) : base(itemView)
+        public ExpenseViewHolder(View itemView, IExpenseRepository expenseRepository, IUserSession userSession, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
             // TODO: we should create a single Use Case and inject it instead, to create the expense
             _expenseRepository = expenseRepository;

@@ -13,14 +13,16 @@ namespace AbeXP.Platforms.Android.Widget
         private readonly IExpenseRepository _expenseRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly IUserSession _userSession;
+        private readonly IWidgetUpdater _widgetUpdater;
         private readonly int[] _layouts;
 
-        public AddItemPagerAdapter(Context c, IExpenseRepository expenseRepository, ILoanRepository loanRepository, IUserSession userSession)
+        public AddItemPagerAdapter(Context c, IExpenseRepository expenseRepository, ILoanRepository loanRepository, IUserSession userSession, IWidgetUpdater widgetUpdater)
         {
             _context = c;
             _expenseRepository = expenseRepository;
             _loanRepository = loanRepository;
             _userSession = userSession;
+            _widgetUpdater = widgetUpdater;
             _layouts = new[]
             {
                 Resource.Layout.expense_tab,
@@ -35,8 +37,8 @@ namespace AbeXP.Platforms.Android.Widget
 
             return viewType switch
             {
-                0 => new ExpenseViewHolder(view, _expenseRepository, _userSession),
-                1 => new LoanViewHolder(view, _loanRepository, _userSession),
+                0 => new ExpenseViewHolder(view, _expenseRepository, _userSession, _widgetUpdater),
+                1 => new LoanViewHolder(view, _loanRepository, _userSession, _widgetUpdater),
                 _ => throw new ArgumentOutOfRangeException(nameof(viewType))
             };
         }

@@ -1,6 +1,7 @@
 ﻿using AbeXP.Common.Constants;
 using AbeXP.Common.Enum;
 using AbeXP.Extensions;
+using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
@@ -15,10 +16,13 @@ namespace AbeXP.ViewModels
     public partial class MainPageViewModel : ObservableObject
     {
         private readonly IGetTransactionsUseCase _getTransactionsUseCase;
-        
-        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase)
+        private readonly IWidgetUpdater _widgetUpdater;
+
+        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase, IWidgetUpdater widgetUpdater)
         {
             _getTransactionsUseCase = getExpendituresUseCase;
+            _widgetUpdater = widgetUpdater;
+
             LoadTransactionsAsync();
         }
 
@@ -62,6 +66,9 @@ namespace AbeXP.ViewModels
             {
                 if(value)
                 {
+                    if (DeviceInfo.Platform == DevicePlatform.Android)
+                        _widgetUpdater.NotifyDataChanged();
+
                     LoadTransactionsAsync();
                 }
             }

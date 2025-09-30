@@ -37,12 +37,13 @@ namespace AbeXP.Platforms.Android.Widget
             var expenseRepository = MauiApplication.Current.Services.GetService<IExpenseRepository>();
             var loanRepository = MauiApplication.Current.Services.GetService<ILoanRepository>();
             var userSession = MauiApplication.Current.Services.GetService<IUserSession>();
+            var widgetUpdater = MauiApplication.Current.Services.GetService<IWidgetUpdater>();
 
             // tab titles
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
 
-            var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository, userSession);
+            var adapter = new AddItemPagerAdapter(this, expenseRepository, loanRepository, userSession, widgetUpdater);
             viewPager.Adapter = adapter;
 
             var titles = new[] { AppResources.Expense, AppResources.Loan };
