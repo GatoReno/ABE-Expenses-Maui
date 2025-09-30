@@ -4,6 +4,7 @@
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:controls="clr-namespace:AbeXP.Controls"
+             xmlns:resources="clr-namespace:AbeXP.Resources.Strings"
              xmlns:enums="clr-namespace:AbeXP.Common.Enum"
              x:Class="AbeXP.Views.FinantialChartsPage"
              Title="Gráficas">
@@ -27,54 +28,53 @@
         </Grid>
     </Shell.TitleView>-->
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollView Padding="{StaticResource Padding}">
 
-        <!--Expense total-->
-        <Border BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="20,0,20,10" StrokeShape="RoundRectangle 40,0,0,40">
-            <VerticalStackLayout VerticalOptions="Center">
-                <Label Text="{Binding TotalExpensesTitle}" HorizontalOptions="Center" TextColor="{StaticResource Black}"/>
-                <Label HorizontalOptions="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="$" TextColor="{StaticResource Black}" FontSize="23"/>
-                            <Span Text="{Binding TotalExpensesAmount}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="30" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label HorizontalOptions="Center" Margin="0,10,0,0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding TotalExpensesCount}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="16" />
-                            <Span Text="{Binding CountExpensesTitle}" TextColor="{StaticResource Black}" FontSize="16"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </VerticalStackLayout>
-        </Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Expense total-->
+            <Border BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="20,0,20,10" StrokeShape="RoundRectangle 40,0,0,40">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{Binding TotalExpensesTitle}" HorizontalOptions="Center" TextColor="{StaticResource Black}"/>
+                    <Label HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TotalExpensesAmount, StringFormat='{0:C}'}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="30" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label HorizontalOptions="Center" Margin="0,10,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TotalExpensesCount}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="16" />
+                                <Span Text="{Binding CountExpensesTitle}" TextColor="{StaticResource Black}" FontSize="16"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
 
 
-        <!--Select date range-->
-        <HorizontalStackLayout Grid.Row="1" Padding="{StaticResource Padding}" HorizontalOptions="Center" >
-            <controls:DatePickerWithIcon Title="Fecha inicial" Date="{Binding StartDate}" MaxDateAllowed="{Binding MaxStartDateAllowed}" MinDateAllowed="{Binding MinStartDateAllowed}" Margin="0,0,10,0"/>
-            <controls:DatePickerWithIcon Title="Fecha final" Date="{Binding EndDate}" MaxDateAllowed="{Binding MaxEndDateAllowed}" MinDateAllowed="{Binding MinEndDateAllowed}"/>
-            
             <!--search button, show loading spinner when busy-->
-            <controls:ButtonWithContent Margin="15,0,0,-15" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center"  Command="{Binding FilterExpensesCommand}" x:Name="btnSearch">
-                <Grid BackgroundColor="Transparent">
-                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
-                    <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
-                </Grid>
-            </controls:ButtonWithContent>
-        </HorizontalStackLayout>
+            <Grid Grid.Row="1" ColumnDefinitions="auto, auto, *" Margin="0,10,0,0">
+                <controls:DatePickerEntry Grid.Column="0" Hint="{x:Static resources:AppResources.StartDate}" Date="{Binding StartDate}" Margin="0,0,5,0"/>
+                <controls:DatePickerEntry Grid.Column="1" Hint="{x:Static resources:AppResources.EndDate}" Date="{Binding EndDate}"/>
 
+                <controls:ButtonWithContent Grid.Column="2" x:Name="btnSearch" Margin="10,0,0,0" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding GetTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+                    <Grid>
+                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
+                        <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Grid>
+                </controls:ButtonWithContent>
+            </Grid>
+            
 
-        <ScrollView Grid.Row="2"  VerticalOptions="Start" Padding="{StaticResource Padding}">
-            <VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="2" Margin="0,20,0,0">
                 <!--Expenses by period chart-->
                 <Label FontAttributes="Bold" Text="{Binding ExpensesChartsTitle}"/>
                 <VerticalStackLayout Grid.Row="2" >
@@ -95,9 +95,6 @@
                 <Label FontAttributes="Bold" Text="{Binding TagsTypeChartTitle}"/>
                 <controls:ChartViewRefreshable Chart="{Binding TagsBarChart}"/>
             </VerticalStackLayout>
-        </ScrollView>
-
-
-    </Grid>
-
+        </Grid>
+    </ScrollView>
 </ContentPage>

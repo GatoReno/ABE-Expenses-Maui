@@ -2,9 +2,12 @@
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Resources.Strings;
+using AbeXP.UseCases.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microcharts;
+using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
 using SkiaSharp;
 using System.Collections.ObjectModel;
@@ -13,32 +16,30 @@ namespace AbeXP.ViewModels
 {
     public partial class FinantialChartsViewModel : ObservableObject
     {
-        private readonly IExpenseRepository _expenseRepository;
+        private readonly IGetTransactionsUseCase _getTransactionsUseCase;
 
-        public FinantialChartsViewModel(IExpenseRepository expenseRepository)
+        public FinantialChartsViewModel(IGetTransactionsUseCase getTransactionsUseCase)
         {
-            _expenseRepository = expenseRepository;
-            GetExpenses();
+            _getTransactionsUseCase = getTransactionsUseCase;
+
+            GetTransactionsAsync();
         }
 
         #region PROPERTIES
 
         // data
-        private IReadOnlyCollection<Expense> expenses;
-        public IReadOnlyCollection<Expense> Expenses
+        private IReadOnlyList<TransactionItem> _transactions;
+        public IReadOnlyList<TransactionItem> Transactions
         {
-            get { return expenses; }
+            get { return _transactions; }
             set
             {
-                expenses = value;
-
-                FilterExpenses();
+                _transactions = value;
+                OnTransactionsChanged();
             }
         }
-
-        [ObservableProperty]
-        public ObservableCollection<Expense> _expensesFiltered;
         public bool IsDarkMode => Application.Current.RequestedTheme == AppTheme.Dark;
+        public float ChartLabelFontSize => 40f;
 
         [ObservableProperty]
         public bool _expensesMoreThanOneMonth;
@@ -83,7 +84,7 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public string _timePeriodTitle = "Intervalo de tiempo";
         [ObservableProperty]
-        public string _paymentTypeChartTitle = "Por tipo de pago";
+        public string _paymentTypeChartTitle = "Por método de pago";
         [ObservableProperty]
         public string _tagsTypeChartTitle = "Por etiquetas";
 
@@ -104,7 +105,7 @@ namespace AbeXP.ViewModels
         /// Triggered when the Expenses property changes, refresh all the charts with the new data
         /// </summary>
         /// <param name="value"></param>
-        partial void OnExpensesFilteredChanged(ObservableCollection<Expense> value)
+        private void OnTransactionsChanged()
         {
             IsBusy = true;
             try
@@ -113,7 +114,7 @@ namespace AbeXP.ViewModels
                 CreatePaymentTypesPieChart();
                 CreateTagsBarChart();
 
-                TotalExpensesAmount = ExpensesFiltered?.Sum(e => e.Amount);
+
             }
             catch (Exception ex)
             {
@@ -131,7 +132,7 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateExpensesLineChart()
         {
-            var groupedDates = ExpensesFiltered
+            var groupedDates = Transactions
                .GroupBy(e => e.Date.GetPeriodStart(Period))
                .OrderBy(g => g.Key)
                .Select(g => new { Date = g.Key, Total = g.Sum(e => e.Amount) });
@@ -160,6 +161,7 @@ namespace AbeXP.ViewModels
                 BackgroundColor = SKColors.Transparent,
                 LabelOrientation = Orientation.Vertical,
                 LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
+                LabelTextSize = ChartLabelFontSize,
             };
         }
 
@@ -168,17 +170,18 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreatePaymentTypesPieChart()
         {
-            var grouped = ExpensesFiltered
-                .GroupBy(e => e.PaymentTypeId)
+            var grouped = Transactions
+                .GroupBy(e => e.PaymentMethod)
                 .Select(g => new
                 {
                     g.Key,
+                    Count = g.Count(),
                     Total = g.Sum(e => e.Amount)
                 });
 
             var entries = grouped.Select(g => new ChartEntry((float)g.Total)
             {
-                Label = g.Key,
+                Label = $"{g.Key} ({g.Count})",
                 ValueLabel = g.Total.ToString("C"),
                 ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}")
@@ -189,7 +192,8 @@ namespace AbeXP.ViewModels
                 Entries = entries,
                 HoleRadius = 0.6f,
                 BackgroundColor = SKColors.Transparent,
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
+                LabelTextSize = ChartLabelFontSize,
             };
         }
 
@@ -198,32 +202,51 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateTagsBarChart()
         {
-            var grouped = ExpensesFiltered
-                .SelectMany(e => e.TagIds.Select(tagId => new { TagId = tagId, e.Amount }))
-                .GroupBy(x => x.TagId)
+            // divide amount on all the transaction tags, since a single transaction may contain more than one tag
+            var grouped = Transactions
+                .SelectMany(e => e.Tags?.Select(tag => new { Tag = tag, Amount = e.Amount / e.Tags.Count }) ?? [new { Tag = AppResources.NoTag, e.Amount }])
+                .GroupBy(x => x.Tag)
                 .Select(g => new
                 {
                     g.Key,
+                    Count = g.Count(),
                     Total = g.Sum(x => x.Amount)
                 });
 
             var entries = grouped.Select(g => new ChartEntry((float)g.Total)
             {
-                Label = g.Key,
+                Label = $"{g.Key} ({g.Count})",
                 ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 ValueLabel = g.Total.ToString("C"),
                 Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}"),
-            }).ToArray();
+            });
+
+            //if so, the barchart takes all width screen, reduce by adding dummy entries
+            if (entries.Count() == 1)
+            {
+                entries = entries.Prepend(new ChartEntry(0)
+                {
+                    Label = "",
+                    ValueLabel = "",
+                    Color = SKColor.Parse("#00FFFFFF")
+                });
+
+                entries = entries.Append(new ChartEntry(0)
+                {
+                    Label = "",
+                    ValueLabel = "",
+                    Color = SKColor.Parse("#00FFFFFF")
+                });
+            }
 
             TagsBarChart = new BarChart
             {
                 Entries = entries,
-                LabelOrientation = Orientation.Horizontal,
-                ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColors.Transparent,
                 BarAreaAlpha = 0,
                 MaxValue = entries.Any() ? (float)(entries.Max(e => e.Value) * 1.1f) : 0f, // small padding above
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
+                LabelTextSize = ChartLabelFontSize,
             };
         }
 
@@ -232,17 +255,55 @@ namespace AbeXP.ViewModels
         /// Get all expenses from the repository and populate the Expenses collection.
         /// </summary>
         /// <returns></returns>
-        private async Task GetExpenses()
+        [RelayCommand]
+        private async Task GetTransactionsAsync()
         {
             IsBusy = true;
             try
             {
-                var expenses = await _expenseRepository.GetAllAsync();
-                Expenses = expenses;
+                var transactionsResult = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest
+                {
+                    StartAt = StartDate,
+                    EndAt = EndDate,
+                    MapTags = true
+                });
+
+                if (transactionsResult.IsFailed)
+                {
+                    App.Alert.ShowAlert("Error", "Could not load data.");
+                }
+
+                var transactions = transactionsResult.Payload.ToList();
+
+                if (!transactions.Any())
+                {
+                    transactions.Add(new TransactionItem
+                    {
+                        Amount = 0,
+                        Date = DateTime.Now,
+                        Description = "No expenses found",
+                        PaymentMethod = "N/A",
+                        Tags = new List<string> { "N/A" }
+                    });
+
+                    TotalExpensesCount = 0;
+                }
+                else
+                {
+                    TotalExpensesCount = transactions.Count;
+                }
+
+
+                var minDate = transactions.MinBy(e => e.Date).Date;
+                var maxDate = transactions.MaxBy(e => e.Date).Date;
+
+                TotalExpensesAmount = transactions?.Sum(e => e.Amount);
+                ExpensesMoreThanOneMonth = minDate.IsMoreThanOneMonthApart(maxDate);
+                Transactions = transactions.AsReadOnly();
             }
             catch (Exception ex)
             {
-                App.Alert.ShowAlert("Error", "Could not load expenses data.");
+                App.Alert.ShowAlert("Error", "Could not load data.");
             }
             finally
             {
@@ -250,44 +311,6 @@ namespace AbeXP.ViewModels
             }
         }
 
-
-        /// <summary>
-        /// Handles the search command to filter expenses based on the selected date range.
-        /// </summary>
-        /// <returns></returns>
-        [RelayCommand]
-        private async Task FilterExpenses()
-        {
-
-            var filterItems = Expenses.Where(e => e.Date >= StartDate && e.Date <= EndDate).ToList();
-
-            // If no expenses found, add a placeholder expense so the charts can still render (it throws exceptions)
-            if (!filterItems.Any())
-            {
-                filterItems.Add(new Expense
-                {
-                    Amount = 0,
-                    Date = DateTime.Now,
-                    Description = "No expenses found",
-                    PaymentTypeId = "N/A",
-                    TagIds = new List<string> { "N/A" }
-                });
-
-                TotalExpensesCount = 0;
-            }
-            else
-            {
-                TotalExpensesCount = filterItems.Count;
-            }
-
-            ExpensesFiltered = new ObservableCollection<Expense>(filterItems);
-
-            var minDate = ExpensesFiltered.MinBy(e => e.Date).Date;
-            var maxDate = ExpensesFiltered.MaxBy(e => e.Date).Date;
-
-            ExpensesMoreThanOneMonth = minDate.IsMoreThanOneMonthApart(maxDate);
-            await Task.CompletedTask;
-        }
 
     }
 }

@@ -15,5 +15,9 @@ namespace AbeXP.Extensions
             return tags.Select(pm => new TagModelItem(pm));
         }
 
+        public static List<string> ToLocalizeList(this IEnumerable<TagModel> tags)
+        {
+            return tags.Select(pm => TagModelLocalizer.GetTagName(pm.Name)).ToList();
+        }
     }
 }

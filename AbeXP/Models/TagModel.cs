@@ -8,6 +8,16 @@ namespace AbeXP.Models
 {
     public class TagModel : BaseEntity
     {
+        public TagModel()
+        {
+            
+        }
+
+        public TagModel(string name)
+        {
+            Name = name;
+        }
+
         public string Name { get; set; }
         public string ColorHex { get; set; }
         

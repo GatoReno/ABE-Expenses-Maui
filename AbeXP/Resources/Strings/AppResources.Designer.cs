@@ -223,11 +223,29 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sin tags.
+        /// </summary>
+        internal static string NoTag {
+            get {
+                return ResourceManager.GetString("NoTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nota.
         /// </summary>
         internal static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No encontrado.
+        /// </summary>
+        internal static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
         

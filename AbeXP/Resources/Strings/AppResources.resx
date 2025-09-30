@@ -231,4 +231,10 @@
   <data name="Yes" xml:space="preserve">
     <value>Sí</value>
   </data>
+  <data name="NoTag" xml:space="preserve">
+    <value>Sin tags</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>No encontrado</value>
+  </data>
 </root>
