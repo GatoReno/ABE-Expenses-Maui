@@ -74,13 +74,13 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                var expenses = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest()
+                var transactionsResult = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest()
                 {
                     StartAt = StartDate,
                     EndAt = EndDate
                 });
 
-                AllItems =  new List<TransactionItem>(expenses);
+                AllItems =  new List<TransactionItem>(transactionsResult.Payload);
             }
             catch (Exception ex)
             {

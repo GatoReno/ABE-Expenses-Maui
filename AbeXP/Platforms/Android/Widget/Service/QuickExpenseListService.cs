@@ -84,23 +84,17 @@ namespace AbeXP.Platforms.Android.Widget.Service
             {
                 try
                 {
-                    var items =  await _getExpendituresUseCase.ExecuteAsync(new TransactionRequest
+                    var itemsResult =  await _getExpendituresUseCase.ExecuteAsync(new TransactionRequest
                     {
                         LimitTo = 30
                     });
 
-                    // Call your shared repository
-                    _items = new List<TransactionItem>(items);
-                    //_items = new List<string>() { "ejale"};
+                    _items = new List<TransactionItem>(itemsResult.Payload);
                 }
                 catch (Exception ex)
                 {
-
+                    App.Alert.ShowAlert("Error", "Could not load transactions.");
                 }
-
-              
-
-                
             }
         }
     }

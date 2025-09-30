@@ -34,19 +34,23 @@ namespace AbeXP.ViewModels
         private string description;
 
         [ObservableProperty]
-        private string selectedPaymentTypeId;
+        private PaymentMethodItem selectedPaymentType;
 
         [ObservableProperty]
         public ObservableCollection<TagModelItem> _tags;
 
         [ObservableProperty]
         public ObservableCollection<PaymentMethodItem> _paymentMethods;
+
+        [ObservableProperty]
+        public bool _isBusy;
         #endregion
 
 
         [RelayCommand]
         private async Task SaveExpense()
         {
+            IsBusy = true;
             try
             {
                 var expense = new Expense
@@ -54,7 +58,7 @@ namespace AbeXP.ViewModels
                     Date = Date,
                     Amount = Amount,
                     Description = Description,
-                    PaymentTypeId = SelectedPaymentTypeId,
+                    PaymentTypeId = SelectedPaymentType?.Id,
                     TagIds = Tags.Where(t => t.IsSelected).Select(t => t.Id).ToList()
                 };
 
@@ -68,6 +72,10 @@ namespace AbeXP.ViewModels
             catch (Exception ex)
             {
                 App.Alert.ShowAlert("Error", "Could not save data.");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

@@ -33,6 +33,13 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
+                    <Label Text="{Binding PaymentMethod}" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Expense}">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                 </VerticalStackLayout>
 
                 <!--Amount and date-->
