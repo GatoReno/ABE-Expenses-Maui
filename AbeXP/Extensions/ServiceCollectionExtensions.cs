@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<HomeViewModel>();
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
+        services.AddTransient<LoanFormViewModel>();
         services.AddSingleton<FinantialChartsViewModel>();
 
 
@@ -33,6 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<MainPage>();
         services.AddTransient<ExpenseFormView>();
         services.AddSingleton<FinantialChartsPage>();
+        services.AddSingleton<LoanFormView>();
 
 
         return services;
@@ -80,6 +82,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
         services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
         services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();
+        services.AddTransient<ICreateLoanUseCase, CreateLoanUseCase>();
 
         return services;
     }

@@ -66,7 +66,7 @@ namespace AbeXP.ViewModels
             }
             catch (Exception ex)
             {
-                App.Alert.ShowAlert("Error", "Could not save expenses data.");
+                App.Alert.ShowAlert("Error", "Could not save data.");
             }
         }
 
