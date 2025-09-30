@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using AbeXP.UseCases.Interfaces;
+using AbeXP.Extensions;
 
 namespace AbeXP.ViewModels
 {
@@ -82,8 +83,8 @@ namespace AbeXP.ViewModels
                 var result = await _getTransactionCatalogsUseCase.ExecuteAsync();
                 if (result.IsSuccessful)
                 {
-                    var tagItems = result.Payload.Tags.Select(t => new TagModelItem(t));
-                    var paymentMethods = result.Payload.PaymentMethods.Select(pm => new PaymentMethodItem(pm));
+                    var tagItems = result.Payload.Tags.ToTagModelItemList();
+                    var paymentMethods = result.Payload.PaymentMethods.ToPaymentMethodItemList();
 
                     Tags = new ObservableCollection<TagModelItem>(tagItems);
                     PaymentMethods = new ObservableCollection<PaymentMethodItem>(paymentMethods);
