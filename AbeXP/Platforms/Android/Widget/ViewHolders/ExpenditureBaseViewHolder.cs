@@ -1,4 +1,5 @@
 ﻿using AbeXP.Common.Constants;
+using AbeXP.Interfaces;
 using Android.App;
 using Android.Appwidget;
 using Android.Content;
@@ -11,9 +12,11 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 {
     internal class ExpenditureBaseViewHolder : RecyclerView.ViewHolder
     {
-        public ExpenditureBaseViewHolder(View itemView) : base(itemView)
-        {
+        private readonly IWidgetUpdater _widgetUpdater;
 
+        public ExpenditureBaseViewHolder(View itemView, IWidgetUpdater widgetUpdater) : base(itemView)
+        {
+            _widgetUpdater = widgetUpdater;
         }
 
 
@@ -56,15 +59,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         /// </summary>
         protected void NotifyWidgetUpdate()
         {
-            var activity = GetActivity();
-            var appWidgetManager = AppWidgetManager.GetInstance(activity);
-
-            var componentName = new ComponentName(activity, Java.Lang.Class.FromType(typeof(QuickExpenseWidgetProvider)));
-            var appWidgetIds = appWidgetManager.GetAppWidgetIds(componentName);
-
-            //var views = new RemoteViews(activity.PackageName, Resource.Layout.quickexpense_widget_layout);
-            //appWidgetManager.UpdateAppWidget(appWidgetIds, views); // views is a RemoteViews that you need to build
-            appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetIds, Resource.Id.quickexpense_list);
+            _widgetUpdater.NotifyDataChanged();
         }
 
         protected Activity GetActivity()
