@@ -13,6 +13,7 @@ namespace AbeXP.Models
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
+        public DateTime? DatePayment { get; set; }
         public string PaymentMethod { get; set; }
         public List<string> Tags { get; set; }
         public string Description { get; set; }

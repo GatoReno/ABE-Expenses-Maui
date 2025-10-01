@@ -46,6 +46,13 @@
                 <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
                     <Label Text="{Binding Amount, StringFormat='{0:C}'}" HorizontalOptions="End" TextColor="Green" FontAttributes="Bold"/>
                     <Label Text="{Binding Date, StringFormat='{0:dd MMM}'}" HorizontalOptions="End"/>
+                    <Label Text="{Binding DatePayment, StringFormat='Fecha de pago: {0:dd MMM}'}" HorizontalOptions="End" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Loan}">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                 </VerticalStackLayout>
 
                 <!--bottom border-->
@@ -88,8 +95,8 @@
         <VerticalStackLayout Grid.Row="1" Padding="0,10,0,0">
             <controls:PickerWithIcon Title="{Binding TitleFilter}" ItemsSource="{Binding Filters}" SelectedItem="{Binding SelectedFilter}"/>
         </VerticalStackLayout>
-        
-        
+
+
         <!--List of items-->
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Transactions}"

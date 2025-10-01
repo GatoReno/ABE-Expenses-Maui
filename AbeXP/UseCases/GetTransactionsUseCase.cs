@@ -85,6 +85,7 @@ namespace AbeXP.UseCases
             {
                 Amount = ex.Amount,
                 Date = ex.DateGiven,
+                DatePayment = ex.SuggestedPaybackDate,
                 Description = ex.PersonName,
                 IsPaid = ex.IsPaid ? AppResources.Yes : AppResources.No,
                 TypeDescription = AppResources.Loan,
