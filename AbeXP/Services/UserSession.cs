@@ -9,6 +9,7 @@ namespace AbeXP.Services
 {
     internal class UserSession : IUserSession
     {
+        // TODO: update with the real userid
         private string userId = "alex";
 
         public string UserId
