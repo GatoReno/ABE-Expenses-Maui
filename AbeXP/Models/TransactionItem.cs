@@ -1,4 +1,6 @@
 ﻿using AbeXP.Common.Enum;
+using AbeXP.Resources.Strings;
+using AbeXP.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,9 @@ namespace AbeXP.Models
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
+        public DateTime? DatePayment { get; set; }
         public string PaymentMethod { get; set; }
+        public List<string> Tags { get; set; }
         public string Description { get; set; }
         public string IsPaid { get; set; }
         public string TypeDescription { get; set; } //Expense or Loan

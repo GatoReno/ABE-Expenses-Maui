@@ -5,6 +5,7 @@ namespace AbeXP.Models
     {
         public LoanIndexed(Loan loan) 
         {
+            Id = loan.Id;
             PersonName = loan.PersonName;
             Email = loan.Email;
             Amount = loan.Amount;
@@ -13,6 +14,7 @@ namespace AbeXP.Models
             IsPaid = loan.IsPaid;
             Notes = loan.Notes;
             UserId = loan.UserId;
+            InsertedDate = loan.InsertedDate;
         }
 
         public string UserId_DateGiven => $"{UserId}_{DateGiven.ToString(DateConstants.IndexDateFormat)}";

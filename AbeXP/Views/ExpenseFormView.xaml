@@ -6,9 +6,13 @@
     Title="Nuevo Gasto">
 
     <ScrollView>
-        <Grid Padding="20" RowSpacing="15" ColumnDefinitions="Auto,*">
+        <Grid Padding="20" RowSpacing="15">
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -20,40 +24,40 @@
             </Grid.RowDefinitions>
 
             <!-- Fecha -->
-            <Label Grid.Row="0" Grid.Column="0" Text="Fecha:" VerticalOptions="Center" />
-            <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding Date, Mode=TwoWay}" />
+            <Label Grid.Row="0" Text="Fecha:" VerticalOptions="Center" />
+            <DatePicker Grid.Row="1" Date="{Binding Date, Mode=TwoWay}" />
 
-            <!-- Cantidad -->
-            <Label Grid.Row="1" Grid.Column="0" Text="Cantidad:" VerticalOptions="Center" />
+            <!-- Monto -->
+            <Label Grid.Row="2" Text="Monto:" VerticalOptions="Center" />
             <Entry 
-                Grid.Row="1" Grid.Column="1"
+                Grid.Row="3"
                 Placeholder="0.00"
                 Keyboard="Numeric"
                 Text="{Binding Amount, Mode=TwoWay}" />
 
             <!-- Descripción -->
-            <Label Grid.Row="2" Grid.Column="0" Text="Descripción:" VerticalOptions="Center" />
+            <Label Grid.Row="4" Text="Descripción:" VerticalOptions="Center" />
             <Entry 
-                Grid.Row="2" Grid.Column="1"
+                Grid.Row="5"
                 Placeholder="Ej: Cena en restaurante"
                 Text="{Binding Description, Mode=TwoWay}" />
 
             <!-- Tipo de pago -->
-            <Label Grid.Row="3" Grid.Column="0" Text="Tipo de pago:" VerticalOptions="Center" />
+            <Label Grid.Row="6" Text="Tipo de pago:" VerticalOptions="Center" />
             <Picker 
-                Grid.Row="3" Grid.Column="1"
+                Grid.Row="7" 
                 Title="Selecciona un método de pago"
-                ItemsSource="{Binding PaymentTypes}"
+                ItemsSource="{Binding PaymentMethods}"
                 ItemDisplayBinding="{Binding Name}"
                 SelectedItem="{Binding SelectedPaymentType, Mode=TwoWay}" />
 
             <!-- Etiquetas -->
-            <Label Grid.Row="4" Grid.Column="0" Text="Etiquetas:" VerticalOptions="Start" />
+            <Label Grid.Row="8" Text="Etiquetas:" VerticalOptions="Start" />
             <CollectionView 
-                Grid.Row="4" Grid.Column="1"
+                Grid.Row="9"
                 ItemsSource="{Binding Tags}" 
                 SelectionMode="None"
-                HeightRequest="150">
+                MaximumHeightRequest="300">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <HorizontalStackLayout Spacing="10">
@@ -66,14 +70,14 @@
 
             <!-- Botón Guardar -->
             <Button 
-                Grid.Row="5" Grid.ColumnSpan="2"
+                Grid.Row="10"
                 Text="Guardar Gasto"
                 Command="{Binding SaveExpenseCommand}"
                 IsEnabled="{Binding IsNotBusy}" />
 
             <!-- Loading -->
             <ActivityIndicator 
-                Grid.Row="6" Grid.ColumnSpan="2"
+                Grid.Row="11"
                 IsRunning="{Binding IsBusy}" 
                 IsVisible="{Binding IsBusy}" 
                 HorizontalOptions="Center" />

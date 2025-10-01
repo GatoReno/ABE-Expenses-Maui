@@ -1,5 +1,7 @@
-﻿using AbeXP.Common.Enum;
+﻿using AbeXP.Common.Constants;
+using AbeXP.Common.Enum;
 using AbeXP.Extensions;
+using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
@@ -10,13 +12,17 @@ using System.Collections.ObjectModel;
 
 namespace AbeXP.ViewModels
 {
+    [QueryProperty(nameof(TriggerUpdate), NavigationConstants.TRIGGER_DASHBOARD_PARAM)]
     public partial class MainPageViewModel : ObservableObject
     {
         private readonly IGetTransactionsUseCase _getTransactionsUseCase;
-        
-        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase)
+        private readonly IWidgetUpdater _widgetUpdater;
+
+        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase, IWidgetUpdater widgetUpdater)
         {
             _getTransactionsUseCase = getExpendituresUseCase;
+            _widgetUpdater = widgetUpdater;
+
             LoadTransactionsAsync();
         }
 
@@ -52,6 +58,23 @@ namespace AbeXP.ViewModels
         public DateTime _startDate = DateTime.Now.FirstDayOfCurrentMonth();
         [ObservableProperty]
         public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+
+        // navigation params
+        public bool TriggerUpdate
+        {
+            set 
+            {
+                if(value)
+                {
+                    if (DeviceInfo.Platform == DevicePlatform.Android)
+                        _widgetUpdater.NotifyDataChanged();
+
+                    LoadTransactionsAsync();
+                }
+            }
+        }
+
+
         #endregion
 
         /// <summary>
@@ -74,13 +97,13 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                var expenses = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest()
+                var transactionsResult = await _getTransactionsUseCase.ExecuteAsync(new TransactionRequest()
                 {
                     StartAt = StartDate,
                     EndAt = EndDate
                 });
 
-                AllItems =  new List<TransactionItem>(expenses);
+                AllItems =  new List<TransactionItem>(transactionsResult.Payload);
             }
             catch (Exception ex)
             {

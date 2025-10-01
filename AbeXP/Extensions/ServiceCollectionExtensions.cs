@@ -21,18 +21,18 @@ public static class ServiceCollectionExtensions
     {
         // ViewModels
         services.AddTransient<LoginViewModel>();
-        services.AddSingleton<HomeViewModel>();
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
+        services.AddTransient<LoanFormViewModel>();
         services.AddSingleton<FinantialChartsViewModel>();
 
 
         // Views
         services.AddTransient<LoginView>();
-        services.AddTransient<HomeView>();
         services.AddSingleton<MainPage>();
         services.AddTransient<ExpenseFormView>();
         services.AddSingleton<FinantialChartsPage>();
+        services.AddSingleton<LoanFormView>();
 
 
         return services;
@@ -62,8 +62,25 @@ public static class ServiceCollectionExtensions
             return new LoanRepository(fibInstanceService, FirebaseConstants.LOANS_COLLECTION);
         });
 
+        services.AddSingleton<ITagsRepository, TagsRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new TagsRepository(fibInstanceService, FirebaseConstants.TAGS_COLLECTION);
+        });
+
+        services.AddSingleton<IPaymentMethodsRepository, PaymentMethodsRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new PaymentMethodsRepository(fibInstanceService, FirebaseConstants.PAYMENT_METHODS_COLLECTION);
+        });
+
         // Use cases
         services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
+        services.AddTransient<ICreateExpenseUseCase, CreateExpenseUseCase>();
+        services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
+        services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
+        services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();
+        services.AddTransient<ICreateLoanUseCase, CreateLoanUseCase>();
 
         return services;
     }

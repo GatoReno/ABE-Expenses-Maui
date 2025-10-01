@@ -19,6 +19,7 @@ namespace AbeXP.Models
             PaymentTypeId = expense.PaymentTypeId;
             TagIds = expense.TagIds;
             UserId = expense.UserId;
+            InsertedDate = expense.InsertedDate;
         }
 
         public string UserId_Date => $"{UserId}_{Date.ToString(DateConstants.IndexDateFormat)}";

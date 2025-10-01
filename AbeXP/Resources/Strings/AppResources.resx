@@ -180,6 +180,21 @@
   <data name="PaymentMethod" xml:space="preserve">
     <value>Método de pago</value>
   </data>
+  <data name="Tag_Business" xml:space="preserve">
+    <value>Negocios</value>
+  </data>
+  <data name="Tag_Food" xml:space="preserve">
+    <value>Comida</value>
+  </data>
+  <data name="Tag_Shopping" xml:space="preserve">
+    <value>Compras</value>
+  </data>
+  <data name="Tag_Transport" xml:space="preserve">
+    <value>Transporte</value>
+  </data>
+  <data name="Tag_Travel" xml:space="preserve">
+    <value>Viajes</value>
+  </data>
   <data name="PleaseLoginExpenses" xml:space="preserve">
     <value>Por favor inicia sesión para ver tus gastos</value>
   </data>
@@ -201,7 +216,25 @@
   <data name="Tags" xml:space="preserve">
     <value>Etiquetas</value>
   </data>
+  <data name="PaymentMethod_Card" xml:space="preserve">
+    <value>Tarjeta</value>
+  </data>
+  <data name="PaymentMethod_Cash" xml:space="preserve">
+    <value>Efectivo</value>
+  </data>
+  <data name="PaymentMethod_Check" xml:space="preserve">
+    <value>Cheque</value>
+  </data>
+  <data name="PaymentMethod_Transference" xml:space="preserve">
+    <value>Transferencia</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Sí</value>
+  </data>
+  <data name="NoTag" xml:space="preserve">
+    <value>Sin tags</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>No encontrado</value>
   </data>
 </root>

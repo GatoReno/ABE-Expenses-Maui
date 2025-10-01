@@ -28,6 +28,14 @@ public static class MauiProgram
         builder.Services.ConfigureViewsAndViewModels();
         //        builder.Services.ConfigureServices();
 
+
+
+#if ANDROID
+        builder.Services.AddSingleton<AbeXP.Interfaces.IWidgetUpdater, AbeXP.Platforms.Android.Widget.Service.WidgetUpdater>();
+#elif IOS
+        builder.Services.AddSingleton<AbeXP.Interfaces.IWidgetUpdater, AbeXP.Platforms.iOS.Widget.Service.WidgetUpdater>();
+#endif
+
         return builder.Build();
 	}
 }

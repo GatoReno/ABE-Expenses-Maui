@@ -12,5 +12,6 @@ namespace AbeXP.Models
         public DateTime StartAt { get; set; } = DateTime.Now.FirstDayOfCurrentMonth();
         public DateTime EndAt { get; set; } = DateTime.Now.LastDayOfCurrentMonth();
         public int? LimitTo { get; set; }
+        public bool MapTags { get; set; }
     }
 }
