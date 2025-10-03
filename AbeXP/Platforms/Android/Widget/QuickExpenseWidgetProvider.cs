@@ -14,10 +14,10 @@ namespace AbeXP.Platforms.Android.Widget
     [MetaData("android.appwidget.provider", Resource = "@xml/quickexpense_widget_provider")]
     public class QuickExpenseWidgetProvider : AppWidgetProvider
     {
-        public override void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+        public async override void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
-
             var userSession = MauiApplication.Current.Services.GetService<IUserSession>();
+            var isLoggedin = await userSession.IsLoggedInAsync();
             var views = new RemoteViews(context.PackageName, Resource.Layout.quickexpense_widget_layout);
 
             foreach (int appWidgetId in appWidgetIds)
@@ -30,7 +30,7 @@ namespace AbeXP.Platforms.Android.Widget
                 views.SetTextViewText(Resource.Id.btnQuickexpenseAdd, AppResources.AddExpenseLoan);
 
 
-                if (userSession.IsLoggedIn)
+                if (isLoggedin)
                 {
                     views.SetViewVisibility(Resource.Id.txtQuickExpenseLoginRequired, ViewStates.Gone);
                     views.SetViewVisibility(Resource.Id.quickexpense_list, ViewStates.Visible);
@@ -56,6 +56,7 @@ namespace AbeXP.Platforms.Android.Widget
                     views.SetViewVisibility(Resource.Id.txtQuickExpenseHeader, ViewStates.Visible);
                     views.SetViewVisibility(Resource.Id.quickexpense_list, ViewStates.Gone);
                     views.SetViewVisibility(Resource.Id.btnQuickexpenseAdd, ViewStates.Gone);
+                    views.SetViewVisibility(Resource.Id.txtQuickExpenseEmpty, ViewStates.Gone);
                 }
                 
                 appWidgetManager.UpdateAppWidget(appWidgetId, views);

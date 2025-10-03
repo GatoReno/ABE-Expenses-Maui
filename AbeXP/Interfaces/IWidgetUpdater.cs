@@ -9,5 +9,6 @@ namespace AbeXP.Interfaces
     public interface IWidgetUpdater
     {
         void NotifyDataChanged();
+        void Redraw();
     }
 }

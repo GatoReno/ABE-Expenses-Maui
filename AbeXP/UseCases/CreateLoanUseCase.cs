@@ -23,7 +23,7 @@ namespace AbeXP.UseCases
         }
         public async Task<Result> ExecuteAsync(Loan request)
         {
-            request.UserId = _userSession.UserId;
+            request.UserId = _userSession.User.UserId;
             await _loanRepository.AddAsync(new LoanIndexed(request));
 
             return Result.Ok();

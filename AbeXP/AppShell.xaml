@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:AbeXP"
     xmlns:views="clr-namespace:AbeXP.Views"
     xmlns:utils="clr-namespace:AbeXP.Util"
-    xmlns:finantialChartsViews="clr-namespace:AbeXP.Views"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:resources="clr-namespace:AbeXP.Resources.Strings"
+    Shell.FlyoutBehavior="Flyout"
     Title="AbeXP">
 
 
@@ -25,7 +25,7 @@
         <ShellContent
             Title="Gráficas"
             Route="FinantialChartsPage"
-            ContentTemplate="{DataTemplate finantialChartsViews:FinantialChartsPage}">
+            ContentTemplate="{DataTemplate views:FinantialChartsPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Bar_chart}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
             </ShellContent.Icon>
@@ -33,11 +33,16 @@
 
     </TabBar>
 
+    <Shell.FlyoutFooter>
+        <Button Margin="20" Padding="10" Text="{x:Static resources:AppResources.LogOut}" Command="{Binding LogOutCommand}"/>
+    </Shell.FlyoutFooter>
+    <!-- Logout Button -->
+   
     <!--<ShellContent
       Title="Login"
-      ContentTemplate="{DataTemplate views:LoginView}"/>
+      ContentTemplate="{DataTemplate views:LoginView}"/>-->
 
-    <ShellContent
+    <!--<ShellContent
       Title="XP"
       ContentTemplate="{DataTemplate views:TransactionListPage}"/>-->
 

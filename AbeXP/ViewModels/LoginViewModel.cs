@@ -2,22 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 
 using AbeXP.Abstractions.Interfaces;
+using AbeXP.Interfaces;
 
 namespace AbeXP.ViewModels;
 
 public partial class LoginViewModel : ObservableObject
 {
     private readonly IFibAuthLog _authService;
+    private readonly IWidgetUpdater _widgetUpdater;
+    private readonly INavigationService _navigationService;
 
-    public LoginViewModel(IFibAuthLog authService)
+    public LoginViewModel(IFibAuthLog authService, IWidgetUpdater widgetUpdater, INavigationService navigationService)
     {
         _authService = authService;
+        _widgetUpdater = widgetUpdater;
+        _navigationService = navigationService;
     }
 
     [ObservableProperty] private string email;
     [ObservableProperty] private string password;
     [ObservableProperty] private string confirmPassword;
-    [ObservableProperty] private string userName;
     [ObservableProperty] private bool isBusy;
     [ObservableProperty] private string errorMessage;
     [ObservableProperty] private bool isLoginMode = true;
@@ -47,13 +51,9 @@ public partial class LoginViewModel : ObservableObject
             IsBusy = true;
             ErrorMessage = string.Empty;
 
-            var token = await _authService.SignInWithEmailAndPass(Email, Password);
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                Preferences.Set("firebase_token", token);
-                // Navegación a home o siguiente pantalla
-            }
+            var user = await _authService.SignInWithEmailAndPass(Email, Password);
+            _widgetUpdater.Redraw();
+            App.Instance.SetNewShellPage();
         }
         catch (Exception ex)
         {
@@ -80,12 +80,8 @@ public partial class LoginViewModel : ObservableObject
             ErrorMessage = string.Empty;
 
             var token = await _authService.CreateUserWithEmailAndPass(Email, Password);
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                Preferences.Set("firebase_token", token);
-                // Navegación a home o siguiente pantalla
-            }
+            _widgetUpdater.Redraw();
+            App.Instance.SetNewShellPage();
         }
         catch (Exception ex)
         {

@@ -49,11 +49,11 @@
             IsVisible="{Binding IsSignUpMode}" />
 
         <!-- Username (solo SignUp) -->
-        <Entry 
+        <!--<Entry 
             Grid.Row="4"
             Placeholder="Nombre de usuario"
             Text="{Binding UserName, Mode=TwoWay}"
-            IsVisible="{Binding IsSignUpMode}" />
+            IsVisible="{Binding IsSignUpMode}" />-->
 
         <!-- Botón principal -->
         <Button 

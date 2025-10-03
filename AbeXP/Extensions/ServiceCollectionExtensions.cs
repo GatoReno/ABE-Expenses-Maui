@@ -25,6 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ExpenseFormViewModel>();
         services.AddTransient<LoanFormViewModel>();
         services.AddSingleton<FinantialChartsViewModel>();
+        services.AddTransient<AppShellViewModel>();
 
 
         // Views
@@ -33,6 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ExpenseFormView>();
         services.AddSingleton<FinantialChartsPage>();
         services.AddSingleton<LoanFormView>();
+        services.AddTransient<AppShell>();
 
 
         return services;

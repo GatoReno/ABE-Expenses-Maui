@@ -26,14 +26,40 @@ public partial class App : Application
         Alert = _serviceProvider.GetService<IAlertService>();
 
 
-        var userSession = _serviceProvider.GetService<IUserSession>();
-        if (userSession.IsLoggedIn)
+        // Temporary page while we check login
+        MainPage = new ContentPage
         {
-            MainPage = new AppShell(_serviceProvider);
+            Content = new ActivityIndicator
+            {
+                IsRunning = true,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
+
+        CheckLoginAsync();
+    }
+
+    public void SetNewShellPage()
+    {
+        MainPage = _serviceProvider.GetService<AppShell>();
+    }
+
+    public void SetLoginPage()
+    {
+        MainPage = _serviceProvider.GetService<LoginView>();
+    }
+
+    private async void CheckLoginAsync()
+    {
+        var userSession = _serviceProvider.GetService<IUserSession>();
+        if (await userSession.IsLoggedInAsync())
+        {
+            SetNewShellPage();
         }
         else
         {
-            MainPage = _serviceProvider.GetService<LoginView>();
+            SetLoginPage();
         }
     }
 
@@ -51,7 +77,7 @@ public partial class App : Application
         base.OnResume();
     }
 
-    protected override void OnStart()
+    protected async override void OnStart()
     {
         base.OnStart();
     }

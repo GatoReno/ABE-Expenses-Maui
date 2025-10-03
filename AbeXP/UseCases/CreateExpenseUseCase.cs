@@ -24,7 +24,7 @@ namespace AbeXP.UseCases
 
         public async Task<Result> ExecuteAsync(Expense expense)
         {
-            expense.UserId = _userSession.UserId;
+            expense.UserId = _userSession.User.UserId;
 
             await _expenseRepository.AddAsync(new ExpenseIndexed(expense));
             return Result.Ok();

@@ -19,5 +19,19 @@ namespace AbeXP.Platforms.Android.Widget.Service
 
             appWidgetManager.NotifyAppWidgetViewDataChanged(appWidgetIds, Resource.Id.quickexpense_list);
         }
+
+        public void Redraw()
+        {
+            var context = global::Android.App.Application.Context;
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+
+            var componentName = new ComponentName(context, Java.Lang.Class.FromType(typeof(QuickExpenseWidgetProvider)));
+            var appWidgetIds = appWidgetManager.GetAppWidgetIds(componentName);
+
+            var intent = new Intent(context, typeof(QuickExpenseWidgetProvider));
+            intent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetIds);
+            context.SendBroadcast(intent);
+        }
     }
 }

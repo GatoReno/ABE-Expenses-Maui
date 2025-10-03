@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbeXP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,12 @@ namespace AbeXP.UseCases.Plugins
 {
     public interface IUserSession
     {
-        string UserId {  get; }
-        bool IsLoggedIn {  get; }
+        UserModel User {  get; }
+        Task<string?> GetTokenAsync();
+        Task<string?> GetRefreshTokenAsync();
+        Task<string?> GetTokenExpirationAsync();
+        Task<bool> IsLoggedInAsync();
+        Task NewSession(FirebaseAuthResponse authResponse);
+        void SignOut();
     }
 }

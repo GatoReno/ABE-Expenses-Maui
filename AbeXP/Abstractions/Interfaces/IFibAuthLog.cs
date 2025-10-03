@@ -1,10 +1,13 @@
-﻿using System;
+﻿using AbeXP.Models;
+using System;
 namespace AbeXP.Abstractions.Interfaces
 {
 	public interface IFibAuthLog
 	{
-		Task<string> SignInWithEmailAndPass(string email, string pass);
-		Task<string> CreateUserWithEmailAndPass(string email, string pass);
+		Task<UserModel> SignInWithEmailAndPass(string email, string pass);
+		Task<UserModel> CreateUserWithEmailAndPass(string email, string pass);
+
+		Task<string?> GetValidTokenAsync();
         Task Logout();
 
     }

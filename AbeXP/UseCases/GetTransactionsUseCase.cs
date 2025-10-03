@@ -46,8 +46,8 @@ namespace AbeXP.UseCases
             var expenses = await _expenseRepository.GetAllAsync(new IndexItemRequest
             {
                 OrderBy = nameof(ExpenseIndexed.UserId_Date),
-                StartAt = $"{_userSession.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
-                EndAt = $"{_userSession.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
+                StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
+                EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
                 LimitTo = request.LimitTo
             });
 
@@ -55,8 +55,8 @@ namespace AbeXP.UseCases
             var loans = await _loanRepository.GetAllAsync(new IndexItemRequest
             {
                 OrderBy = nameof(LoanIndexed.UserId_DateGiven),
-                StartAt = $"{_userSession.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
-                EndAt = $"{_userSession.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
+                StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
+                EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
                 LimitTo = request.LimitTo
             });
 

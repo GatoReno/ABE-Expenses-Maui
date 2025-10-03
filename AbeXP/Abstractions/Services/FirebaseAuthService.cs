@@ -1,5 +1,7 @@
 ﻿using AbeXP.Abstractions.Interfaces;
 using AbeXP.Common.Constants;
+using AbeXP.Models;
+using AbeXP.UseCases.Plugins;
 using Firebase.Auth;
 
 namespace AbeXP.Abstractions.Services
@@ -8,27 +10,34 @@ namespace AbeXP.Abstractions.Services
     {
         private readonly FirebaseAuthProvider _authProvider;
         private readonly string ApiKey = FirebaseConstants.KEY;
+        private readonly IUserSession _userSession;
 
-        public FirebaseAuthService()
+        public FirebaseAuthService(IUserSession userSession)
         {
-            // Inicializa con tu API Key de Firebase
             _authProvider = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            _userSession = userSession;
         }
 
-        public async Task<string> SignInWithEmailAndPass(string email, string pass)
+        public async Task<UserModel> SignInWithEmailAndPass(string email, string pass)
         {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
-            var result = await auth.SignInWithEmailAndPasswordAsync(email, pass);
-            return result.FirebaseToken;
+            var result = await _authProvider.SignInWithEmailAndPasswordAsync(email, pass);
+
+            var userModel = new FirebaseAuthResponse(result);
+            await _userSession.NewSession(userModel);
+
+            return userModel;
         }
 
-        public async Task<string> CreateUserWithEmailAndPass(string email, string pass)
+        public async Task<UserModel> CreateUserWithEmailAndPass(string email, string pass)
         {
             try
             {
                 var auth = await _authProvider.CreateUserWithEmailAndPasswordAsync(email, pass, null, true);
-                var token = auth.FirebaseToken;
-                return token;
+
+                var userModel = new FirebaseAuthResponse(auth);
+                await _userSession.NewSession(userModel);
+
+                return userModel;
             }
             catch (FirebaseAuthException ex)
             {
@@ -36,11 +45,38 @@ namespace AbeXP.Abstractions.Services
             }
         }
 
+
+        public async Task<string?> GetValidTokenAsync()
+        {
+            var savedToken = await _userSession.GetTokenAsync();
+            var tokenExpiration = await _userSession.GetTokenExpirationAsync();
+
+            // if token still valid
+            if (!string.IsNullOrEmpty(savedToken) && DateTime.TryParse(tokenExpiration, out var expiryTime) && DateTime.UtcNow < expiryTime)
+            {
+                return savedToken;
+            }
+
+            var refreshToken = await _userSession.GetRefreshTokenAsync();
+          
+            if (string.IsNullOrEmpty(refreshToken))
+                return null;
+
+            // Refresh if expired
+            var refreshedAuth = await _authProvider.RefreshAuthAsync(new FirebaseAuth { RefreshToken = refreshToken });
+
+            var userModel = new FirebaseAuthResponse(refreshedAuth);
+            await _userSession.NewSession(userModel);
+           
+            return userModel.Token;
+        }
+
         public async Task Logout()
         {
             try
             {
-                SecureStorage.Remove("firebase_token");
+                _userSession.SignOut();
+
                 await Task.CompletedTask;
             }
             catch (Exception ex)
