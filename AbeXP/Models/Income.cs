@@ -11,5 +11,17 @@ namespace AbeXP.Models
         {
             Type = TransactionType.Income;
         }
+
+        public Income(TransactionModel transaction)
+        {
+            Type = transaction.Type;
+            Date = transaction.Date;
+            Amount = transaction.Amount;
+            Description = transaction.Description;
+            PaymentTypeId = transaction.PaymentTypeId;
+            TagIds = transaction.TagIds;
+            UserId = transaction.UserId;
+            InsertedDate = transaction.InsertedDate;
+        }
     }
 }

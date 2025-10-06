@@ -13,7 +13,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <x:String x:Key="MaterialIconsRegular">MaterialIconsRegular</x:String>
-            <converters:IsExpenseConverter x:Key="IsExpenseConverter" />
             <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />

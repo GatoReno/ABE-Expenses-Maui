@@ -8,7 +8,7 @@ namespace AbeXP.Common.Constants
 {
     public static class DateConstants
     {
-        public const string IndexDateFormat = "yyyyMMdd";
+        public const string IndexDateFormat = "yyyyMMddss";
         public const string WidgetDateFormat = "yyyy-MM-dd";
     }
 }

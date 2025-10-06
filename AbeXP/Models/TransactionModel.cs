@@ -11,7 +11,6 @@ namespace AbeXP.Models
         public string Description { get; set; } = string.Empty;
         public string? PaymentTypeId { get; set; }
         public List<string>? TagIds { get; set; }
-        public DateTime DateIndex { get; set; } = DateTime.UtcNow;
-        public string UserId_Date => $"{UserId}_{DateIndex.ToString(DateConstants.IndexDateFormat)}";
+        public virtual string UserId_Date => $"{UserId}_{InsertedDate.ToString(DateConstants.IndexDateFormat)}";
     }
 }

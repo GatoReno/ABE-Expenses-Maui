@@ -34,21 +34,13 @@ namespace AbeXP.UseCases
 
         public async Task<Result<IEnumerable<TransactionItem>>> ExecuteAsync(TransactionRequest request)
         {
+            // catalogs
             var paymentMethodsResult = await _getPaymentMethodsUseCase.ExecuteAsync();
 
             if (paymentMethodsResult.IsFailed)
                 return paymentMethodsResult.Errors;
 
             var paymentMethodsCatalog = paymentMethodsResult.Payload.ToList();
-
-            var transactionsRaw = await _transactionsRepository.GetAllAsync(new IndexItemRequest
-            {
-                OrderBy = nameof(TransactionModel.UserId_Date),
-                StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
-                EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
-                LimitTo = request.LimitTo
-            });
-
 
             List<TagModel> tagsCatalog = new List<TagModel>();
             if (request.MapTags)
@@ -57,40 +49,26 @@ namespace AbeXP.UseCases
                 tagsCatalog = tagsResult.Payload.ToList();
             }
 
-            List<TransactionItem> transactions = new List<TransactionItem>();
-
-            foreach (var t in transactionsRaw)
+            // transactions
+            var transactionsRaw = await _transactionsRepository.GetAllAsync(new IndexItemRequest
             {
-                switch (t.Type)
-                {
-                    case Common.Enum.TransactionType.Expense:
-                        transactions.Add(new TransactionItem
-                        {
-                            Amount = t.Amount,
-                            Date = t.Date,
-                            Description = t.Description,
-                            PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
-                            Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
-                            TypeDescription = AppResources.Expense,
-                            Type = Common.Enum.TransactionType.Expense,
-                            Icon = MaterialIconsRegular.Attach_money
-                        });
-                        break;
-                    case Common.Enum.TransactionType.Income:
-                        transactions.Add(new TransactionItem
-                        {
-                            Amount = t.Amount,
-                            Date = t.Date,
-                            Description = t.Description,
-                            PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
-                            Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
-                            TypeDescription = AppResources.Income,
-                            Type = Common.Enum.TransactionType.Income,
-                            Icon = MaterialIconsRegular.Attach_money
-                        });
-                        break;
-                }
-            }
+                OrderBy = nameof(TransactionModel.UserId_Date),
+                StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
+                EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
+                LimitTo = request.LimitTo
+            });
+
+            List<TransactionItem> transactions = transactionsRaw.Select(t => new TransactionItem
+            {
+                Amount = t.Amount,
+                Date = t.Date,
+                Description = t.Description,
+                PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
+                Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
+                TypeDescription = t.Type == Common.Enum.TransactionType.Expense ? AppResources.Expense : AppResources.Income,
+                Type = Common.Enum.TransactionType.Income,
+                Icon = MaterialIconsRegular.Attach_money
+            }).ToList();
 
             return transactions.OrderByDescending(exp => exp.Date).ToList();
         }
