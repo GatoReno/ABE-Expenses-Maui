@@ -1,0 +1,95 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:theme="@style/Theme.Light.NoActionBar" 
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+		<!--Description-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytIncomeDescription"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/txtIncomeDescription"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!--Date-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytIncomeDate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/edtIncomeDate"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:focusable="false"
+				android:clickable="true"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!--Amount-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytIncomeAmount"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/txtIncomeAmount"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="numberDecimal"/>
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!--Payment type-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytIncomePaymentType"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<com.google.android.material.textfield.MaterialAutoCompleteTextView
+				android:id="@+id/ddlIncomePaymentType"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!--Tags-->
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/lytIncomeTags"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/edtIncomeTags"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:focusable="false"
+				android:clickable="true" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<!-- Save button -->
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/btnSaveIncome"
+			android:textColor="@android:color/white"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Widget.MaterialComponents.Button"
+			android:layout_marginTop="16dp"/>
+
+	</LinearLayout>
+</ScrollView>

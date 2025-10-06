@@ -1,4 +1,4 @@
-﻿using AbeXP.Abstractions.Interfaces;
+using AbeXP.Abstractions.Interfaces;
 using AbeXP.Abstractions.Services;
 using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<LoginViewModel>();
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
+        services.AddTransient<IncomeFormViewModel>();
         services.AddTransient<LoanFormViewModel>();
         services.AddSingleton<FinantialChartsViewModel>();
         services.AddTransient<AppShellViewModel>();
@@ -32,6 +33,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<LoginView>();
         services.AddSingleton<MainPage>();
         services.AddTransient<ExpenseFormView>();
+        services.AddTransient<IncomeFormView>();
         services.AddSingleton<FinantialChartsPage>();
         services.AddSingleton<LoanFormView>();
         services.AddTransient<AppShell>();
@@ -46,7 +48,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
         services.AddSingleton<INavigationService, MauiNavigationService>();
-        //services.AddSingleton<IAuthService, AuthService>();
         services.AddSingleton<IFibAuthLog, FirebaseAuthService>();
         services.AddSingleton<IAlertService, AlertService>();
         services.AddSingleton<IFibInstance, FibInstance>();
@@ -56,6 +57,12 @@ public static class ServiceCollectionExtensions
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
             return new ExpenseRepository(fibInstanceService, FirebaseConstants.EXPENSES_COLLECTION);
+        });
+
+        services.AddSingleton<IIncomeRepository, IncomeRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new IncomeRepository(fibInstanceService, FirebaseConstants.INCOMES_COLLECTION);
         });
 
         services.AddSingleton<ILoanRepository, LoanRepository>(sp =>
@@ -79,6 +86,7 @@ public static class ServiceCollectionExtensions
         // Use cases
         services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
         services.AddTransient<ICreateExpenseUseCase, CreateExpenseUseCase>();
+        services.AddTransient<ICreateIncomeUseCase, CreateIncomeUseCase>();
         services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
         services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
         services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();

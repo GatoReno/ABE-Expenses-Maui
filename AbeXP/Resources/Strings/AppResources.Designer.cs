@@ -187,6 +187,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ingreso.
+        /// </summary>
+        internal static string Income {
+            get {
+                return ResourceManager.GetString("Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ¿Ya está pagado?.
         /// </summary>
         internal static string IsPaid {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -161,6 +161,12 @@
   </data>
   <data name="IsPaid" xml:space="preserve">
     <value>¿Ya está pagado?</value>
+  </data>
+  <data name="Expense" xml:space="preserve">
+    <value>Gasto</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Ingreso</value>
   </data>
   <data name="Loan" xml:space="preserve">
     <value>Préstamo</value>

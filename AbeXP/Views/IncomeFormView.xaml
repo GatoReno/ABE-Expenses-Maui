@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AbeXP.Views.IncomeFormView"
+    Title="Nuevo Ingreso">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Text="Fecha:" VerticalOptions="Center" />
+            <DatePicker Grid.Row="1" Date="{Binding Date, Mode=TwoWay}" />
+
+            <Label Grid.Row="2" Text="Monto:" VerticalOptions="Center" />
+            <Entry Grid.Row="3" Placeholder="0.00" Keyboard="Numeric" Text="{Binding Amount, Mode=TwoWay}" />
+
+            <Label Grid.Row="4" Text="Descripción:" VerticalOptions="Center" />
+            <Entry Grid.Row="5" Placeholder="Ej: Salario" Text="{Binding Description, Mode=TwoWay}" />
+
+            <Label Grid.Row="6" Text="Tipo de pago:" VerticalOptions="Center" />
+            <Picker Grid.Row="7" Title="Selecciona un método de pago" ItemsSource="{Binding PaymentMethods}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedPaymentType, Mode=TwoWay}" />
+
+            <Label Grid.Row="8" Text="Etiquetas:" VerticalOptions="Start" />
+            <CollectionView Grid.Row="9" ItemsSource="{Binding Tags}" SelectionMode="None" MaximumHeightRequest="300">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout Spacing="10">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="10" Text="Guardar Ingreso" Command="{Binding SaveIncomeCommand}" />
+
+            <ActivityIndicator Grid.Row="11" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HorizontalOptions="Center" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

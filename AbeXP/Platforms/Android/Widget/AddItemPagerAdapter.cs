@@ -1,4 +1,4 @@
-﻿using AbeXP.Interfaces;
+using AbeXP.Interfaces;
 using AbeXP.Platforms.Android.Widget.ViewHolders;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.UseCases.Plugins;
@@ -12,21 +12,24 @@ namespace AbeXP.Platforms.Android.Widget
     {
         private readonly Context _context;
         private readonly ICreateExpenseUseCase _createExpenseUseCase;
+        private readonly ICreateIncomeUseCase _createIncomeUseCase;
         private readonly ICreateLoanUseCase _createLoanUseCase;
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private readonly IWidgetUpdater _widgetUpdater;
         private readonly int[] _layouts;
 
-        public AddItemPagerAdapter(Context c, ICreateExpenseUseCase createExpenseUseCase, ICreateLoanUseCase createLoanUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater)
+        public AddItemPagerAdapter(Context c, ICreateExpenseUseCase createExpenseUseCase, ICreateIncomeUseCase createIncomeUseCase, ICreateLoanUseCase createLoanUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater)
         {
             _context = c;
             _createExpenseUseCase = createExpenseUseCase;
+            _createIncomeUseCase = createIncomeUseCase;
             _createLoanUseCase = createLoanUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
             _widgetUpdater = widgetUpdater;
             _layouts = new[]
             {
                 Resource.Layout.expense_tab,
+                Resource.Layout.income_tab,
                 Resource.Layout.loan_tab
             };
         }
@@ -39,7 +42,8 @@ namespace AbeXP.Platforms.Android.Widget
             return viewType switch
             {
                 0 => new ExpenseViewHolder(view, _createExpenseUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
-                1 => new LoanViewHolder(view, _createLoanUseCase, _widgetUpdater),
+                1 => new IncomeViewHolder(view, _createIncomeUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
+                2 => new LoanViewHolder(view, _createLoanUseCase, _widgetUpdater),
                 _ => throw new ArgumentOutOfRangeException(nameof(viewType))
             };
         }
