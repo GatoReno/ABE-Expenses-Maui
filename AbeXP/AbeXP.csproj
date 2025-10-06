@@ -43,7 +43,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\abe.svg" ForegroundFile="Resources\AppIcon\abe.svg" Color="#43B86B" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appicon.svg" Color="#43B86B" />
+		<!--<MauiIcon Include="Resources\AppIcon\abe.svg" />-->
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#43B86B" BaseSize="128,128" />
@@ -80,6 +81,7 @@
 	  <None Remove="Platforms\Android\Resources\layout\loan_tab.xml" />
 	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
 	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
+	  <None Remove="Resources\AppIcon\appicon.svg" />
 	  <!--<None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />-->
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
