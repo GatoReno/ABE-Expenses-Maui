@@ -27,12 +27,6 @@ namespace AbeXP.Models
         //    DateIndex = Date
         //};
     }
-    public class Tag
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; } = ""; // Ej: "Comida", "Ropa", "Transporte"
-        public string ColorHex { get; set; } = "#FFFFFF"; // Opcional: para UI
-    }
 
     public class PaymentMethod : BaseEntity
     {
