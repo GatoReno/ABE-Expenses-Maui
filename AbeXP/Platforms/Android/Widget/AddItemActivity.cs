@@ -37,7 +37,6 @@ namespace AbeXP.Platforms.Android.Widget
             // get repository from MAUI DI
             var createExpenseUseCase = MauiApplication.Current.Services.GetService<ICreateExpenseUseCase>();
             var createIncomeUseCase = MauiApplication.Current.Services.GetService<ICreateIncomeUseCase>();
-            var createLoanUseCase = MauiApplication.Current.Services.GetService<ICreateLoanUseCase>();
             var getTransactionCatalogsUseCase = MauiApplication.Current.Services.GetService<IGetTransactionCatalogsUseCase>();
             var widgetUpdater = MauiApplication.Current.Services.GetService<IWidgetUpdater>();
 
@@ -45,10 +44,10 @@ namespace AbeXP.Platforms.Android.Widget
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
 
-            var adapter = new AddItemPagerAdapter(this, createExpenseUseCase, createIncomeUseCase, createLoanUseCase, getTransactionCatalogsUseCase, widgetUpdater);
+            var adapter = new AddItemPagerAdapter(this, createExpenseUseCase, createIncomeUseCase, getTransactionCatalogsUseCase, widgetUpdater);
             viewPager.Adapter = adapter;
 
-            var titles = new[] { AppResources.Expense, AppResources.Income, AppResources.Loan };
+            var titles = new[] { AppResources.Expense, AppResources.Income };
 
             // create and attach the mediator using a C# implementation of the strategy interface
             var mediator = new TabLayoutMediator(tabLayout, viewPager, new TabConfigStrategy(titles));

@@ -11,7 +11,6 @@ namespace AbeXP.Common.Enum
         None,
         All,
         Expense,
-        Income,
-        Loan
+        Income
     }
 }

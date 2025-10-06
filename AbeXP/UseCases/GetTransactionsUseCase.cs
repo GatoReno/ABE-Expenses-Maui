@@ -89,19 +89,6 @@ namespace AbeXP.UseCases
                             Icon = MaterialIconsRegular.Attach_money
                         });
                         break;
-                    case Common.Enum.TransactionType.Loan:
-                        transactions.Add(new TransactionItem
-                        {
-                            Amount = t.Amount,
-                            Date = t.DateGiven ?? t.Date,
-                            DatePayment = t.SuggestedPaybackDate,
-                            Description = t.PersonName ?? t.Description,
-                            IsPaid = (t.IsPaid ?? false) ? AppResources.Yes : AppResources.No,
-                            TypeDescription = AppResources.Loan,
-                            Type = Common.Enum.TransactionType.Loan,
-                            Icon = MaterialIconsRegular.Person
-                        });
-                        break;
                 }
             }
 

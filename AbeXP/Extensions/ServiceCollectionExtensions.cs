@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
         services.AddTransient<IncomeFormViewModel>();
-        services.AddTransient<LoanFormViewModel>();
         services.AddSingleton<FinantialChartsViewModel>();
         services.AddTransient<AppShellViewModel>();
 
@@ -35,7 +34,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ExpenseFormView>();
         services.AddTransient<IncomeFormView>();
         services.AddSingleton<FinantialChartsPage>();
-        services.AddSingleton<LoanFormView>();
         services.AddTransient<AppShell>();
 
 
@@ -71,12 +69,6 @@ public static class ServiceCollectionExtensions
             return new IncomeRepository(fibInstanceService, FirebaseConstants.INCOMES_COLLECTION);
         });
 
-        services.AddSingleton<ILoanRepository, LoanRepository>(sp =>
-        {
-            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
-            return new LoanRepository(fibInstanceService, FirebaseConstants.LOANS_COLLECTION);
-        });
-
         services.AddSingleton<ITagsRepository, TagsRepository>(sp =>
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
@@ -96,7 +88,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
         services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
         services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();
-        services.AddTransient<ICreateLoanUseCase, CreateLoanUseCase>();
 
         return services;
     }

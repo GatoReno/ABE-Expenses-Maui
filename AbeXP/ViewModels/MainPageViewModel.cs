@@ -32,7 +32,7 @@ namespace AbeXP.ViewModels
         public bool _isBusy;
 
         [ObservableProperty] 
-        private List<string> filters = new() { AppResources.All, AppResources.Expense, AppResources.Loan, AppResources.Income};
+        private List<string> filters = new() { AppResources.All, AppResources.Expense, AppResources.Income};
         
         [ObservableProperty] 
         private string selectedFilter = AppResources.All;
@@ -132,8 +132,6 @@ namespace AbeXP.ViewModels
 
             if (action == AppResources.Expense)
                 await Shell.Current.GoToAsync(nameof(ExpenseFormView));
-            else if (action == AppResources.Loan)
-                await Shell.Current.GoToAsync(nameof(LoanFormView));
             else if (action == AppResources.Income)
                 await Shell.Current.GoToAsync(nameof(IncomeFormView));
         }
@@ -150,8 +148,6 @@ namespace AbeXP.ViewModels
 
             if (SelectedFilter == AppResources.Expense)
                 filtered = filtered.Where(x => x.Type == TransactionType.Expense);
-            else if (SelectedFilter == AppResources.Loan)
-                filtered = filtered.Where(x => x.Type == TransactionType.Loan);
 
             Transactions = new ObservableCollection<TransactionItem>(filtered);
         }

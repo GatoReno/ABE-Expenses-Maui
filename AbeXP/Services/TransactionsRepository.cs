@@ -15,8 +15,7 @@ namespace AbeXP.Services
 
         public async Task AddAsync(IAmTransaction entity)
         {
-            var model = entity.ToTransactionModel();
-            await AddAsync(model);
+            await AddAsync(entity);
         }
     }
 }

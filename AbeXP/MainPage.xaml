@@ -26,13 +26,6 @@
                 <VerticalStackLayout Grid.Column="1">
                     <Label Text="{Binding TypeDescription}" FontAttributes="Bold" />
                     <Label Text="{Binding Description}" />
-                    <Label Text="{Binding IsPaid, StringFormat='Pagado: {0}'}" IsVisible="False">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Loan}">
-                                <Setter Property="IsVisible" Value="True"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
                     <Label Text="{Binding PaymentMethod}" IsVisible="False">
                         <Label.Triggers>
                             <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Expense}">
@@ -46,13 +39,6 @@
                 <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
                     <Label Text="{Binding Amount, StringFormat='{0:C}'}" HorizontalOptions="End" TextColor="Green" FontAttributes="Bold"/>
                     <Label Text="{Binding Date, StringFormat='{0:dd MMM}'}" HorizontalOptions="End"/>
-                    <Label Text="{Binding DatePayment, StringFormat='Fecha de pago: {0:dd MMM}'}" HorizontalOptions="End" IsVisible="False">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Loan}">
-                                <Setter Property="IsVisible" Value="True"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
                 </VerticalStackLayout>
 
                 <!--bottom border-->
