@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Result;
+using AbeXP.Common.Result;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
@@ -13,18 +13,18 @@ namespace AbeXP.UseCases
 {
     public class CreateLoanUseCase : ICreateLoanUseCase
     {
-        private readonly ILoanRepository _loanRepository;
+        private readonly ITransactionsRepository _transactionsRepository;
         private readonly IUserSession _userSession;
 
-        public CreateLoanUseCase(ILoanRepository loanRepository, IUserSession userSession)
+        public CreateLoanUseCase(ITransactionsRepository transactionsRepository, IUserSession userSession)
         {
-            _loanRepository = loanRepository;
+            _transactionsRepository = transactionsRepository;
             _userSession = userSession;
         }
         public async Task<Result> ExecuteAsync(Loan request)
         {
             request.UserId = _userSession.User.UserId;
-            await _loanRepository.AddAsync(new LoanIndexed(request));
+            await _transactionsRepository.AddAsync(request);
 
             return Result.Ok();
         }

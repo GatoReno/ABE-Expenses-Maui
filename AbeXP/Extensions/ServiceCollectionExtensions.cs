@@ -59,6 +59,12 @@ public static class ServiceCollectionExtensions
             return new ExpenseRepository(fibInstanceService, FirebaseConstants.EXPENSES_COLLECTION);
         });
 
+        services.AddSingleton<ITransactionsRepository, TransactionsRepository>(sp =>
+        {
+            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
+            return new TransactionsRepository(fibInstanceService, FirebaseConstants.TRANSACTIONS_COLLECTION);
+        });
+
         services.AddSingleton<IIncomeRepository, IncomeRepository>(sp =>
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();

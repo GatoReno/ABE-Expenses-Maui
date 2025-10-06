@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Result;
+using AbeXP.Common.Result;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
@@ -13,12 +13,12 @@ namespace AbeXP.UseCases
 {
     public class CreateExpenseUseCase : ICreateExpenseUseCase
     {
-        private readonly IExpenseRepository _expenseRepository;
+        private readonly ITransactionsRepository _transactionsRepository;
         private readonly IUserSession _userSession;
 
-        public CreateExpenseUseCase(IExpenseRepository expenseRepository, IUserSession userSession)
+        public CreateExpenseUseCase(ITransactionsRepository transactionsRepository, IUserSession userSession)
         {
-            _expenseRepository = expenseRepository;
+            _transactionsRepository = transactionsRepository;
             _userSession = userSession;
         }
 
@@ -26,7 +26,7 @@ namespace AbeXP.UseCases
         {
             expense.UserId = _userSession.User.UserId;
 
-            await _expenseRepository.AddAsync(new ExpenseIndexed(expense));
+            await _transactionsRepository.AddAsync(expense);
             return Result.Ok();
         }
     }

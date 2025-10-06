@@ -8,6 +8,7 @@ namespace AbeXP.Common.Constants
         public const string REF = "https://abexp-45259-default-rtdb.firebaseio.com/";
 
 		public const string EXPENSES_COLLECTION = "expenses";
+		public const string TRANSACTIONS_COLLECTION = "transactions";
 		public const string INCOMES_COLLECTION = "incomes";
 		public const string LOANS_COLLECTION = "loans";
 		public const string TAGS_COLLECTION = "tags";

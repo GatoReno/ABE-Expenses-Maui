@@ -8,19 +8,19 @@ namespace AbeXP.UseCases
 {
     public class CreateIncomeUseCase : ICreateIncomeUseCase
     {
-        private readonly IIncomeRepository _incomeRepository;
+        private readonly ITransactionsRepository _transactionsRepository;
         private readonly IUserSession _userSession;
 
-        public CreateIncomeUseCase(IIncomeRepository incomeRepository, IUserSession userSession)
+        public CreateIncomeUseCase(ITransactionsRepository transactionsRepository, IUserSession userSession)
         {
-            _incomeRepository = incomeRepository;
+            _transactionsRepository = transactionsRepository;
             _userSession = userSession;
         }
 
         public async Task<Result> ExecuteAsync(Income request)
         {
             request.UserId = _userSession.User.UserId;
-            await _incomeRepository.AddAsync(new IncomeIndexed(request));
+            await _transactionsRepository.AddAsync(request);
             return Result.Ok();
         }
     }

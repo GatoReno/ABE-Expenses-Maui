@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Constants;
+using AbeXP.Common.Constants;
 using AbeXP.Common.Result;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
@@ -18,16 +18,14 @@ namespace AbeXP.UseCases
 {
     internal class GetTransactionsUseCase : IGetTransactionsUseCase
     {
-        private readonly IExpenseRepository _expenseRepository;
-        private readonly ILoanRepository _loanRepository;
+        private readonly ITransactionsRepository _transactionsRepository;
         private readonly IGetPaymentMethodsUseCase _getPaymentMethodsUseCase;
         private readonly IGetTagsUseCase _getTagsUseCase;
         private readonly IUserSession _userSession;
 
-        public GetTransactionsUseCase(IExpenseRepository expenseRepository, ILoanRepository loanRepository, IGetPaymentMethodsUseCase getPaymentMethodsUseCase, IGetTagsUseCase getTagsUseCase, IUserSession userSession)
+        public GetTransactionsUseCase(ITransactionsRepository transactionsRepository, IGetPaymentMethodsUseCase getPaymentMethodsUseCase, IGetTagsUseCase getTagsUseCase, IUserSession userSession)
         {
-            _expenseRepository = expenseRepository;
-            _loanRepository = loanRepository;
+            _transactionsRepository = transactionsRepository;
             _getPaymentMethodsUseCase = getPaymentMethodsUseCase;
             _getTagsUseCase = getTagsUseCase;
             _userSession = userSession;
@@ -43,18 +41,9 @@ namespace AbeXP.UseCases
 
             var paymentMethodsCatalog = paymentMethodsResult.Payload.ToList();
 
-            var expenses = await _expenseRepository.GetAllAsync(new IndexItemRequest
+            var transactionsRaw = await _transactionsRepository.GetAllAsync(new IndexItemRequest
             {
-                OrderBy = nameof(ExpenseIndexed.UserId_Date),
-                StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
-                EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
-                LimitTo = request.LimitTo
-            });
-
-
-            var loans = await _loanRepository.GetAllAsync(new IndexItemRequest
-            {
-                OrderBy = nameof(LoanIndexed.UserId_DateGiven),
+                OrderBy = nameof(TransactionModel.UserId_Date),
                 StartAt = $"{_userSession.User.UserId}_{request.StartAt.ToString(DateConstants.IndexDateFormat)}",
                 EndAt = $"{_userSession.User.UserId}_{request.EndAt.ToString(DateConstants.IndexDateFormat)}",
                 LimitTo = request.LimitTo
@@ -69,29 +58,52 @@ namespace AbeXP.UseCases
             }
 
             List<TransactionItem> transactions = new List<TransactionItem>();
-            transactions.AddRange(expenses.Select(ex => new TransactionItem
-            {
-                Amount = ex.Amount,
-                Date = ex.Date,
-                Description = ex.Description,
-                PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == ex.PaymentTypeId)?.Name ?? ex.PaymentTypeId,
-                Tags = request.MapTags ? ex.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
-                TypeDescription = AppResources.Expense,
-                Type = Common.Enum.TransactionType.Expense,
-                Icon = MaterialIconsRegular.Attach_money
-            }));
 
-            transactions.AddRange(loans.Select(ex => new TransactionItem
+            foreach (var t in transactionsRaw)
             {
-                Amount = ex.Amount,
-                Date = ex.DateGiven,
-                DatePayment = ex.SuggestedPaybackDate,
-                Description = ex.PersonName,
-                IsPaid = ex.IsPaid ? AppResources.Yes : AppResources.No,
-                TypeDescription = AppResources.Loan,
-                Type = Common.Enum.TransactionType.Loan,
-                Icon = MaterialIconsRegular.Person
-            }));
+                switch (t.Type)
+                {
+                    case Common.Enum.TransactionType.Expense:
+                        transactions.Add(new TransactionItem
+                        {
+                            Amount = t.Amount,
+                            Date = t.Date,
+                            Description = t.Description,
+                            PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
+                            Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
+                            TypeDescription = AppResources.Expense,
+                            Type = Common.Enum.TransactionType.Expense,
+                            Icon = MaterialIconsRegular.Attach_money
+                        });
+                        break;
+                    case Common.Enum.TransactionType.Income:
+                        transactions.Add(new TransactionItem
+                        {
+                            Amount = t.Amount,
+                            Date = t.Date,
+                            Description = t.Description,
+                            PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
+                            Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
+                            TypeDescription = AppResources.Income,
+                            Type = Common.Enum.TransactionType.Income,
+                            Icon = MaterialIconsRegular.Attach_money
+                        });
+                        break;
+                    case Common.Enum.TransactionType.Loan:
+                        transactions.Add(new TransactionItem
+                        {
+                            Amount = t.Amount,
+                            Date = t.DateGiven ?? t.Date,
+                            DatePayment = t.SuggestedPaybackDate,
+                            Description = t.PersonName ?? t.Description,
+                            IsPaid = (t.IsPaid ?? false) ? AppResources.Yes : AppResources.No,
+                            TypeDescription = AppResources.Loan,
+                            Type = Common.Enum.TransactionType.Loan,
+                            Icon = MaterialIconsRegular.Person
+                        });
+                        break;
+                }
+            }
 
             return transactions.OrderByDescending(exp => exp.Date).ToList();
         }
