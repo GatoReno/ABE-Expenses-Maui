@@ -11,7 +11,12 @@ namespace AbeXP.Platforms.iOS.Widget.Service
     {
         public void NotifyDataChanged()
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void Redraw()
+        {
+            
         }
     }
 }
