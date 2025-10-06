@@ -9,7 +9,6 @@ public partial class AppShell : Shell
 	{
         InitializeComponent();
         Routing.RegisterRoute(nameof(ExpenseFormView), typeof(ExpenseFormView));
-        Routing.RegisterRoute(nameof(LoanFormView), typeof(LoanFormView));
         Routing.RegisterRoute(nameof(IncomeFormView), typeof(IncomeFormView));
         Routing.RegisterRoute(nameof(TransactionListPage), typeof(TransactionListPage));
 

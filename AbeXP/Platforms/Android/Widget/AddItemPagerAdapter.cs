@@ -27,8 +27,7 @@ namespace AbeXP.Platforms.Android.Widget
             _layouts = new[]
             {
                 Resource.Layout.expense_tab,
-                Resource.Layout.income_tab,
-                Resource.Layout.loan_tab
+                Resource.Layout.income_tab
             };
         }
 
