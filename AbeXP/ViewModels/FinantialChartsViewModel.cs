@@ -121,6 +121,8 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateExpensesLineChart()
         {
+            SKColor labelColor = IsDarkMode ? SKColors.White : SKColors.Black;
+
             var grouped = Transactions
                 .GroupBy(t => new { Period = t.Date.GetPeriodStart(Period), t.Type })
                 .Select(g => new { Date = g.Key.Period, Type = g.Key.Type, Total = g.Sum(t => t.Amount) })
@@ -135,7 +137,7 @@ namespace AbeXP.ViewModels
                     Label = Period.ToLabel(g.Date),
                     ValueLabel = g.Total.ToString("C"),
                     Color = SKColor.Parse("#E74C3C"), // red
-                    ValueLabelColor = SKColors.White
+                    ValueLabelColor = labelColor
                 })
                 .ToList();
 
@@ -147,7 +149,7 @@ namespace AbeXP.ViewModels
                     Label = Period.ToLabel(g.Date),
                     ValueLabel = g.Total.ToString("C"),
                     Color = SKColor.Parse("#27AE60"), // green
-                    ValueLabelColor = SKColors.White
+                    ValueLabelColor = labelColor
                 })
                 .ToList();
 
@@ -162,7 +164,7 @@ namespace AbeXP.ViewModels
                 PointSize = 5,
                 BackgroundColor = SKColors.Transparent,
                 LabelTextSize = ChartLabelFontSize,
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
+                LabelColor = labelColor
             };
 
             IncomesLineChart = new LineChart
@@ -175,7 +177,8 @@ namespace AbeXP.ViewModels
                 PointSize = 5,
                 AnimationDuration = TimeSpan.Zero,
                 BackgroundColor = SKColors.Transparent,
-                LabelTextSize = ChartLabelFontSize
+                LabelTextSize = ChartLabelFontSize,
+                LabelColor = labelColor
             };
         }
 
