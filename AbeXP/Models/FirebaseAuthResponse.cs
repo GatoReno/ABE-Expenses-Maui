@@ -11,11 +11,11 @@ namespace AbeXP.Models
     {
         public FirebaseAuthResponse(FirebaseAuthLink result)
         {
-            UserId = result.User.LocalId;
-            FirstName = result.User.FirstName;
-            LastName = result.User.LastName;
-            DisplayName = result.User.DisplayName;
-            Email = result.User.Email;
+            UserId = result.User?.LocalId;
+            FirstName = result.User?.FirstName;
+            LastName = result.User?.LastName;
+            DisplayName = result.User?.DisplayName;
+            Email = result.User?.Email;
             Token = result.FirebaseToken;
             RefreshToken = result.RefreshToken;
             ExpiresIn = DateTime.UtcNow.AddSeconds(result.ExpiresIn);

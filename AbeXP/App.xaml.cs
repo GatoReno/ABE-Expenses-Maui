@@ -55,6 +55,12 @@ public partial class App : Application
         var userSession = _serviceProvider.GetService<IUserSession>();
         if (await userSession.IsLoggedInAsync())
         {
+            if(!await userSession.IsSessionValid())
+            {
+                userSession.SignOut();
+                SetLoginPage();
+            }
+
             SetNewShellPage();
         }
         else

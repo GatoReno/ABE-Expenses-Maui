@@ -3,6 +3,7 @@ using AbeXP.Common.Constants;
 using AbeXP.Models;
 using AbeXP.UseCases.Plugins;
 using Firebase.Auth;
+using System.Globalization;
 
 namespace AbeXP.Abstractions.Services
 {
@@ -52,7 +53,7 @@ namespace AbeXP.Abstractions.Services
             var tokenExpiration = await _userSession.GetTokenExpirationAsync();
 
             // if token still valid
-            if (!string.IsNullOrEmpty(savedToken) && DateTime.TryParse(tokenExpiration, out var expiryTime) && DateTime.UtcNow < expiryTime)
+            if (!string.IsNullOrEmpty(savedToken) && DateTime.TryParse(tokenExpiration, null, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var expiryTime) && DateTime.UtcNow < expiryTime)
             {
                 return savedToken;
             }
@@ -63,12 +64,12 @@ namespace AbeXP.Abstractions.Services
                 return null;
 
             // Refresh if expired
-            var refreshedAuth = await _authProvider.RefreshAuthAsync(new FirebaseAuth { RefreshToken = refreshToken });
+            var authResponse = await _authProvider.RefreshAuthAsync(new FirebaseAuth { RefreshToken = refreshToken });
 
-            var userModel = new FirebaseAuthResponse(refreshedAuth);
-            await _userSession.NewSession(userModel);
+            var fibAuth = new FirebaseAuthResponse(authResponse);
+            await _userSession.NewTokens(fibAuth);
            
-            return userModel.Token;
+            return fibAuth.Token;
         }
 
         public async Task Logout()

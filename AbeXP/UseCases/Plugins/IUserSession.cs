@@ -15,6 +15,8 @@ namespace AbeXP.UseCases.Plugins
         Task<string?> GetTokenExpirationAsync();
         Task<bool> IsLoggedInAsync();
         Task NewSession(FirebaseAuthResponse authResponse);
+        Task NewTokens(FirebaseAuthResponse authResponse);
         void SignOut();
+        Task<bool> IsSessionValid();
     }
 }

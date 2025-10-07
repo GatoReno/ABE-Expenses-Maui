@@ -4,6 +4,7 @@ using AbeXP.Models;
 using AbeXP.UseCases.Plugins;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,23 @@ namespace AbeXP.Services
             return true;
         }
 
+
+        /// <summary>
+        /// Check if session is valid. After a X days from loggedin
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> IsSessionValid()
+        {
+            var loginDateString = await SecureStorage.GetAsync(PreferencesConstants.LogingDate);
+            if (DateTime.TryParse(loginDateString, null, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var loginDate))
+            {
+                return DateTime.UtcNow - loginDate > TimeSpan.FromDays(15);
+            }
+
+            return true;
+        }
+
+
         public async Task<string?> GetTokenAsync()
         {
             return await SecureStorage.GetAsync(PreferencesConstants.Token);
@@ -76,9 +94,8 @@ namespace AbeXP.Services
 
         public async Task NewSession(FirebaseAuthResponse authResponse)
         {
-            await SecureStorage.SetAsync(PreferencesConstants.Token, authResponse.Token);
-            await SecureStorage.SetAsync(PreferencesConstants.RefreshToken, authResponse.RefreshToken);
-            await SecureStorage.SetAsync(PreferencesConstants.TokenExpirationDate, authResponse.ExpiresIn.ToString("O"));
+            await NewTokens(authResponse);
+            await SecureStorage.SetAsync(PreferencesConstants.LogingDate, DateTime.UtcNow.ToString("o"));
 
             Preferences.Set(PreferencesConstants.UserId, authResponse.UserId);
             Preferences.Set(PreferencesConstants.DisplayName, authResponse.DisplayName);
@@ -87,6 +104,14 @@ namespace AbeXP.Services
             Preferences.Set(PreferencesConstants.Email, authResponse.Email);
 
             CreateUser();
+        }
+
+        public async Task NewTokens(FirebaseAuthResponse authResponse)
+        {
+            await SecureStorage.SetAsync(PreferencesConstants.Token, authResponse.Token);
+            await SecureStorage.SetAsync(PreferencesConstants.RefreshToken, authResponse.RefreshToken);
+            await SecureStorage.SetAsync(PreferencesConstants.TokenExpirationDate, authResponse.ExpiresIn.ToString("O"));
+
         }
     }
 }

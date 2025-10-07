@@ -1,13 +1,14 @@
-﻿using AbeXP.Interfaces;
+﻿using AbeXP.Abstractions.Interfaces;
+using AbeXP.Interfaces;
 using AbeXP.UseCases.Plugins;
 using Firebase.Database;
 
 namespace AbeXP.Services
 {
-    public sealed class FibInstance(ISettingsService settingsService, IUserSession userSession) : IFibInstance
+    public sealed class FibInstance(ISettingsService settingsService, IFibAuthLog fibAuthLog) : IFibInstance
     {
         private readonly ISettingsService _settingsService = settingsService;
-        private readonly IUserSession _userSession = userSession;
+        private readonly IFibAuthLog _fibAuthLog = fibAuthLog;
         private FirebaseClient? _instance;
 
         public FirebaseClient GetInstance()
@@ -15,7 +16,7 @@ namespace AbeXP.Services
             if (_instance is null)
                 _instance = new FirebaseClient(_settingsService.FireBaseRef, new FirebaseOptions
                 {
-                    AuthTokenAsyncFactory = async () => await _userSession.GetTokenAsync()
+                    AuthTokenAsyncFactory = async () => await _fibAuthLog.GetValidTokenAsync()
                 });
 
             return _instance;
