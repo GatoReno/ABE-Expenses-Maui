@@ -18,11 +18,11 @@
 
         <!-- DataTemplate for transactions-->
         <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:TransactionItem">
-            <SwipeView>
+            <SwipeView >
                 <!-- Swipe Items -->
-                <SwipeView.RightItems >
+                <SwipeView.RightItems>
                     <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
-                        <SwipeItemView>
+                        <SwipeItemView BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}">
 
                             <Grid MinimumWidthRequest="60" >
                                 <!--button delete icon and loading spinner when busy-->
@@ -37,7 +37,7 @@
                     </SwipeItems>
                 </SwipeView.RightItems>
 
-                <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="*,10" Padding="10,5,10,5">
+                <Grid ColumnDefinitions="auto, *, auto" Margin="0,0,0,5" RowDefinitions="*,10" Padding="10,5,10,5" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}">
 
                     <!--Icon-->
                     <Frame Grid.Column="0" WidthRequest="50" HeightRequest="50" CornerRadius="50" Padding="0" Margin="0,0,5,0" IsClippedToBounds="True" BackgroundColor="{StaticResource Gray100}" BorderColor="Transparent">
@@ -85,7 +85,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto,Auto, *" Padding="10,0,10,10" >
+    <Grid RowDefinitions="Auto,Auto, *" Padding="10,15,10,10" >
         <!--search button, show loading spinner when busy-->
         <Grid ColumnDefinitions="auto, auto, *" Grid.Row="0" >
             <controls:DatePickerEntry Grid.Column="0" Hint="{x:Static resources:AppResources.StartDate}" Date="{Binding StartDate}" Margin="0,0,5,0"/>
