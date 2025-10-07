@@ -62,6 +62,7 @@ namespace AbeXP.UseCases
 
             List<TransactionItem> transactions = transactionsRaw.Select(t => new TransactionItem
             {
+                Id = t.Id,
                 Amount = t.Amount,
                 Date = t.Date,
                 Description = t.Description,

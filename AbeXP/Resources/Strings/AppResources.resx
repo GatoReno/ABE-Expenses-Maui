@@ -276,4 +276,7 @@
   <data name="ExpensesOfTheMonth" xml:space="preserve">
     <value>Gastos del mes</value>
   </data>
+  <data name="SuccessfulOperation" xml:space="preserve">
+    <value>Operación completada con éxito</value>
+  </data>
 </root>

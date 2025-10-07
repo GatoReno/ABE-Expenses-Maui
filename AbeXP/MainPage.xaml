@@ -8,47 +8,70 @@
              xmlns:resources="clr-namespace:AbeXP.Resources.Strings"
              xmlns:controls="clr-namespace:AbeXP.Controls"
              xmlns:selectors="clr-namespace:AbeXP.Views.Templates"
-             x:Class="AbeXP.MainPage">
+             x:Class="AbeXP.MainPage"
+             x:Name="this">
 
     <ContentPage.Resources>
         <Thickness x:Key="Padding">10</Thickness>
 
+
+
         <!-- DataTemplate for transactions-->
         <DataTemplate x:Key="ExpenseTemplate" x:DataType="models:TransactionItem">
-            <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="*,10" Padding="10,5,10,5">
+            <SwipeView>
+                <!-- Swipe Items -->
+                <SwipeView.RightItems >
+                    <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                        <SwipeItemView>
 
-                <!--Icon-->
-                <Frame Grid.Column="0" WidthRequest="50" HeightRequest="50" CornerRadius="50" Padding="0" Margin="0,0,5,0" IsClippedToBounds="True" BackgroundColor="{StaticResource Gray100}" BorderColor="Transparent">
-                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{Binding Icon}" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="25" TextColor="{StaticResource Gray600}"/>
-                </Frame>
+                            <Grid MinimumWidthRequest="60" >
+                                <!--button delete icon and loading spinner when busy-->
+                                <controls:ButtonWithContent x:Name="btnDeleteTxn" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent">
+                                    <Grid>
+                                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Delete}" IsVisible="{Binding Source={x:Reference btnDeleteTxn}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="25" TextColor="{StaticResource Gray600}"/>
+                                        <ActivityIndicator Margin="0" IsRunning="{Binding Source={x:Reference btnDeleteTxn}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
+                                    </Grid>
+                                </controls:ButtonWithContent>
+                            </Grid>
+                        </SwipeItemView>
+                    </SwipeItems>
+                </SwipeView.RightItems>
 
-                <!--Description-->
-                <VerticalStackLayout Grid.Column="1">
-                    <Label Text="{Binding TypeDescription}" FontAttributes="Bold" />
-                    <Label Text="{Binding Description}" />
-                    <Label Text="{Binding PaymentMethod}" IsVisible="False">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Expense}">
-                                <Setter Property="IsVisible" Value="True"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="*,10" Padding="10,5,10,5">
 
-                <!--Amount and date-->
-                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
-                    <Label Text="{Binding Amount, StringFormat='{0:C}'}" HorizontalOptions="End" TextColor="Green" FontAttributes="Bold"/>
-                    <Label Text="{Binding Date, StringFormat='{0:dd MMM}'}" HorizontalOptions="End"/>
-                </VerticalStackLayout>
+                    <!--Icon-->
+                    <Frame Grid.Column="0" WidthRequest="50" HeightRequest="50" CornerRadius="50" Padding="0" Margin="0,0,5,0" IsClippedToBounds="True" BackgroundColor="{StaticResource Gray100}" BorderColor="Transparent">
+                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{Binding Icon}" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="25" TextColor="{StaticResource Gray600}"/>
+                    </Frame>
 
-                <!--bottom border-->
-                <BoxView Grid.ColumnSpan="3"
+                    <!--Description-->
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label Text="{Binding TypeDescription}" FontAttributes="Bold" />
+                        <Label Text="{Binding Description}" />
+                        <Label Text="{Binding PaymentMethod}" IsVisible="False">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="{x:Type Label}" Binding="{Binding Type}" Value="{x:Static enums:TransactionType.Expense}">
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <!--Amount and date-->
+                    <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
+                        <Label Text="{Binding Amount, StringFormat='{0:C}'}" HorizontalOptions="End" TextColor="Green" FontAttributes="Bold"/>
+                        <Label Text="{Binding Date, StringFormat='{0:dd MMM}'}" HorizontalOptions="End"/>
+                    </VerticalStackLayout>
+
+                    <!--bottom border-->
+                    <BoxView Grid.ColumnSpan="3"
                          Grid.Row="2"
                          VerticalOptions="End"
                          HeightRequest="0.6"
                          BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}"
                          Margin="0"/>
-            </Grid>
+                </Grid>
+            </SwipeView>
         </DataTemplate>
     </ContentPage.Resources>
 
@@ -79,7 +102,7 @@
 
 
         <VerticalStackLayout Grid.Row="1" Padding="0,10,0,0">
-            <controls:PickerWithIcon Title="{Binding TitleFilter}" ItemsSource="{Binding Filters}" SelectedItem="{Binding SelectedFilter}"/>
+            <controls:PickerWithIcon Title="Filter transactions" ItemsSource="{Binding Filters}" SelectedItem="{Binding SelectedFilter}"/>
         </VerticalStackLayout>
 
 

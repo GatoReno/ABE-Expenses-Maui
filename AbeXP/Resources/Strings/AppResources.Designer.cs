@@ -412,6 +412,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operación completada con éxito.
+        /// </summary>
+        internal static string SuccessfulOperation {
+            get {
+                return ResourceManager.GetString("SuccessfulOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha sugerida de pago.
         /// </summary>
         internal static string SuggestedPaymentDate {

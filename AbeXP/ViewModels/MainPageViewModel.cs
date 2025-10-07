@@ -39,8 +39,8 @@ namespace AbeXP.ViewModels
         private string titleFilter = AppResources.FilterTransactions;
 
 
-        private IReadOnlyCollection<TransactionItem> _allItems;
-        public IReadOnlyCollection<TransactionItem> AllItems
+        private List<TransactionItem> _allItems;
+        public List<TransactionItem> AllItems
         {
             get { return _allItems; }
             set
@@ -133,6 +133,34 @@ namespace AbeXP.ViewModels
                 await Shell.Current.GoToAsync(nameof(ExpenseFormView));
             else if (action == AppResources.Income)
                 await Shell.Current.GoToAsync(nameof(IncomeFormView));
+        }
+
+
+        /// <summary>
+        /// Delete transaction
+        /// </summary>
+        /// <returns></returns>
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        private async Task DeleteTransactionAsync(TransactionItem item)
+        {
+
+            IsBusy = true;
+            try
+            {
+                // TODO: create use case to delete transaction.
+                AllItems.Remove(item);
+                Transactions.Remove(item);
+
+                App.Alert.ShowAlert(AppResources.Success, AppResources.SuccessfulOperation);
+            }
+            catch (Exception ex)
+            {
+                App.Alert.ShowAlert("Error", "Could not load transactions.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         /// <summary>

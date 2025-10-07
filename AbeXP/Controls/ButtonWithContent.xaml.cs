@@ -50,6 +50,21 @@ public partial class ButtonWithContent : ContentView
     }
 
 
+    // Command paramter bindable property
+    public static readonly BindableProperty CommandParameterProperty =
+        BindableProperty.Create(
+            nameof(CommandParameter),
+            typeof(object),
+            typeof(ButtonWithContent),
+            default(object));
+
+    public object CommandParameter
+    {
+        get => (object)GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
+
 
     // CanExecute bindable property
     public static readonly BindableProperty IsBusyProperty =

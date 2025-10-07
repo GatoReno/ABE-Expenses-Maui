@@ -6,12 +6,12 @@
 
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Grid BindingContext="{x:Reference this}">
+            <Grid BindingContext="{x:Reference this}" VerticalOptions="{Binding VerticalOptions}" HorizontalOptions="{Binding HorizontalOptions}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}"/>
+                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" VerticalOptions="Center"/>
                 <ContentPresenter Grid.Row="1" HorizontalOptions="Center" HeightRequest="{Binding Path=Height}"/>
             </Grid>
         </ControlTemplate>
