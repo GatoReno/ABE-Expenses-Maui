@@ -17,7 +17,7 @@
 
             <!--Style for the charts-->
             <Style TargetType="{x:Type controls:ChartViewRefreshable}" >
-                <Setter Property="HeightRequest" Value="400"/>
+                <Setter Property="MinimumHeightRequest" Value="400"/>
                 <Setter Property="Margin" Value="0,20,0,20"/>
             </Style>
         </ResourceDictionary>
@@ -101,7 +101,16 @@
                         <RadioButton GroupName="PeriodGroup" Content="mensual" Value="{x:Static enums:TimePeriod.Month}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Month}}" IsEnabled="{Binding ExpensesMoreThanOneMonth}"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
+
+                <Border BackgroundColor="Red" HorizontalOptions="Center">
+                    <Label Text="{x:Static resources:AppResources.Expense}"/>
+                </Border>
                 <controls:ChartViewRefreshable Chart="{Binding ExpensesLineChart}"/>
+
+                <Border BackgroundColor="Green" HorizontalOptions="Center">
+                    <Label Text="{x:Static resources:AppResources.Income}"/>
+                </Border>
+                <controls:ChartViewRefreshable Chart="{Binding IncomesLineChart}"/>
 
                 <!--Expenses by payment category chart-->
                 <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.PaymentTypeChart}"/>

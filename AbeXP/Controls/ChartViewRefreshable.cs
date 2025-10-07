@@ -6,9 +6,9 @@ namespace AbeXP.Controls;
 
 public class ChartViewRefreshable : ChartView
 {
-	public ChartViewRefreshable()
-	{
-		PropertyChanged += OnPropertyChanged;
+    public ChartViewRefreshable()
+    {
+        PropertyChanged += OnPropertyChanged;
     }
 
     /// <summary>
@@ -21,8 +21,9 @@ public class ChartViewRefreshable : ChartView
     {
         if (e.PropertyName == nameof(Chart))
         {
-            Dispatcher.Dispatch(() =>
+            Dispatcher.DispatchAsync(async () =>
             {
+                await Task.Delay(20);
                 WidthRequest = Width + 1;
                 WidthRequest = Width - 1;
             });

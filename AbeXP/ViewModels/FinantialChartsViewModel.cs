@@ -51,6 +51,8 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public Chart _expensesLineChart;
         [ObservableProperty]
+        public Chart _incomesLineChart;
+        [ObservableProperty]
         public Chart _paymentsTypeDonutChart;
         [ObservableProperty]
         public Chart _tagsBarChart;
@@ -74,7 +76,7 @@ namespace AbeXP.ViewModels
         public decimal? _totalIncomeAmount;
         [ObservableProperty]
         public int _transactionsCount;
-        
+
 
         #endregion
 
@@ -119,36 +121,61 @@ namespace AbeXP.ViewModels
         /// </summary>
         private void CreateExpensesLineChart()
         {
-            var groupedDates = Transactions
-               .GroupBy(e => e.Date.GetPeriodStart(Period))
-               .OrderBy(g => g.Key)
-               .Select(g => new { Date = g.Key, Total = g.Sum(e => e.Amount) });
+            var grouped = Transactions
+                .GroupBy(t => new { Period = t.Date.GetPeriodStart(Period), t.Type })
+                .Select(g => new { Date = g.Key.Period, Type = g.Key.Type, Total = g.Sum(t => t.Amount) })
+                .ToList();
 
-            var dateEntries = groupedDates.Select(g => new ChartEntry((float)g.Total)
-            {
-                Label = Period switch
+
+            var expenses = grouped
+                .Where(g => g.Type == TransactionType.Expense)
+                .OrderBy(g => g.Date)
+                .Select(g => new ChartEntry((float)g.Total)
                 {
-                    TimePeriod.ThreeDays => g.Date.ToString("MMM-dd"),
-                    TimePeriod.Week => $"Week {g.Date:MMM-dd}",
-                    TimePeriod.Month => g.Date.ToString("MMM yyyy"),
-                    _ => g.Date.ToString("MM-dd")
-                },
-                ValueLabel = g.Total.ToString("C"),
-                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
-                Color = SKColors.DeepSkyBlue
-            }).ToArray();
+                    Label = g.Date.ToString("MMM-dd"),
+                    ValueLabel = g.Total.ToString("C"),
+                    Color = SKColor.Parse("#E74C3C"), // red
+                    ValueLabelColor = SKColors.White
+                })
+                .ToList();
+
+            var incomes = grouped
+                .Where(g => g.Type == TransactionType.Income)
+                .OrderBy(g => g.Date)
+                .Select(g => new ChartEntry((float)g.Total)
+                {
+                    Label = g.Date.ToString("MMM-dd"),
+                    ValueLabel = g.Total.ToString("C"),
+                    Color = SKColor.Parse("#27AE60"), // green
+                    ValueLabelColor = SKColors.White
+                })
+                .ToList();
 
             ExpensesLineChart = new LineChart
             {
-                Entries = dateEntries,
+                AnimationDuration = TimeSpan.Zero,
+                LineAreaAlpha = 0,
+                Entries = expenses,
                 LineMode = LineMode.Straight,
-                LineSize = 2,
+                LineSize = 4,
                 PointMode = PointMode.Circle,
                 PointSize = 5,
                 BackgroundColor = SKColors.Transparent,
-                LabelOrientation = Orientation.Vertical,
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
                 LabelTextSize = ChartLabelFontSize,
+                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black
+            };
+
+            IncomesLineChart = new LineChart
+            {
+                LineAreaAlpha = 0,
+                Entries = incomes,
+                LineMode = LineMode.Straight,
+                LineSize = 4,
+                PointMode = PointMode.Circle,
+                PointSize = 5,
+                AnimationDuration = TimeSpan.Zero,
+                BackgroundColor = SKColors.Transparent,
+                LabelTextSize = ChartLabelFontSize
             };
         }
 
