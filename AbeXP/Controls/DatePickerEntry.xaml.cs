@@ -1,6 +1,9 @@
 using Microsoft.Maui.Handlers;
 using System.ComponentModel;
-
+#if IOS
+using UIKit;
+using Microsoft.Maui.Handlers;
+#endif
 namespace AbeXP.Controls;
 
 public partial class DatePickerEntry : ContentView
@@ -11,17 +14,29 @@ public partial class DatePickerEntry : ContentView
     }
     private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {
+        
+#if ANDROID
+        
         DatePicker.Unfocus();
         DatePicker.Focus();
-
-#if ANDROID
+        
         var handler = DatePicker.Handler as IDatePickerHandler;
         handler.PlatformView.PerformClick();
 #endif
 
 #if IOS
-        var iosHandler = DatePicker.Handler as IDatePickerHandler;
-        iosHandler.PlatformView.ResignFirstResponder();
+        var handler = DatePicker.Handler as DatePickerHandler;
+        if (handler?.PlatformView is Microsoft.Maui.Platform.MauiDatePicker nativePicker)
+        {
+            // Forzar que se muestre el picker
+            if (nativePicker.InputView is UIDatePicker uiDatePicker)
+            {
+                // Aquí tienes acceso al UIDatePicker nativo si lo necesitas
+                uiDatePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
+                
+            }
+            DatePicker.Focus();
+        }
 #endif
     }
 

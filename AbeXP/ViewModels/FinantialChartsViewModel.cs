@@ -152,6 +152,8 @@ namespace AbeXP.ViewModels
                     ValueLabelColor = labelColor
                 })
                 .ToList();
+            
+            
 
             ExpensesLineChart = new LineChart
             {
@@ -292,19 +294,39 @@ namespace AbeXP.ViewModels
 
                 var transactions = transactionsResult.Value.ToList();
 
+
                 if (!transactions.Any())
                 {
-                    transactions.Add(new TransactionItem
+                    if (!transactions.Any(t => t.Type == TransactionType.Expense))
                     {
-                        Amount = 0,
-                        Date = DateTime.Now,
-                        Description = "No expenses found",
-                        PaymentMethod = "N/A",
-                        Tags = new List<string> { "N/A" }
-                    });
+                        transactions.Add(new TransactionItem
+                        {
+                            Amount = 0,
+                            Date = DateTime.Now,
+                            Description = "No expenses found",
+                            PaymentMethod = "N/A",
+                            Type = TransactionType.Expense,
+                            Tags = new List<string> { "N/A" }
+                        });
+                    }
+
+                    if (!transactions.Any(t => t.Type == TransactionType.Income))
+                    {
+                        transactions.Add(new TransactionItem
+                        {
+                            Amount = 0,
+                            Date = DateTime.Now,
+                            Description = "No expenses  ound",
+                            PaymentMethod = "N/A",
+                            Type = TransactionType.Income,
+                            Tags = new List<string> { "N/A" }
+                        });
+
+                    }
 
                     TransactionsCount = 0;
                 }
+                
                 else
                 {
                     TransactionsCount = transactions.Count;

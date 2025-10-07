@@ -42,23 +42,33 @@
             <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
                 <VerticalStackLayout VerticalOptions="Center">
                     <!--<Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>-->
-                    <Grid Margin="30,0,30,0">
-                        <Label HorizontalOptions="Start" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}">
+                    <Grid 
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="20"
+                        Margin="30,0,30,0">
+                        
+                        <Label HorizontalOptions="Start" 
+                               
+                               Grid.Column="0"
+                               TextColor="{AppThemeBinding 
+                               Light={StaticResource White}, Dark={StaticResource White}}">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{x:Static resources:AppResources.TotalExpenses}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                                     <Span Text="{x:Static system:Environment.NewLine}"/>
-                                    <Span Text="{Binding TotalExpensesAmount, StringFormat='{0:C}'}" FontSize="30"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                    <Span Text="{Binding TotalExpensesAmount, StringFormat='{0:C}'}" FontSize="25"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
 
-                        <Label HorizontalOptions="End">
+                        <Label 
+                            Grid.Column="1" 
+                            HorizontalOptions="End">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{x:Static resources:AppResources.TotalIncome}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                                     <Span Text="{x:Static system:Environment.NewLine}" />
-                                    <Span Text="{Binding TotalIncomeAmount, StringFormat='{0:C}'}" FontSize="30"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                    <Span Text="{Binding TotalIncomeAmount, StringFormat='{0:C}'}" FontSize="25"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
