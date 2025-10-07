@@ -285,4 +285,7 @@
   <data name="TotalExpenses" xml:space="preserve">
     <value>Total de gastos</value>
   </data>
+  <data name="Week" xml:space="preserve">
+    <value>Semana</value>
+  </data>
 </root>

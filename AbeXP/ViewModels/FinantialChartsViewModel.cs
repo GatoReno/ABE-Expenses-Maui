@@ -132,7 +132,7 @@ namespace AbeXP.ViewModels
                 .OrderBy(g => g.Date)
                 .Select(g => new ChartEntry((float)g.Total)
                 {
-                    Label = g.Date.ToString("MMM-dd"),
+                    Label = Period.ToLabel(g.Date),
                     ValueLabel = g.Total.ToString("C"),
                     Color = SKColor.Parse("#E74C3C"), // red
                     ValueLabelColor = SKColors.White
@@ -144,7 +144,7 @@ namespace AbeXP.ViewModels
                 .OrderBy(g => g.Date)
                 .Select(g => new ChartEntry((float)g.Total)
                 {
-                    Label = g.Date.ToString("MMM-dd"),
+                    Label = Period.ToLabel(g.Date),
                     ValueLabel = g.Total.ToString("C"),
                     Color = SKColor.Parse("#27AE60"), // green
                     ValueLabelColor = SKColors.White

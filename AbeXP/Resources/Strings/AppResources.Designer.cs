@@ -556,6 +556,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Semana.
+        /// </summary>
+        internal static string Week {
+            get {
+                return ResourceManager.GetString("Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sí.
         /// </summary>
         internal static string Yes {
