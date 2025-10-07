@@ -273,4 +273,7 @@
   <data name="TagsTypeChart" xml:space="preserve">
     <value>Gráfica de etiquetas</value>
   </data>
+  <data name="ExpensesOfTheMonth" xml:space="preserve">
+    <value>Gastos del mes</value>
+  </data>
 </root>

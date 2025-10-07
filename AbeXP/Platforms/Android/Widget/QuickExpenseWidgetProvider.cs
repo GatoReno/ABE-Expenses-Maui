@@ -24,10 +24,10 @@ namespace AbeXP.Platforms.Android.Widget
             {
 
                 // Set localized strings
-                views.SetTextViewText(Resource.Id.txtQuickExpenseHeader, AppResources.QuickExpenses);
+                views.SetTextViewText(Resource.Id.txtQuickExpenseHeader, AppResources.ExpensesOfTheMonth);
                 views.SetTextViewText(Resource.Id.txtQuickExpenseEmpty, AppResources.NoExpenses);
                 views.SetTextViewText(Resource.Id.txtQuickExpenseLoginRequired, AppResources.PleaseLoginExpenses);
-                views.SetTextViewText(Resource.Id.btnQuickexpenseAdd, AppResources.AddExpenseLoan);
+                views.SetTextViewText(Resource.Id.btnQuickexpenseAdd, AppResources.AddTransaction);
 
 
                 if (isLoggedin)

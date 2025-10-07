@@ -58,7 +58,11 @@ public partial class App : Application
             if(!await userSession.IsSessionValid())
             {
                 userSession.SignOut();
+                var widgetService = _serviceProvider.GetService<IWidgetUpdater>();
+                widgetService.Redraw();
                 SetLoginPage();
+
+                return;
             }
 
             SetNewShellPage();

@@ -58,7 +58,7 @@ namespace AbeXP.Services
             var loginDateString = await SecureStorage.GetAsync(PreferencesConstants.LogingDate);
             if (DateTime.TryParse(loginDateString, null, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var loginDate))
             {
-                return DateTime.UtcNow - loginDate > TimeSpan.FromDays(15);
+                return DateTime.UtcNow - loginDate < TimeSpan.FromDays(15);
             }
 
             return true;

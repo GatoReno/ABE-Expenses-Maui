@@ -169,6 +169,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gastos del mes.
+        /// </summary>
+        internal static string ExpensesOfTheMonth {
+            get {
+                return ResourceManager.GetString("ExpensesOfTheMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filtrar transacciones.
         /// </summary>
         internal static string FilterTransactions {
