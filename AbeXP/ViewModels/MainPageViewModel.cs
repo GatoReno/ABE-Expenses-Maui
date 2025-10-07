@@ -151,7 +151,7 @@ namespace AbeXP.ViewModels
                 AllItems.Remove(item);
                 Transactions.Remove(item);
 
-                App.Alert.ShowAlert(AppResources.Success, AppResources.SuccessfulOperation);
+                App.Alert.ShowToast(AppResources.SuccessfulOperation);
             }
             catch (Exception ex)
             {
