@@ -4,6 +4,7 @@ using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
+using AbeXP.Common.Enum;
 using Android.App;
 using Android.Widget;
 using Google.Android.Material.Button;
@@ -14,7 +15,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
 {
     internal class IncomeViewHolder : ExpenditureBaseViewHolder
     {
-        private readonly ICreateIncomeUseCase _createIncomeUseCase;
+        private readonly ICreateTransactionUseCase _createTransactionUseCase;
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private DateTime incomeDate = DateTime.Now;
         private PaymentMethodModelItem[] paymentMethods;
@@ -23,9 +24,9 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private bool[] checkedTags;
         private List<TagModelItem> selectedTags = new();
 
-        public IncomeViewHolder(View itemView, ICreateIncomeUseCase createIncomeUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
+        public IncomeViewHolder(View itemView, ICreateTransactionUseCase createTransactionUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
-            _createIncomeUseCase = createIncomeUseCase;
+            _createTransactionUseCase = createTransactionUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
             InitializeAsync();
         }
@@ -106,8 +107,8 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             {
                 try
                 {
-                    var income = MapIncome();
-                    await _createIncomeUseCase.ExecuteAsync(income);
+                    var transaction = MapIncomeTransaction();
+                    await _createTransactionUseCase.ExecuteAsync(transaction);
                     NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
                     ResetForm();
@@ -145,9 +146,9 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             ItemView.FindViewById<TextInputEditText>(Resource.Id.edtIncomeTags).Text = string.Empty;
         }
 
-        private Income MapIncome()
+        private TransactionModel MapIncomeTransaction()
         {
-            var income = new Income();
+            var income = new TransactionModel { Type = TransactionType.Income };
             var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtIncomeAmount);
             var edtDescription = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtIncomeDescription);
 

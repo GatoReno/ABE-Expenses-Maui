@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.UseCases.Interfaces
 {
-    public interface ICreateExpenseUseCase : IUseCase<Expense, Result>
+    public interface ICreateExpenseUseCase : IUseCase<ExpenseTransactionModel, Result>
     {
 
     }

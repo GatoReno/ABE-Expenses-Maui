@@ -22,7 +22,7 @@ namespace AbeXP.UseCases
             _userSession = userSession;
         }
 
-        public async Task<Result> ExecuteAsync(Expense expense)
+        public async Task<Result> ExecuteAsync(ExpenseTransactionModel expense)
         {
             expense.UserId = _userSession.User.UserId;
 

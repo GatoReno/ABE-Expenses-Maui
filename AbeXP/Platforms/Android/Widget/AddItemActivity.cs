@@ -35,8 +35,7 @@ namespace AbeXP.Platforms.Android.Widget
         private void SetupTabs()
         {
             // get repository from MAUI DI
-            var createExpenseUseCase = MauiApplication.Current.Services.GetService<ICreateExpenseUseCase>();
-            var createIncomeUseCase = MauiApplication.Current.Services.GetService<ICreateIncomeUseCase>();
+            var createTransactionUseCase = MauiApplication.Current.Services.GetService<ICreateTransactionUseCase>();
             var getTransactionCatalogsUseCase = MauiApplication.Current.Services.GetService<IGetTransactionCatalogsUseCase>();
             var widgetUpdater = MauiApplication.Current.Services.GetService<IWidgetUpdater>();
 
@@ -44,7 +43,7 @@ namespace AbeXP.Platforms.Android.Widget
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             var viewPager = FindViewById<ViewPager2>(Resource.Id.viewPager);
 
-            var adapter = new AddItemPagerAdapter(this, createExpenseUseCase, createIncomeUseCase, getTransactionCatalogsUseCase, widgetUpdater);
+            var adapter = new AddItemPagerAdapter(this, createTransactionUseCase, getTransactionCatalogsUseCase, widgetUpdater);
             viewPager.Adapter = adapter;
 
             var titles = new[] { AppResources.Expense, AppResources.Income };

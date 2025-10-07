@@ -1,6 +1,7 @@
 using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Models;
+using AbeXP.Common.Enum;
 
 namespace AbeXP.Services
 {
@@ -11,11 +12,6 @@ namespace AbeXP.Services
             : base(fibInstance, collection)
         {
             _db = fibInstance;
-        }
-
-        public async Task AddAsync(IAmTransaction entity)
-        {
-            await AddAsync(entity);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace AbeXP.Views.Templates
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
-            if (item is Expense)
+            if (item is ExpenseTransactionModel)
                 return ExpenseTemplate;
-            if (item is Income)
+            if (item is IncomeTransactionModel)
                 return IncomeTemplate;
 
             return null;

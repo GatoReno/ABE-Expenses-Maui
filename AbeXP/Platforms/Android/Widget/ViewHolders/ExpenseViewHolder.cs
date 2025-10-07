@@ -1,9 +1,10 @@
-﻿using AbeXP.Common.Constants;
+using AbeXP.Common.Constants;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
+using AbeXP.Common.Enum;
 using Android.App;
 using Android.Widget;
 using Google.Android.Material.Button;
@@ -16,7 +17,7 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
     internal class ExpenseViewHolder : ExpenditureBaseViewHolder
     {
 
-        private readonly ICreateExpenseUseCase _createExpenseUse;
+        private readonly ICreateTransactionUseCase _createTransactionUseCase;
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private DateTime expenseDate = DateTime.Now;
         private PaymentMethodModelItem[] paymentMethods;
@@ -25,9 +26,9 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
         private bool[] checkedTags;
         private List<TagModelItem> selectedTags;
 
-        public ExpenseViewHolder(View itemView, ICreateExpenseUseCase createExpenseUse, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
+        public ExpenseViewHolder(View itemView, ICreateTransactionUseCase createTransactionUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater) : base(itemView, widgetUpdater)
         {
-            _createExpenseUse = createExpenseUse;
+            _createTransactionUseCase = createTransactionUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
 
             InitializeAsync();
@@ -126,8 +127,8 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             {
                 try
                 {
-                    var expense = MapExpense();
-                    await _createExpenseUse.ExecuteAsync(expense);
+                    var transaction = MapExpenseTransaction();
+                    await _createTransactionUseCase.ExecuteAsync(transaction);
 
                     NotifyWidgetUpdate();
                     Toast.MakeText(ItemView.Context, AppResources.Success, ToastLength.Short).Show();
@@ -180,9 +181,9 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             edtTags.Text = string.Empty;
         }
 
-        private Expense MapExpense()
+        private TransactionModel MapExpenseTransaction()
         {
-            var expense = new Expense();
+            var transaction = new TransactionModel { Type = TransactionType.Expense };
 
             var edtDate = ItemView.FindViewById<TextInputEditText>(Resource.Id.edtExpenseDate);
             var edtAmount = ItemView.FindViewById<TextInputEditText>(Resource.Id.txtExpenseAmount);
@@ -194,20 +195,20 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             // Amount
             if (decimal.TryParse(edtAmount.Text, out var amount))
             {
-                expense.Amount = amount;
+                transaction.Amount = amount;
             }
 
             // Payment type
-            expense.PaymentTypeId = selectedPaymentMethod?.Id;
+            transaction.PaymentTypeId = selectedPaymentMethod?.Id;
 
             // Description
-            expense.Description = edtDescription.Text ?? "";
+            transaction.Description = edtDescription.Text ?? "";
 
             // Tags (assuming comma-separated in the EditText)
-            expense.TagIds = selectedTags.Select(tag => tag.Id).ToList();
+            transaction.TagIds = selectedTags.Select(tag => tag.Id).ToList();
 
-            expense.Date = expenseDate;
-            return expense;
+            transaction.Date = expenseDate;
+            return transaction;
         }
 
 

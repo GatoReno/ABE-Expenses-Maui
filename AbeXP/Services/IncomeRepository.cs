@@ -3,7 +3,7 @@ using AbeXP.Models;
 
 namespace AbeXP.Services
 {
-    public class IncomeRepository : FibRepository<Income>, IIncomeRepository
+    public class IncomeRepository : FibRepository<IncomeTransactionModel>, IIncomeRepository
     {
         public IFibInstance _db { get; set; }
         public IncomeRepository(IFibInstance fibInstance, string collection)

@@ -162,9 +162,6 @@
   <data name="IsPaid" xml:space="preserve">
     <value>¿Ya está pagado?</value>
   </data>
-  <data name="Expense" xml:space="preserve">
-    <value>Gasto</value>
-  </data>
   <data name="Income" xml:space="preserve">
     <value>Ingreso</value>
   </data>
@@ -251,5 +248,29 @@
   </data>
   <data name="SignUp" xml:space="preserve">
     <value>Registrarse</value>
+  </data>
+  <data name="TransactionType_Income" xml:space="preserve">
+    <value>Ingreso</value>
+  </data>
+  <data name="TransactionType_Expense" xml:space="preserve">
+    <value>Gasto</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Transacciones</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TransactionsChart" xml:space="preserve">
+    <value>Gráfica de transacciones</value>
+  </data>
+  <data name="Grouping" xml:space="preserve">
+    <value>Agrupación</value>
+  </data>
+  <data name="PaymentTypeChart" xml:space="preserve">
+    <value>Gráfico por método de pago</value>
+  </data>
+  <data name="TagsTypeChart" xml:space="preserve">
+    <value>Gráfica de etiquetas</value>
   </data>
 </root>

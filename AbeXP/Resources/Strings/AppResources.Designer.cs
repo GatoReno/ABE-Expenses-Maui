@@ -187,6 +187,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agrupación.
+        /// </summary>
+        internal static string Grouping {
+            get {
+                return ResourceManager.GetString("Grouping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ingreso.
         /// </summary>
         internal static string Income {
@@ -331,6 +340,15 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gráfico por método de pago.
+        /// </summary>
+        internal static string PaymentTypeChart {
+            get {
+                return ResourceManager.GetString("PaymentTypeChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Por favor inicia sesión para ver tus gastos.
         /// </summary>
         internal static string PleaseLoginExpenses {
@@ -444,6 +462,60 @@ namespace AbeXP.Resources.Strings {
         internal static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gráfica de etiquetas.
+        /// </summary>
+        internal static string TagsTypeChart {
+            get {
+                return ResourceManager.GetString("TagsTypeChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transacciones.
+        /// </summary>
+        internal static string Transactions {
+            get {
+                return ResourceManager.GetString("Transactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gráfica de transacciones.
+        /// </summary>
+        internal static string TransactionsChart {
+            get {
+                return ResourceManager.GetString("TransactionsChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gasto.
+        /// </summary>
+        internal static string TransactionType_Expense {
+            get {
+                return ResourceManager.GetString("TransactionType_Expense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingreso.
+        /// </summary>
+        internal static string TransactionType_Income {
+            get {
+                return ResourceManager.GetString("TransactionType_Income", resourceCulture);
             }
         }
         

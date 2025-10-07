@@ -11,17 +11,15 @@ namespace AbeXP.Platforms.Android.Widget
     public class AddItemPagerAdapter : RecyclerView.Adapter
     {
         private readonly Context _context;
-        private readonly ICreateExpenseUseCase _createExpenseUseCase;
-        private readonly ICreateIncomeUseCase _createIncomeUseCase;
+        private readonly ICreateTransactionUseCase _createTransactionUseCase;
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
         private readonly IWidgetUpdater _widgetUpdater;
         private readonly int[] _layouts;
 
-        public AddItemPagerAdapter(Context c, ICreateExpenseUseCase createExpenseUseCase, ICreateIncomeUseCase createIncomeUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater)
+        public AddItemPagerAdapter(Context c, ICreateTransactionUseCase createTransactionUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase, IWidgetUpdater widgetUpdater)
         {
             _context = c;
-            _createExpenseUseCase = createExpenseUseCase;
-            _createIncomeUseCase = createIncomeUseCase;
+            _createTransactionUseCase = createTransactionUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
             _widgetUpdater = widgetUpdater;
             _layouts = new[]
@@ -38,8 +36,8 @@ namespace AbeXP.Platforms.Android.Widget
 
             return viewType switch
             {
-                0 => new ExpenseViewHolder(view, _createExpenseUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
-                1 => new IncomeViewHolder(view, _createIncomeUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
+                0 => new ExpenseViewHolder(view, _createTransactionUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
+                1 => new IncomeViewHolder(view, _createTransactionUseCase, _getTransactionCatalogsUseCase, _widgetUpdater),
                 _ => throw new ArgumentOutOfRangeException(nameof(viewType))
             };
         }

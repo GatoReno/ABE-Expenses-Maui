@@ -1,4 +1,4 @@
-﻿using AbeXP.Models;
+using AbeXP.Models;
 using AbeXP.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -6,19 +6,20 @@ using System.Collections.ObjectModel;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.Extensions;
 using AbeXP.Common.Constants;
+using AbeXP.Common.Enum;
 
 namespace AbeXP.ViewModels
 {
     public partial class ExpenseFormViewModel : ObservableObject
     {
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
-        private readonly ICreateExpenseUseCase _createExpenseUseCase;
+        private readonly ICreateTransactionUseCase _createTransactionUseCase;
         private readonly INavigationService _navigation;
 
-        public ExpenseFormViewModel(INavigationService navigation, ICreateExpenseUseCase createExpenseUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
+        public ExpenseFormViewModel(INavigationService navigation, ICreateTransactionUseCase createTransactionUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
         {
             _navigation = navigation;
-            _createExpenseUseCase = createExpenseUseCase;
+            _createTransactionUseCase = createTransactionUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
 
             GetCatalogs();
@@ -54,8 +55,9 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                var expense = new Expense
+                var transaction = new ExpenseTransactionModel
                 {
+                    Type = TransactionType.Expense,
                     Date = Date,
                     Amount = Amount,
                     Description = Description,
@@ -63,7 +65,7 @@ namespace AbeXP.ViewModels
                     TagIds = Tags.Where(t => t.IsSelected).Select(t => t.Id).ToList()
                 };
 
-                var result = await _createExpenseUseCase.ExecuteAsync(expense);
+                var result = await _createTransactionUseCase.ExecuteAsync(transaction);
                 if (result.IsSuccessful)
                 {
                     App.Alert.ShowToast("Expense saved successfully.");

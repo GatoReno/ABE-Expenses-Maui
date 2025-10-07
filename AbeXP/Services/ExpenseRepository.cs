@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.Services
 {
-    class ExpenseRepository : FibRepository<Expense>, IExpenseRepository
+    class ExpenseRepository : FibRepository<ExpenseTransactionModel>, IExpenseRepository
     {
         public IFibInstance _db { get; set; }
         public ExpenseRepository(IFibInstance fibInstance, string collection)

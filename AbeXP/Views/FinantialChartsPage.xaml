@@ -40,7 +40,7 @@
             <!--Expense total-->
             <Border BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="20,0,20,10" StrokeShape="RoundRectangle 40,0,0,40">
                 <VerticalStackLayout VerticalOptions="Center">
-                    <Label Text="{Binding TotalExpensesTitle}" HorizontalOptions="Center" TextColor="{StaticResource Black}"/>
+                    <Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{StaticResource Black}"/>
                     <Label HorizontalOptions="Center">
                         <Label.FormattedText>
                             <FormattedString>
@@ -51,8 +51,8 @@
                     <Label HorizontalOptions="Center" Margin="0,10,0,0">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding TotalExpensesCount}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="16" />
-                                <Span Text="{Binding CountExpensesTitle}" TextColor="{StaticResource Black}" FontSize="16"/>
+                                <Span Text="{Binding TotalExpensesCount, StringFormat='{0} '}" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="16" />
+                                <Span Text="{x:Static resources:AppResources.Transactions}" TextColor="{StaticResource Black}" FontSize="16"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -76,9 +76,9 @@
 
             <VerticalStackLayout Grid.Row="2" Margin="0,20,0,0">
                 <!--Expenses by period chart-->
-                <Label FontAttributes="Bold" Text="{Binding ExpensesChartsTitle}"/>
+                <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.TransactionsChart}"/>
                 <VerticalStackLayout Grid.Row="2" >
-                    <Label HorizontalOptions="Center" Text="{Binding TimePeriodTitle}"/>
+                    <Label HorizontalOptions="Center" Text="{x:Static resources:AppResources.Grouping}"/>
                     <HorizontalStackLayout HorizontalOptions="Center">
                         <RadioButton x:Name="rb" GroupName="PeriodGroup" Content="3 días" Value="{x:Static enums:TimePeriod.ThreeDays}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.ThreeDays}}" />
                         <RadioButton GroupName="PeriodGroup" Content="semanal" Value="{x:Static enums:TimePeriod.Week}" IsChecked="{Binding Period, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={Static enums:TimePeriod.Week}}" />
@@ -88,11 +88,11 @@
                 <controls:ChartViewRefreshable Chart="{Binding ExpensesLineChart}"/>
 
                 <!--Expenses by payment category chart-->
-                <Label FontAttributes="Bold" Text="{Binding PaymentTypeChartTitle}"/>
+                <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.PaymentTypeChart}"/>
                 <controls:ChartViewRefreshable Chart="{Binding PaymentsTypeDonutChart}"/>
 
                 <!--Expenses by tags chart-->
-                <Label FontAttributes="Bold" Text="{Binding TagsTypeChartTitle}"/>
+                <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.TagsTypeChart}"/>
                 <controls:ChartViewRefreshable Chart="{Binding TagsBarChart}"/>
             </VerticalStackLayout>
         </Grid>

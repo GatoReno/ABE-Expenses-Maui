@@ -127,7 +127,6 @@ namespace AbeXP.ViewModels
                 AppResources.Cancel,
                 null,
                 AppResources.Expense,
-                AppResources.Loan,
                 AppResources.Income);
 
             if (action == AppResources.Expense)
@@ -148,6 +147,8 @@ namespace AbeXP.ViewModels
 
             if (SelectedFilter == AppResources.Expense)
                 filtered = filtered.Where(x => x.Type == TransactionType.Expense);
+            else if(SelectedFilter == AppResources.Income)
+                filtered = filtered.Where(x => x.Type == TransactionType.Income);
 
             Transactions = new ObservableCollection<TransactionItem>(filtered);
         }

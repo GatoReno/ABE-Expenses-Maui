@@ -1,18 +1,17 @@
-using AbeXP.Interfaces;
 using AbeXP.Common.Enum;
 using AbeXP.Attributes;
 using System;
 using AbeXP.Common.Constants;
 namespace AbeXP.Models
 {
-    public class Expense : TransactionModel, IAmTransaction
+    public class ExpenseTransactionModel : TransactionModel
     {
-        public Expense()
+        public ExpenseTransactionModel()
         {
             Type = TransactionType.Expense;
         }
 
-        public Expense(TransactionModel transaction)
+        public ExpenseTransactionModel(TransactionModel transaction)
         {
             Type = transaction.Type;
             Date = transaction.Date;

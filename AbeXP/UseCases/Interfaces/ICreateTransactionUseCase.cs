@@ -3,7 +3,7 @@ using AbeXP.Models;
 
 namespace AbeXP.UseCases.Interfaces
 {
-    public interface ICreateIncomeUseCase : IUseCase<IncomeTransactionModel, Result>
+    public interface ICreateTransactionUseCase : IUseCase<TransactionModel, Result>
     {
     }
 }

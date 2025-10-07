@@ -5,19 +5,21 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.Extensions;
+using AbeXP.Common.Enum;
+using AbeXP.Common.Constants;
 
 namespace AbeXP.ViewModels
 {
     public partial class IncomeFormViewModel : ObservableObject
     {
         private readonly IGetTransactionCatalogsUseCase _getTransactionCatalogsUseCase;
-        private readonly ICreateIncomeUseCase _createIncomeUseCase;
+        private readonly ICreateTransactionUseCase _createTransactionUseCase;
         private readonly INavigationService _navigation;
 
-        public IncomeFormViewModel(INavigationService navigation, ICreateIncomeUseCase createIncomeUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
+        public IncomeFormViewModel(INavigationService navigation, ICreateTransactionUseCase createTransactionUseCase, IGetTransactionCatalogsUseCase getTransactionCatalogsUseCase)
         {
             _navigation = navigation;
-            _createIncomeUseCase = createIncomeUseCase;
+            _createTransactionUseCase = createTransactionUseCase;
             _getTransactionCatalogsUseCase = getTransactionCatalogsUseCase;
 
             GetCatalogs();
@@ -50,8 +52,9 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                var income = new Income
+                var transaction = new IncomeTransactionModel
                 {
+                    Type = TransactionType.Income,
                     Date = Date,
                     Amount = Amount,
                     Description = Description,
@@ -59,11 +62,16 @@ namespace AbeXP.ViewModels
                     TagIds = Tags.Where(t => t.IsSelected).Select(t => t.Id).ToList()
                 };
 
-                var result = await _createIncomeUseCase.ExecuteAsync(income);
+                var result = await _createTransactionUseCase.ExecuteAsync(transaction);
                 if (result.IsSuccessful)
                 {
                     App.Alert.ShowToast("Income saved successfully.");
-                    await _navigation.PopAsync();
+
+                    var routePramteres = new ShellNavigationQueryParameters()
+                    {
+                        { NavigationConstants.TRIGGER_DASHBOARD_PARAM, true }
+                    };
+                    await _navigation.PopAsync(routePramteres);
                 }
             }
             catch

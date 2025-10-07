@@ -73,22 +73,6 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public int _totalExpensesCount;
 
-
-        // titles
-        [ObservableProperty]
-        public string _totalExpensesTitle = "Total";
-        [ObservableProperty]
-        public string _countExpensesTitle = " gastos";
-        [ObservableProperty]
-        public string _expensesChartsTitle = "Gráfico de gastos";
-        [ObservableProperty]
-        public string _timePeriodTitle = "Intervalo de tiempo";
-        [ObservableProperty]
-        public string _paymentTypeChartTitle = "Por método de pago";
-        [ObservableProperty]
-        public string _tagsTypeChartTitle = "Por etiquetas";
-
-
         #endregion
 
         /// <summary>

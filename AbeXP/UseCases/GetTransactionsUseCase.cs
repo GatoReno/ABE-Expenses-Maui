@@ -2,6 +2,7 @@ using AbeXP.Common.Constants;
 using AbeXP.Common.Result;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
+using AbeXP.Localizers;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
@@ -35,6 +36,7 @@ namespace AbeXP.UseCases
         public async Task<Result<IEnumerable<TransactionItem>>> ExecuteAsync(TransactionRequest request)
         {
             // catalogs
+            // TODO: better for performance to have one centralized storage and load once instead of each request (singleton for catalogs)
             var paymentMethodsResult = await _getPaymentMethodsUseCase.ExecuteAsync();
 
             if (paymentMethodsResult.IsFailed)
@@ -65,8 +67,8 @@ namespace AbeXP.UseCases
                 Description = t.Description,
                 PaymentMethod = paymentMethodsCatalog.FirstOrDefault(pm => pm.Id == t.PaymentTypeId)?.Name ?? t.PaymentTypeId,
                 Tags = request.MapTags ? t.TagIds?.Select(tagId => tagsCatalog.FirstOrDefault(tagCatalogItem => tagCatalogItem.Id == tagId) ?? new TagModel(tagId)).ToLocalizeStringList() : [],
-                TypeDescription = t.Type == Common.Enum.TransactionType.Expense ? AppResources.Expense : AppResources.Income,
-                Type = Common.Enum.TransactionType.Income,
+                TypeDescription = TransactionModelLocalizer.GetTypeName(t.Type.ToString()),
+                Type = t.Type,
                 Icon = MaterialIconsRegular.Attach_money
             }).ToList();
 

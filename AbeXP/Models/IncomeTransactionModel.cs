@@ -1,18 +1,17 @@
-using AbeXP.Interfaces;
 using AbeXP.Common.Enum;
 using System;
 using System.Collections.Generic;
 
 namespace AbeXP.Models
 {
-    public class Income : TransactionModel, IAmTransaction
+    public class IncomeTransactionModel : TransactionModel
     {
-        public Income()
+        public IncomeTransactionModel()
         {
             Type = TransactionType.Income;
         }
 
-        public Income(TransactionModel transaction)
+        public IncomeTransactionModel(TransactionModel transaction)
         {
             Type = transaction.Type;
             Date = transaction.Date;

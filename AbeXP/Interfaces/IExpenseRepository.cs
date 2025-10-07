@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbeXP.Interfaces
 {
-    public interface IExpenseRepository: IFibRepository<Expense>
+    public interface IExpenseRepository: IFibRepository<ExpenseTransactionModel>
     {
     }
 }
