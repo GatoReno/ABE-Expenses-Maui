@@ -71,7 +71,10 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public decimal? _totalExpensesAmount;
         [ObservableProperty]
-        public int _totalExpensesCount;
+        public decimal? _totalIncomeAmount;
+        [ObservableProperty]
+        public int _transactionsCount;
+        
 
         #endregion
 
@@ -270,18 +273,19 @@ namespace AbeXP.ViewModels
                         Tags = new List<string> { "N/A" }
                     });
 
-                    TotalExpensesCount = 0;
+                    TransactionsCount = 0;
                 }
                 else
                 {
-                    TotalExpensesCount = transactions.Count;
+                    TransactionsCount = transactions.Count;
                 }
 
 
                 var minDate = transactions.MinBy(e => e.Date).Date;
                 var maxDate = transactions.MaxBy(e => e.Date).Date;
 
-                TotalExpensesAmount = transactions?.Sum(e => e.Amount);
+                TotalExpensesAmount = transactions?.Where(t => t.Type == TransactionType.Expense).Sum(e => e.Amount);
+                TotalIncomeAmount = transactions?.Where(t => t.Type == TransactionType.Income).Sum(e => e.Amount);
                 ExpensesMoreThanOneMonth = minDate.IsMoreThanOneMonthApart(maxDate);
                 Transactions = transactions.AsReadOnly();
             }

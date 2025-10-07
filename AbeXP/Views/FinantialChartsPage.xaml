@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:controls="clr-namespace:AbeXP.Controls"
@@ -40,20 +41,34 @@
             <!--Expense total-->
             <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
                 <VerticalStackLayout VerticalOptions="Center">
-                    <Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>
-                    <Label HorizontalOptions="Center">
+                    <!--<Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>-->
+                    <Grid Margin="30,0,30,0">
+                        <Label HorizontalOptions="Start" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{x:Static resources:AppResources.TotalExpenses}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                    <Span Text="{x:Static system:Environment.NewLine}"/>
+                                    <Span Text="{Binding TotalExpensesAmount, StringFormat='{0:C}'}" FontSize="30"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label HorizontalOptions="End">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{x:Static resources:AppResources.TotalIncome}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                    <Span Text="{x:Static system:Environment.NewLine}" />
+                                    <Span Text="{Binding TotalIncomeAmount, StringFormat='{0:C}'}" FontSize="30"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                    <Label HorizontalOptions="Center" Margin="0,10,0,0" FontSize="16" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}">
                         <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding TotalExpensesAmount, StringFormat='{0:C}'}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" FontSize="30" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Label HorizontalOptions="Center" Margin="0,10,0,0">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding TotalExpensesCount}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" FontSize="16" />
+                            <FormattedString >
+                                <Span Text="{Binding TransactionsCount}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                                 <Span Text=" " />
-                                <Span Text="{x:Static resources:AppResources.Transactions}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" FontSize="16"/>
+                                <Span Text="{x:Static resources:AppResources.Transactions}"  TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -73,7 +88,7 @@
                     </Grid>
                 </controls:ButtonWithContent>
             </Grid>
-            
+
 
             <VerticalStackLayout Grid.Row="2" Margin="0,20,0,0">
                 <!--Expenses by period chart-->

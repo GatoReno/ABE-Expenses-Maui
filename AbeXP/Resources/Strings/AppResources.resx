@@ -279,4 +279,10 @@
   <data name="SuccessfulOperation" xml:space="preserve">
     <value>Operación completada con éxito</value>
   </data>
+  <data name="TotalIncome" xml:space="preserve">
+    <value>Total de ingresos</value>
+  </data>
+  <data name="TotalExpenses" xml:space="preserve">
+    <value>Total de gastos</value>
+  </data>
 </root>

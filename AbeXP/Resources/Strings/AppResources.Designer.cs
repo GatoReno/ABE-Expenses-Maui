@@ -502,6 +502,24 @@ namespace AbeXP.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total de gastos.
+        /// </summary>
+        internal static string TotalExpenses {
+            get {
+                return ResourceManager.GetString("TotalExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total de ingresos.
+        /// </summary>
+        internal static string TotalIncome {
+            get {
+                return ResourceManager.GetString("TotalIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transacciones.
         /// </summary>
         internal static string Transactions {
