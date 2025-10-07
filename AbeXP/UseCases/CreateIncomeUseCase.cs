@@ -1,8 +1,8 @@
-using AbeXP.Common.Result;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.UseCases.Plugins;
+using FluentResults;
 
 namespace AbeXP.UseCases
 {

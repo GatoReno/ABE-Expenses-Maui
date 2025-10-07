@@ -1,4 +1,4 @@
-using AbeXP.Common.Result;
+using FluentResults;
 using AbeXP.Interfaces;
 using AbeXP.UseCases.Interfaces;
 

@@ -105,7 +105,7 @@ namespace AbeXP.ViewModels
                     EndAt = EndDate
                 });
 
-                AllItems =  new List<TransactionItem>(transactionsResult.Payload);
+                AllItems =  new List<TransactionItem>(transactionsResult.Value);
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace AbeXP.ViewModels
             try
             {
                 var result = await _deleteTransactionUseCase.ExecuteAsync(item.Id);
-                if (!result.IsSuccessful)
+                if (!result.IsSuccess)
                 {
                     App.Alert.ShowAlert("Error", "Could not delete transaction.");
                     return;

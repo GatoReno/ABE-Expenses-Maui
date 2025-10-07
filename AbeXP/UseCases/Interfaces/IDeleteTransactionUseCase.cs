@@ -1,4 +1,4 @@
-using AbeXP.Common.Result;
+using FluentResults;
 
 namespace AbeXP.UseCases.Interfaces
 {

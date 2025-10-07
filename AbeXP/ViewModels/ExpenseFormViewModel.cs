@@ -66,7 +66,7 @@ namespace AbeXP.ViewModels
                 };
 
                 var result = await _createTransactionUseCase.ExecuteAsync(transaction);
-                if (result.IsSuccessful)
+                if (result.IsSuccess)
                 {
                     App.Alert.ShowToast("Expense saved successfully.");
 
@@ -90,25 +90,23 @@ namespace AbeXP.ViewModels
 
         /// <summary>
         /// Get the catalogs for the form
-        /// </summary>
         /// <returns></returns>
         private async Task GetCatalogs()
         {
             try
             {
-                var result = await _getTransactionCatalogsUseCase.ExecuteAsync();
-                if (result.IsSuccessful)
+                var itemsResult = await _getTransactionCatalogsUseCase.ExecuteAsync();
+                if (itemsResult.IsSuccess)
                 {
-                    var tagItems = result.Payload.Tags.ToTagModelItemList();
-                    var paymentMethods = result.Payload.PaymentMethods;
+                    var paymentMethods = itemsResult.Value.PaymentMethods.ToPaymentMethodItemList().ToArray();
+                    var tags = itemsResult.Value.Tags.ToTagModelItemList().ToArray();
 
-                    Tags = new ObservableCollection<TagModelItem>(tagItems);
+                    Tags = new ObservableCollection<TagModelItem>(tags);
                     PaymentMethods = new ObservableCollection<PaymentMethod>(paymentMethods);
                 }
             }
             catch (Exception ex)
             {
-                App.Alert.ShowAlert("Error", "Could not load payment types and tags.");
             }
         }
     }

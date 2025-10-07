@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Enum;
+using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
@@ -257,7 +257,7 @@ namespace AbeXP.ViewModels
                     App.Alert.ShowAlert("Error", "Could not load data.");
                 }
 
-                var transactions = transactionsResult.Payload.ToList();
+                var transactions = transactionsResult.Value.ToList();
 
                 if (!transactions.Any())
                 {

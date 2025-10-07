@@ -1,5 +1,5 @@
 using AbeXP.Common.Constants;
-using AbeXP.Common.Result;
+using FluentResults;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Localizers;
@@ -40,15 +40,17 @@ namespace AbeXP.UseCases
             var paymentMethodsResult = await _getPaymentMethodsUseCase.ExecuteAsync();
 
             if (paymentMethodsResult.IsFailed)
-                return paymentMethodsResult.Errors;
+                return Result.Fail<IEnumerable<TransactionItem>>(paymentMethodsResult.Errors);
 
-            var paymentMethodsCatalog = paymentMethodsResult.Payload.ToList();
+            var paymentMethodsCatalog = paymentMethodsResult.Value.ToList();
 
             List<TagModel> tagsCatalog = new List<TagModel>();
             if (request.MapTags)
             {
                 var tagsResult = await _getTagsUseCase.ExecuteAsync();
-                tagsCatalog = tagsResult.Payload.ToList();
+                if (tagsResult.IsFailed)
+                    return Result.Fail<IEnumerable<TransactionItem>>(tagsResult.Errors);
+                tagsCatalog = tagsResult.Value.ToList();
             }
 
             // transactions

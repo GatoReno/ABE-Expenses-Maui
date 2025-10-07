@@ -63,7 +63,7 @@ namespace AbeXP.ViewModels
                 };
 
                 var result = await _createTransactionUseCase.ExecuteAsync(transaction);
-                if (result.IsSuccessful)
+                if (result.IsSuccess)
                 {
                     App.Alert.ShowToast("Income saved successfully.");
 
@@ -89,10 +89,10 @@ namespace AbeXP.ViewModels
             try
             {
                 var result = await _getTransactionCatalogsUseCase.ExecuteAsync();
-                if (result.IsSuccessful)
+                if (result.IsSuccess)
                 {
-                    var tagItems = result.Payload.Tags.ToTagModelItemList();
-                    var paymentMethods = result.Payload.PaymentMethods;
+                    var tagItems = result.Value.Tags.ToTagModelItemList();
+                    var paymentMethods = result.Value.PaymentMethods;
 
                     Tags = new ObservableCollection<TagModelItem>(tagItems);
                     PaymentMethods = new ObservableCollection<PaymentMethod>(paymentMethods);

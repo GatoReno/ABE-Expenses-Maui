@@ -1,5 +1,5 @@
-using AbeXP.Common.Result;
 using AbeXP.Models;
+using FluentResults;
 
 namespace AbeXP.UseCases.Interfaces
 {

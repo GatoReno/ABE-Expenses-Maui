@@ -1,14 +1,8 @@
-﻿using AbeXP.Common.Result;
+using FluentResults;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbeXP.UseCases
 {

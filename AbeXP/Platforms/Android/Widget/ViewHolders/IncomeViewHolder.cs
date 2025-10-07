@@ -165,10 +165,10 @@ namespace AbeXP.Platforms.Android.Widget.ViewHolders
             try
             {
                 var itemsResult = await _getTransactionCatalogsUseCase.ExecuteAsync();
-                if (itemsResult.IsSuccessful)
+                if (itemsResult.IsSuccess)
                 {
-                    paymentMethods = itemsResult.Payload.PaymentMethods.ToPaymentMethodItemList().ToArray();
-                    tags = itemsResult.Payload.Tags.ToTagModelItemList().ToArray();
+                    paymentMethods = itemsResult.Value.PaymentMethods.ToPaymentMethodItemList().ToArray();
+                    tags = itemsResult.Value.Tags.ToTagModelItemList().ToArray();
                 }
             }
             catch

@@ -1,4 +1,4 @@
-﻿using AbeXP.Models;
+using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
 using Android.App;
 using Android.Content;
@@ -89,7 +89,7 @@ namespace AbeXP.Platforms.Android.Widget.Service
                         LimitTo = 30
                     });
 
-                    _items = new List<TransactionItem>(itemsResult.Payload);
+                    _items = new List<TransactionItem>(itemsResult.Value);
                 }
                 catch (Exception ex)
                 {

@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Result;
+using FluentResults;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
 using System;
@@ -25,17 +25,17 @@ namespace AbeXP.UseCases
             var paymentMethodsResult = await _getPaymentMethodsUseCase.ExecuteAsync();
 
             if (paymentMethodsResult.IsFailed)
-                return paymentMethodsResult.Errors;
+                return Result.Fail<TransactionCatalog>(paymentMethodsResult.Errors);
 
             var tagsResult = await _getTagsUseCase.ExecuteAsync();
             if (tagsResult.IsFailed)
-                return tagsResult.Errors;
+                return Result.Fail<TransactionCatalog>(tagsResult.Errors);
 
-            return new TransactionCatalog
+            return Result.Ok(new TransactionCatalog
             {
-                PaymentMethods = paymentMethodsResult.Payload.ToList(),
-                Tags = tagsResult.Payload.ToList()
-            };
+                PaymentMethods = paymentMethodsResult.Value.ToList(),
+                Tags = tagsResult.Value.ToList()
+            });
         }
     }
 }
