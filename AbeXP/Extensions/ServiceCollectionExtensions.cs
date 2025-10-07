@@ -84,6 +84,7 @@ public static class ServiceCollectionExtensions
         // Use cases
         services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
         services.AddTransient<ICreateTransactionUseCase, CreateTransactionUseCase>();
+        services.AddTransient<IDeleteTransactionUseCase, DeleteTransactionUseCase>();
         services.AddTransient<IGetPaymentMethodsUseCase, GetPaymentMethodsUseCase>();
         services.AddTransient<IGetTagsUseCase, GetAllTagsUseCase>();
         services.AddTransient<IGetTransactionCatalogsUseCase, GetTransactionCatalogsUseCase>();

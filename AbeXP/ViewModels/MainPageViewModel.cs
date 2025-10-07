@@ -1,4 +1,4 @@
-﻿using AbeXP.Common.Constants;
+using AbeXP.Common.Constants;
 using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
@@ -16,11 +16,13 @@ namespace AbeXP.ViewModels
     public partial class MainPageViewModel : ObservableObject
     {
         private readonly IGetTransactionsUseCase _getTransactionsUseCase;
+        private readonly IDeleteTransactionUseCase _deleteTransactionUseCase;
         private readonly IWidgetUpdater _widgetUpdater;
 
-        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase, IWidgetUpdater widgetUpdater)
+        public MainPageViewModel(IGetTransactionsUseCase getExpendituresUseCase, IDeleteTransactionUseCase deleteTransactionUseCase, IWidgetUpdater widgetUpdater)
         {
             _getTransactionsUseCase = getExpendituresUseCase;
+            _deleteTransactionUseCase = deleteTransactionUseCase;
             _widgetUpdater = widgetUpdater;
 
             LoadTransactionsAsync();
@@ -147,7 +149,12 @@ namespace AbeXP.ViewModels
             IsBusy = true;
             try
             {
-                // TODO: create use case to delete transaction.
+                var result = await _deleteTransactionUseCase.ExecuteAsync(item.Id);
+                if (!result.IsSuccessful)
+                {
+                    App.Alert.ShowAlert("Error", "Could not delete transaction.");
+                    return;
+                }
                 AllItems.Remove(item);
                 Transactions.Remove(item);
 
@@ -155,7 +162,7 @@ namespace AbeXP.ViewModels
             }
             catch (Exception ex)
             {
-                App.Alert.ShowAlert("Error", "Could not load transactions.");
+                App.Alert.ShowAlert("Error", "Could not delete transaction.");
             }
             finally
             {
