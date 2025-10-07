@@ -24,7 +24,7 @@
 		<ApplicationTitle>AbeXP</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.abexp</ApplicationId>
+            <ApplicationId>com.abe.abexp</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -37,7 +37,9 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
+    <PropertyGroup>
+        <CodesignEntitlements>Platforms/iOS/AbeXP.entitlements</CodesignEntitlements>
+    </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
@@ -50,7 +52,7 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#43B86B" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Include="Resources\Images\**" Svg="true"/>
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
@@ -59,7 +61,9 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
+    <ItemGroup>
+        <BundleResource Include="Platforms/iOS/AbeXP.entitlements" />
+    </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="Microcharts.Maui" Version="1.0.1" />
