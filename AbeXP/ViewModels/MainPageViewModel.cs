@@ -33,10 +33,10 @@ namespace AbeXP.ViewModels
         [ObservableProperty]
         public bool _isBusy;
 
-        [ObservableProperty] 
-        private List<string> filters = new() { AppResources.All, AppResources.Expense, AppResources.Income};
-        
-        [ObservableProperty] 
+        [ObservableProperty]
+        private List<string> filters = new() { AppResources.All, AppResources.Expense, AppResources.Income };
+
+        [ObservableProperty]
         private string selectedFilter = AppResources.All;
         private string titleFilter = AppResources.FilterTransactions;
 
@@ -52,7 +52,7 @@ namespace AbeXP.ViewModels
             }
         }
 
-        [ObservableProperty] 
+        [ObservableProperty]
         private ObservableCollection<TransactionItem> _transactions = new();
 
         // date pickers
@@ -64,12 +64,11 @@ namespace AbeXP.ViewModels
         // navigation params
         public bool TriggerUpdate
         {
-            set 
+            set
             {
-                if(value)
+                if (value)
                 {
-                    if (DeviceInfo.Platform == DevicePlatform.Android)
-                        _widgetUpdater.NotifyDataChanged();
+                    _widgetUpdater.NotifyDataChanged();
 
                     LoadTransactionsAsync();
                 }
@@ -105,7 +104,7 @@ namespace AbeXP.ViewModels
                     EndAt = EndDate
                 });
 
-                AllItems =  new List<TransactionItem>(transactionsResult.Value);
+                AllItems = new List<TransactionItem>(transactionsResult.Value);
             }
             catch (Exception ex)
             {
@@ -157,7 +156,7 @@ namespace AbeXP.ViewModels
                 }
                 AllItems.Remove(item);
                 Transactions.Remove(item);
-
+                _widgetUpdater.NotifyDataChanged();
                 App.Alert.ShowToast(AppResources.SuccessfulOperation);
             }
             catch (Exception ex)
@@ -182,7 +181,7 @@ namespace AbeXP.ViewModels
 
             if (SelectedFilter == AppResources.Expense)
                 filtered = filtered.Where(x => x.Type == TransactionType.Expense);
-            else if(SelectedFilter == AppResources.Income)
+            else if (SelectedFilter == AppResources.Income)
                 filtered = filtered.Where(x => x.Type == TransactionType.Income);
 
             Transactions = new ObservableCollection<TransactionItem>(filtered);
