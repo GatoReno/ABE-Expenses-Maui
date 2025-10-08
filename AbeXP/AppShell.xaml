@@ -15,6 +15,8 @@
         <toolkit:StatusBarBehavior StatusBarColor="{StaticResource PrimaryDark}" StatusBarStyle="LightContent" />
     </Shell.Behaviors>
 
+   
+
 
     <TabBar>
         <ShellContent
@@ -37,7 +39,16 @@
         </ShellContent>
 
     </TabBar>
-
+    <FlyoutItem Title="Home" Route="MainPage">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Home}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+    </FlyoutItem>
     <FlyoutItem Title="Profile" Route="ProfilePage">
         <ShellContent
             Title="Profile"

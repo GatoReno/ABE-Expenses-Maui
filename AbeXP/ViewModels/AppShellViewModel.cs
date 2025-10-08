@@ -1,4 +1,5 @@
 ﻿using AbeXP.Abstractions.Interfaces;
+using AbeXP;
 using AbeXP.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,11 +16,13 @@ namespace AbeXP.ViewModels
     {
         private readonly IFibAuthLog _fibAuthLog;
         private readonly IWidgetUpdater _widgetUpdater;
+        private readonly INavigationService _navigationService;
 
-        public AppShellViewModel(IFibAuthLog fibAuthLog, IWidgetUpdater widgetUpdater)
+        public AppShellViewModel(IFibAuthLog fibAuthLog, IWidgetUpdater widgetUpdater, INavigationService navigationService)
         {
             _fibAuthLog = fibAuthLog;
             _widgetUpdater = widgetUpdater;
+            _navigationService = navigationService;
         }
 
 
@@ -35,6 +38,19 @@ namespace AbeXP.ViewModels
             catch (Exception ex)
             {
                 App.Alert.ShowAlert("Error", $"Could not log out: {ex.Message}");
+            }
+        }
+
+        [RelayCommand]
+        private async Task NavigateHomeAsync()
+        {
+            try
+            {
+                await _navigationService.NavigateToAsync($"//{nameof(MainPage)}");
+            }
+            catch (Exception ex)
+            {
+                App.Alert.ShowAlert("Error", $"Unable to navigate home: {ex.Message}");
             }
         }
     }
