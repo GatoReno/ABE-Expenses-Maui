@@ -11,7 +11,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" VerticalOptions="Center"/>
+                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" VerticalOptions="{Binding VerticalOptions}" HorizontalOptions="{Binding HorizontalOptions}"/>
                 <ContentPresenter Grid.Row="1" HorizontalOptions="Center" HeightRequest="{Binding Path=Height}"/>
             </Grid>
         </ControlTemplate>

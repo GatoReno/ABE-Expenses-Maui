@@ -22,16 +22,10 @@
                 <!-- Swipe Items -->
                 <SwipeView.RightItems>
                     <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
-                        <SwipeItemView BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}">
-
+                        <SwipeItemView  BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource PrimaryDark}}" Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference this}}" CommandParameter="{Binding .}">
                             <Grid MinimumWidthRequest="60" >
-                                <!--button delete icon and loading spinner when busy-->
-                                <controls:ButtonWithContent x:Name="btnDeleteTxn" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference this}}" CommandParameter="{Binding .}" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent">
-                                    <Grid>
-                                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Delete}" IsVisible="{Binding Source={x:Reference btnDeleteTxn}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="25" TextColor="{StaticResource Gray600}"/>
-                                        <ActivityIndicator Margin="0" IsRunning="{Binding Source={x:Reference btnDeleteTxn}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
-                                    </Grid>
-                                </controls:ButtonWithContent>
+                                <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Delete}" IsVisible="{Binding Source={x:Reference this}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="25" TextColor="{StaticResource Gray600}"/>
+                                <ActivityIndicator Margin="0" IsRunning="{Binding Source={x:Reference this}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
                             </Grid>
                         </SwipeItemView>
                     </SwipeItems>
