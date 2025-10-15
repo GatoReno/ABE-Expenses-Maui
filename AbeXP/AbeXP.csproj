@@ -50,7 +50,7 @@
 		<MauiSplashScreen Include="Resources\AppIcon\appicon.svg" Color="#43B86B" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\**" Svg="true"/>
+		<MauiImage Include="Resources\Images\**" Svg="true" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
@@ -108,9 +108,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\DatePickerEntry.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Controls\DatePickerWithIcon.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\PickerWithIcon.xaml">

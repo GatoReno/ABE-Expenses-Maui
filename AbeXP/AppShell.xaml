@@ -38,10 +38,14 @@
 
     </TabBar>
 
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="20" />
+    </Shell.FlyoutHeader>
+
     <MenuItem
         Text="Profile"
         IconImageSource="{FontImageSource FontFamily={StaticResource MaterialIconsRegular}, Glyph={x:Static utils:MaterialIconsRegular.Person}}"
-        Command="{Binding NavigateProfileCommand}" />
+        Command="{Binding NavigateProfileCommand}"/>
 
     <Shell.FlyoutFooter>
         <Button Margin="20" Padding="10" Text="{x:Static resources:AppResources.LogOut}" Command="{Binding LogOutCommand}"/>
