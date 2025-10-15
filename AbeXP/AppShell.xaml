@@ -15,8 +15,6 @@
         <toolkit:StatusBarBehavior StatusBarColor="{StaticResource PrimaryDark}" StatusBarStyle="LightContent" />
     </Shell.Behaviors>
 
-   
-
 
     <TabBar>
         <ShellContent
@@ -39,38 +37,13 @@
         </ShellContent>
 
     </TabBar>
-    <FlyoutItem Title="Home" Route="MainPage">
-        <ShellContent
-            Title="Home"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route="MainPage">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Home}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
-            </ShellContent.Icon>
-        </ShellContent>
-    </FlyoutItem>
-    <FlyoutItem Title="Profile" Route="ProfilePage">
-        <ShellContent
-            Title="Profile"
-            ContentTemplate="{DataTemplate views:ProfilePage}"
-            Route="ProfilePage">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="{StaticResource MaterialIconsRegular}" Glyph="{x:Static utils:MaterialIconsRegular.Person}" Size="30" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
-            </ShellContent.Icon>
-        </ShellContent>
-    </FlyoutItem>
+
+    <MenuItem
+        Text="Profile"
+        IconImageSource="{FontImageSource FontFamily={StaticResource MaterialIconsRegular}, Glyph={x:Static utils:MaterialIconsRegular.Person}}"
+        Command="{Binding NavigateProfileCommand}" />
 
     <Shell.FlyoutFooter>
         <Button Margin="20" Padding="10" Text="{x:Static resources:AppResources.LogOut}" Command="{Binding LogOutCommand}"/>
     </Shell.FlyoutFooter>
-    <!-- Logout Button -->
-   
-    <!--<ShellContent
-      Title="Login"
-      ContentTemplate="{DataTemplate views:LoginView}"/>-->
-
-    <!--<ShellContent
-      Title="XP"
-      ContentTemplate="{DataTemplate views:TransactionListPage}"/>-->
-
 </Shell>

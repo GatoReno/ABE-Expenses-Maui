@@ -48,19 +48,6 @@ namespace AbeXP.ViewModels
         }
 
         [RelayCommand]
-        private async Task NavigateHomeAsync()
-        {
-            try
-            {
-                await _navigationService.NavigateToAsync($"//{nameof(MainPage)}");
-            }
-            catch (Exception ex)
-            {
-                App.Alert.ShowAlert("Error", $"Unable to navigate home: {ex.Message}");
-            }
-        }
-
-        [RelayCommand]
         private async Task NavigateProfileAsync()
         {
             try
