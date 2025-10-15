@@ -86,9 +86,9 @@
             <controls:DatePickerEntry Grid.Column="1" Hint="{x:Static resources:AppResources.EndDate}" Date="{Binding EndDate}"/>
 
             <!--button shows search icon and loading spinner when busy-->
-            <controls:ButtonWithContent Grid.Column="2" x:Name="btnSearch" Margin="10,0,0,0" HeightRequest="35" WidthRequest="70"  VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding LoadTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
-                <Grid>
-                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
+            <controls:ButtonWithContent Grid.Column="2" x:Name="btnSearch" HeightRequest="35" VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding LoadTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" >
+                <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="25" TextColor="{StaticResource White}"/>
                     <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
                 </Grid>
             </controls:ButtonWithContent>

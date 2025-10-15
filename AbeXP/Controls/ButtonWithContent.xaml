@@ -6,13 +6,32 @@
 
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Grid BindingContext="{x:Reference this}" VerticalOptions="{Binding VerticalOptions}" HorizontalOptions="{Binding HorizontalOptions}">
+            <Grid BindingContext="{x:Reference this}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button HeightRequest="{Binding Path=Height}" Grid.RowSpan="2" BackgroundColor="{Binding BackgroundColor}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" VerticalOptions="{Binding VerticalOptions}" HorizontalOptions="{Binding HorizontalOptions}"/>
-                <ContentPresenter Grid.Row="1" HorizontalOptions="Center" HeightRequest="{Binding Path=Height}"/>
+
+                <Button Grid.RowSpan="2" 
+                        Command="{Binding Command}" 
+                        CommandParameter="{Binding CommandParameter}" 
+                        BackgroundColor="{Binding BackgroundColor}"
+                        HeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
+                        MinimumHeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
+                        WidthRequest="{Binding WidthRequest, Source={x:Reference this}}"
+                        VerticalOptions="Fill" 
+                        HorizontalOptions="Fill"/>
+
+
+
+                <ContentPresenter Grid.Row="1" 
+                                  HeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
+                                  MinimumHeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
+                                  WidthRequest="{Binding WidthRequest, Source={x:Reference this}}"
+                                  VerticalOptions="Fill"
+                                  HorizontalOptions="Fill"/>
+                                  <!--VerticalOptions="{Binding VerticalOptions, Source={x:Reference this}}" 
+                                  HorizontalOptions="{Binding HorizontalOptions, Source={x:Reference this}}"-->
             </Grid>
         </ControlTemplate>
     </ContentView.ControlTemplate>

@@ -20,7 +20,7 @@
             <Grid ColumnDefinitions="auto, *" RowDefinitions="auto,*" >
                 
                 <!--Icon-->
-                <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource PrimaryDark}}"/>
+                <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
 
                 <!--Date picker-->
                 <DatePicker Grid.Column="1" Grid.Row="1" x:Name="DatePicker"  IsVisible="Collapse" PropertyChanged="DatePicker_PropertyChanged" Date="{Binding Date, Source={x:Reference this}}"/>
