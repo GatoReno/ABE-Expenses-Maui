@@ -9,10 +9,10 @@
             <Grid BindingContext="{x:Reference this}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    
                 </Grid.RowDefinitions>
 
-                <Button Grid.RowSpan="2" 
+                <Button  
                         Command="{Binding Command}" 
                         CommandParameter="{Binding CommandParameter}" 
                         BackgroundColor="{Binding BackgroundColor}"
@@ -22,9 +22,9 @@
                         VerticalOptions="Fill" 
                         HorizontalOptions="Fill"/>
 
-
-
-                <ContentPresenter Grid.Row="1" 
+                <ContentPresenter 
+                                  InputTransparent="True"
+                                  CascadeInputTransparent="False"
                                   HeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
                                   MinimumHeightRequest="{Binding Path=HeightRequest, Source={x:Reference this}}"
                                   WidthRequest="{Binding WidthRequest, Source={x:Reference this}}"

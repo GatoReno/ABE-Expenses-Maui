@@ -20,7 +20,7 @@
             <Grid ColumnDefinitions="auto, *" RowDefinitions="auto,*" >
                 
                 <!--Icon-->
-                <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                <Label Grid.RowSpan="2" FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Date_range}" VerticalOptions="Center" Padding="5" FontSize="11" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
 
                 <!--Date picker-->
                 <DatePicker Grid.Column="1" Grid.Row="1" x:Name="DatePicker"  IsVisible="Collapse" PropertyChanged="DatePicker_PropertyChanged" Date="{Binding Date, Source={x:Reference this}}"/>
@@ -28,7 +28,7 @@
 
                 <Grid Grid.Column="1" Grid.Row="1" Padding="0,0,5,1" RowDefinitions="auto, auto, auto">
                     <!--hint-->
-                    <Label  Text="{Binding Hint, Source={x:Reference this}}" VerticalOptions="Start" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="12" />
+                    <Label  Text="{Binding Hint, Source={x:Reference this}}" VerticalOptions="Start" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="11" />
 
                     <!--border-->
                     <BoxView Grid.Row="2"
@@ -39,7 +39,7 @@
                          Margin="0,-1,0,0"/>
 
                     <!--date string-->
-                    <Label Grid.Row="1" Text="{Binding Date, Source={x:Reference this}, Converter={StaticResource DateTimeToStringConverter}}" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Margin="0,0,0,1"/>
+                    <Label Grid.Row="1" FontSize="11" Text="{Binding Date, Source={x:Reference this}, Converter={StaticResource DateTimeToStringConverter}}" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Margin="0,0,0,1"/>
                 </Grid>
             </Grid>
         </Border.Content>
