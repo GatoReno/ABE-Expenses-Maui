@@ -86,7 +86,19 @@ namespace AbeXP.ViewModels
         /// <param name="period"></param>
         partial void OnPeriodChanged(TimePeriod period)
         {
-            CreateExpensesLineChart();
+            IsBusy = true;
+            try
+            {
+                CreateExpensesLineChart();
+            }
+            catch (Exception ex)
+            {
+                App.Alert.ShowAlert("Error", "Could not load charts.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
 
@@ -152,8 +164,8 @@ namespace AbeXP.ViewModels
                     ValueLabelColor = labelColor
                 })
                 .ToList();
-            
-            
+
+
 
             ExpensesLineChart = new LineChart
             {
@@ -293,43 +305,33 @@ namespace AbeXP.ViewModels
                 }
 
                 var transactions = transactionsResult.Value.ToList();
+                TransactionsCount = transactions.Any() ? transactions.Count : 0;
 
-
-                if (!transactions.Any())
+                if (!transactions.Any(t => t.Type == TransactionType.Expense))
                 {
-                    if (!transactions.Any(t => t.Type == TransactionType.Expense))
+                    transactions.Add(new TransactionItem
                     {
-                        transactions.Add(new TransactionItem
-                        {
-                            Amount = 0,
-                            Date = DateTime.Now,
-                            Description = "No expenses found",
-                            PaymentMethod = "N/A",
-                            Type = TransactionType.Expense,
-                            Tags = new List<string> { "N/A" }
-                        });
-                    }
-
-                    if (!transactions.Any(t => t.Type == TransactionType.Income))
-                    {
-                        transactions.Add(new TransactionItem
-                        {
-                            Amount = 0,
-                            Date = DateTime.Now,
-                            Description = "No expenses  ound",
-                            PaymentMethod = "N/A",
-                            Type = TransactionType.Income,
-                            Tags = new List<string> { "N/A" }
-                        });
-
-                    }
-
-                    TransactionsCount = 0;
+                        Amount = 0,
+                        Date = DateTime.Now,
+                        Description = "No expenses found",
+                        PaymentMethod = "N/A",
+                        Type = TransactionType.Expense,
+                        Tags = new List<string> { "N/A" }
+                    });
                 }
-                
-                else
+
+                if (!transactions.Any(t => t.Type == TransactionType.Income))
                 {
-                    TransactionsCount = transactions.Count;
+                    transactions.Add(new TransactionItem
+                    {
+                        Amount = 0,
+                        Date = DateTime.Now,
+                        Description = "No inconmes found",
+                        PaymentMethod = "N/A",
+                        Type = TransactionType.Income,
+                        Tags = new List<string> { "N/A" }
+                    });
+
                 }
 
 
