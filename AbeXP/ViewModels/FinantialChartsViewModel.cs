@@ -256,9 +256,10 @@ namespace AbeXP.ViewModels
                 new Axis
                 {
                     Labels = periods.Select(p => Period.ToLabel(p)).ToArray(),
-                    LabelsRotation = 12,
+                    LabelsRotation = 70,
                     LabelsPaint = new SolidColorPaint(labelColor),
-                    TextSize = 14
+                    TextSize = 14,
+                    Position = AxisPosition.End
                 }
             };
 
