@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:system="clr-namespace:System;assembly=netstandard"
-             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              xmlns:utils="clr-namespace:AbeXP.Util"
              xmlns:controls="clr-namespace:AbeXP.Controls"
              xmlns:resources="clr-namespace:AbeXP.Resources.Strings"
              xmlns:enums="clr-namespace:AbeXP.Common.Enum"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="AbeXP.Views.FinantialChartsPage"
              Title="Gráficas">
 
@@ -18,9 +18,13 @@
             <x:Double x:Key="TotalTitleFontSize">12</x:Double>
 
             <!--Style for the charts-->
-            <Style TargetType="{x:Type controls:ChartViewRefreshable}" >
-                <Setter Property="MinimumHeightRequest" Value="400"/>
-                <Setter Property="Margin" Value="0,20,0,20"/>
+            <Style TargetType="lvc:CartesianChart">
+                <Setter Property="MinimumHeightRequest" Value="600" />
+                <Setter Property="Margin" Value="0,20,0,20" />
+            </Style>
+            <Style TargetType="lvc:PieChart">
+                <Setter Property="MinimumHeightRequest" Value="500" />
+                <Setter Property="Margin" Value="0,20,0,20" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -35,13 +39,13 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!--Expense total-->
-            <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
+           <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
                 <VerticalStackLayout VerticalOptions="Center">
                     <!--<Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>-->
                     <Grid 
@@ -77,7 +81,7 @@
                             </Label.FormattedText>
                         </Label>
                     </Grid>
-                    
+
                     <!--Transactions count-->
                     <Label HorizontalOptions="Center" Margin="0,10,0,0" FontSize="{StaticResource TotalTitleFontSize}" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}">
                         <Label.FormattedText>
@@ -97,10 +101,10 @@
                 <controls:DatePickerEntry Grid.Column="0" Hint="{x:Static resources:AppResources.StartDate}" Date="{Binding StartDate}" Margin="0,0,5,0"/>
                 <controls:DatePickerEntry Grid.Column="1" Hint="{x:Static resources:AppResources.EndDate}" Date="{Binding EndDate}" Margin="0,0,5,0"/>
 
-                <controls:ButtonWithContent Grid.Column="2" x:Name="btnSearch" HeightRequest="40" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding GetTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" >
+                <controls:ButtonWithContent Grid.Column="2" HeightRequest="40" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="End"  Command="{Binding GetTransactionsCommand}" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" >
                     <Grid VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Source={x:Reference btnSearch}, Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
-                        <ActivityIndicator Margin="5" IsRunning="{Binding Source={x:Reference btnSearch}, Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Label FontFamily="{StaticResource MaterialIconsRegular}" Text="{x:Static utils:MaterialIconsRegular.Search}" IsVisible="{Binding Path=IsBusy, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=collapse}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="{StaticResource White}"/>
+                        <ActivityIndicator Margin="5" IsRunning="{Binding Path=IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" />
                     </Grid>
                 </controls:ButtonWithContent>
             </Grid>
@@ -118,24 +122,25 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
 
-                <Border BackgroundColor="Red" HorizontalOptions="Center">
-                    <Label Text="{x:Static resources:AppResources.Expense}"/>
-                </Border>
-                <controls:ChartViewRefreshable Chart="{Binding ExpensesLineChart}"/>
-
-                <Border BackgroundColor="Green" HorizontalOptions="Center">
-                    <Label Text="{x:Static resources:AppResources.Income}"/>
-                </Border>
-                <controls:ChartViewRefreshable Chart="{Binding IncomesLineChart}"/>
+                <lvc:CartesianChart Series="{Binding TransactionLineSeries}"
+                                    XAxes="{Binding TransactionLineXAxes}"
+                                    YAxes="{Binding TransactionLineYAxes}"
+                                    LegendPosition="Bottom"/>
 
                 <!--Expenses by payment category chart-->
                 <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.PaymentTypeChart}"/>
-                <controls:ChartViewRefreshable Chart="{Binding PaymentsTypeDonutChart}"/>
+                <lvc:PieChart Series="{Binding PaymentMethodSeries}"
+                              LegendPosition="Bottom" />
 
                 <!--Expenses by tags chart-->
                 <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.TagsTypeChart}"/>
-                <controls:ChartViewRefreshable Chart="{Binding TagsBarChart}"/>
+
+                    <lvc:CartesianChart Series="{Binding TagsSeries}"
+                                    XAxes="{Binding TagsXAxes}"
+                                    YAxes="{Binding TagsYAxes}"
+                                    LegendPosition="Hidden" />
             </VerticalStackLayout>
         </Grid>
+
     </ScrollView>
 </ContentPage>

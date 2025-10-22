@@ -1,14 +1,15 @@
 using AbeXP.Common.Enum;
 using AbeXP.Extensions;
-using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.Resources.Strings;
 using AbeXP.UseCases.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microcharts;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Maui.Controls;
-using Newtonsoft.Json;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 
@@ -18,80 +19,135 @@ namespace AbeXP.ViewModels
     {
         private readonly IGetTransactionsUseCase _getTransactionsUseCase;
 
+        private static readonly SKColor ExpenseColor = SKColor.Parse("#E74C3C");
+        private static readonly SKColor IncomeColor = SKColor.Parse("#27AE60");
+        private static readonly SKColor TagsColor = SKColor.Parse("#3498DB");
+        private static readonly SKColor[] Palette =
+        [
+            SKColor.Parse("#FF6B6B"),
+            SKColor.Parse("#6BCB77"),
+            SKColor.Parse("#4D96FF"),
+            SKColor.Parse("#FFBC42"),
+            SKColor.Parse("#9D4EDD"),
+            SKColor.Parse("#FF8FAB"),
+            SKColor.Parse("#4ECDC4")
+        ];
+
         public FinantialChartsViewModel(IGetTransactionsUseCase getTransactionsUseCase)
         {
             _getTransactionsUseCase = getTransactionsUseCase;
 
+            TransactionLineSeries = new ObservableCollection<ISeries>();
+            TransactionLineXAxes = Array.Empty<Axis>();
+            TransactionLineYAxes = Array.Empty<Axis>();
+
+            PaymentMethodSeries = new ObservableCollection<ISeries>();
+            TagsSeries = new ObservableCollection<ISeries>();
+            TagsXAxes = Array.Empty<Axis>();
+            TagsYAxes = Array.Empty<Axis>();
+
             GetTransactionsAsync();
+
+            Application.Current.RequestedThemeChanged += (s, a) =>
+            {
+                OnTransactionsChanged();
+            };
         }
 
         #region PROPERTIES
 
         // data
-        private IReadOnlyList<TransactionItem> _transactions;
+        private IReadOnlyList<TransactionItem> _transactions = Array.Empty<TransactionItem>();
         public IReadOnlyList<TransactionItem> Transactions
         {
-            get { return _transactions; }
+            get => _transactions;
             set
             {
                 _transactions = value;
                 OnTransactionsChanged();
             }
         }
+
         public bool IsDarkMode => Application.Current.RequestedTheme == AppTheme.Dark;
-        public float ChartLabelFontSize => 40f;
 
         [ObservableProperty]
-        public bool _expensesMoreThanOneMonth;
+        private bool _expensesMoreThanOneMonth;
 
         [ObservableProperty]
-        public bool _isBusy;
+        private bool _isBusy;
 
         // charts
         [ObservableProperty]
-        public Chart _expensesLineChart;
+        private ObservableCollection<ISeries> _transactionLineSeries;
+
         [ObservableProperty]
-        public Chart _incomesLineChart;
+        private Axis[] _transactionLineXAxes;
+
         [ObservableProperty]
-        public Chart _paymentsTypeDonutChart;
+        private Axis[] _transactionLineYAxes;
+
         [ObservableProperty]
-        public Chart _tagsBarChart;
+        private ObservableCollection<ISeries> _paymentMethodSeries;
+
         [ObservableProperty]
-        public TimePeriod _period = TimePeriod.ThreeDays;
+        private ObservableCollection<ISeries> _tagsSeries;
+
+        [ObservableProperty]
+        private Axis[] _tagsXAxes;
+
+        [ObservableProperty]
+        private Axis[] _tagsYAxes;
+
+        [ObservableProperty]
+        private TimePeriod _period = TimePeriod.ThreeDays;
+
+        private SKColor GetTextColor() => IsDarkMode ? SKColors.White : SKColors.Black;
+
+        private SKColor GetSeparatorColor() => IsDarkMode ? SKColor.Parse("#2E2E2E") : SKColor.Parse("#DDDDDD");
+
+        private SKColor GetPaletteColor(int index) => Palette[index % Palette.Length];
+
+        private sealed record PaymentMethodSlice(string PaymentMethod, decimal Total, int Count);
+
+        private sealed record TagChartEntry(string Tag, decimal Total, int Count);
 
         // dates configuration
         [ObservableProperty]
-        public DateTime _startDate = DateTime.Now.FirstDayOfCurrentMonth();
+        private DateTime _startDate = DateTime.Now.FirstDayOfCurrentMonth();
+
         [ObservableProperty]
-        public DateTime _minStartDateAllowed = DateTime.MinValue;
+        private DateTime _minStartDateAllowed = DateTime.MinValue;
+
         [ObservableProperty]
-        public DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+        private DateTime _endDate = DateTime.Now.LastDayOfCurrentMonth();
+
         [ObservableProperty]
-        public DateTime _maxEndDateAllowed = DateTime.Now.LastDayOfCurrentMonth();
+        private DateTime _maxEndDateAllowed = DateTime.Now.LastDayOfCurrentMonth();
 
         // total
         [ObservableProperty]
-        public decimal? _totalExpensesAmount;
-        [ObservableProperty]
-        public decimal? _totalIncomeAmount;
-        [ObservableProperty]
-        public int _transactionsCount;
+        private decimal? _totalExpensesAmount;
 
+        [ObservableProperty]
+        private decimal? _totalIncomeAmount;
+
+        [ObservableProperty]
+        private int _transactionsCount;
 
         #endregion
 
         /// <summary>
-        /// Triggered when the Period property changes, recreating the expenses line chart to reflect the new grouping.
+        /// Triggered when the Period property changes; refresh the line chart grouping.
         /// </summary>
-        /// <param name="period"></param>
+        /// <param name="period">Selected period grouping.</param>
         partial void OnPeriodChanged(TimePeriod period)
         {
-            IsBusy = true;
             try
             {
-                CreateExpensesLineChart();
+                IsBusy = true;
+                CreateTransactionLineChart();
             }
-            catch (Exception ex)
+            catch
             {
                 App.Alert.ShowAlert("Error", "Could not load charts.");
             }
@@ -101,23 +157,19 @@ namespace AbeXP.ViewModels
             }
         }
 
-
         /// <summary>
-        /// Triggered when the Expenses property changes, refresh all the charts with the new data
+        /// Triggered when the Transactions collection changes; rebuild all charts.
         /// </summary>
-        /// <param name="value"></param>
         private void OnTransactionsChanged()
         {
-            IsBusy = true;
             try
             {
-                CreateExpensesLineChart();
-                CreatePaymentTypesPieChart();
+                IsBusy = true;
+                CreateTransactionLineChart();
+                CreatePaymentMethodsPieChart();
                 CreateTagsBarChart();
-
-
             }
-            catch (Exception ex)
+            catch
             {
                 App.Alert.ShowAlert("Error", "Could not load charts.");
             }
@@ -127,165 +179,211 @@ namespace AbeXP.ViewModels
             }
         }
 
-
         /// <summary>
-        /// Creates a line chart representing expenses over time, grouped by the selected period (ThreeDays, Week, Month).
+        /// Creates a line chart that plots expenses and incomes over the selected period aggregation.
         /// </summary>
-        private void CreateExpensesLineChart()
+        private void CreateTransactionLineChart()
         {
-            SKColor labelColor = IsDarkMode ? SKColors.White : SKColors.Black;
+            if (Transactions is null || Transactions.Count == 0)
+            {
+                TransactionLineSeries = new ObservableCollection<ISeries>();
+                TransactionLineXAxes = Array.Empty<Axis>();
+                TransactionLineYAxes = Array.Empty<Axis>();
+                return;
+            }
 
             var grouped = Transactions
                 .GroupBy(t => new { Period = t.Date.GetPeriodStart(Period), t.Type })
-                .Select(g => new { Date = g.Key.Period, Type = g.Key.Type, Total = g.Sum(t => t.Amount) })
-                .ToList();
-
-
-            var expenses = grouped
-                .Where(g => g.Type == TransactionType.Expense)
-                .OrderBy(g => g.Date)
-                .Select(g => new ChartEntry((float)g.Total)
+                .Select(g => new
                 {
-                    Label = Period.ToLabel(g.Date),
-                    ValueLabel = g.Total.ToString("C"),
-                    Color = SKColor.Parse("#E74C3C"), // red
-                    ValueLabelColor = labelColor
+                    g.Key.Period,
+                    g.Key.Type,
+                    Total = g.Sum(t => t.Amount)
                 })
                 .ToList();
 
-            var incomes = grouped
-                .Where(g => g.Type == TransactionType.Income)
-                .OrderBy(g => g.Date)
-                .Select(g => new ChartEntry((float)g.Total)
-                {
-                    Label = Period.ToLabel(g.Date),
-                    ValueLabel = g.Total.ToString("C"),
-                    Color = SKColor.Parse("#27AE60"), // green
-                    ValueLabelColor = labelColor
-                })
+            var periods = grouped
+                .Select(g => g.Period)
+                .Distinct()
+                .OrderBy(d => d)
                 .ToList();
 
-
-
-            ExpensesLineChart = new LineChart
+            if (periods.Count == 0)
             {
-                AnimationDuration = TimeSpan.Zero,
-                LineAreaAlpha = 0,
-                Entries = expenses,
-                LineMode = LineMode.Straight,
-                LineSize = 4,
-                PointMode = PointMode.Circle,
-                PointSize = 5,
-                BackgroundColor = SKColors.Transparent,
-                LabelTextSize = ChartLabelFontSize,
-                LabelColor = labelColor
+                TransactionLineSeries = new ObservableCollection<ISeries>();
+                TransactionLineXAxes = Array.Empty<Axis>();
+                TransactionLineYAxes = Array.Empty<Axis>();
+                return;
+            }
+
+            var expenses = periods
+                .Select(date => (double)(grouped.FirstOrDefault(g => g.Period == date && g.Type == TransactionType.Expense)?.Total ?? 0m))
+                .ToList();
+
+            var incomes = periods
+                .Select(date => (double)(grouped.FirstOrDefault(g => g.Period == date && g.Type == TransactionType.Income)?.Total ?? 0m))
+                .ToList();
+
+            var labelColor = GetTextColor();
+
+            TransactionLineSeries = new ObservableCollection<ISeries>
+            {
+                new LineSeries<double>
+                {
+                    Name = AppResources.Expense,
+                    Values = expenses,
+                    Stroke = new SolidColorPaint(ExpenseColor) { StrokeThickness = 4 },
+                    Fill = null,
+                    GeometryStroke = new SolidColorPaint(ExpenseColor) { StrokeThickness = 4 },
+                    GeometryFill = new SolidColorPaint(ExpenseColor),
+                    GeometrySize = 10
+                },
+                new LineSeries<double>
+                {
+                    Name = AppResources.Income,
+                    Values = incomes,
+                    Stroke = new SolidColorPaint(IncomeColor) { StrokeThickness = 4 },
+                    Fill = null,
+                    GeometryStroke = new SolidColorPaint(IncomeColor) { StrokeThickness = 4 },
+                    GeometryFill = new SolidColorPaint(IncomeColor),
+                    GeometrySize = 10
+                }
             };
 
-            IncomesLineChart = new LineChart
+            TransactionLineXAxes = new[]
             {
-                LineAreaAlpha = 0,
-                Entries = incomes,
-                LineMode = LineMode.Straight,
-                LineSize = 4,
-                PointMode = PointMode.Circle,
-                PointSize = 5,
-                AnimationDuration = TimeSpan.Zero,
-                BackgroundColor = SKColors.Transparent,
-                LabelTextSize = ChartLabelFontSize,
-                LabelColor = labelColor
+                new Axis
+                {
+                    Labels = periods.Select(p => Period.ToLabel(p)).ToArray(),
+                    LabelsRotation = 12,
+                    LabelsPaint = new SolidColorPaint(labelColor),
+                    TextSize = 14
+                }
+            };
+
+            TransactionLineYAxes = new[]
+            {
+                new Axis
+                {
+                    MinLimit = 0,
+                    Labeler = value => value.ToString("C0"),
+                    LabelsPaint = new SolidColorPaint(labelColor),
+                    TextSize = 14,
+                    SeparatorsPaint = new SolidColorPaint(GetSeparatorColor()) { StrokeThickness = 1 }
+                }
             };
         }
 
         /// <summary>
-        /// Creates a donut chart representing the distribution of expenses by payment types.
+        /// Builds the pie chart aggregating transaction amounts by payment method.
         /// </summary>
-        private void CreatePaymentTypesPieChart()
+        private void CreatePaymentMethodsPieChart()
         {
+            if (Transactions is null || Transactions.Count == 0)
+            {
+                PaymentMethodSeries = new ObservableCollection<ISeries>();
+                return;
+            }
+
             var grouped = Transactions
-                .GroupBy(e => e.PaymentMethod)
-                .Select(g => new
-                {
-                    g.Key,
-                    Count = g.Count(),
-                    Total = g.Sum(e => e.Amount)
-                });
+                .GroupBy(t => string.IsNullOrWhiteSpace(t.PaymentMethod) ? "N/A" : t.PaymentMethod)
+                .Select(g => new PaymentMethodSlice(g.Key, g.Sum(t => t.Amount), g.Count()))
+                .OrderByDescending(slice => slice.Total)
+                .ToList();
 
-            var entries = grouped.Select(g => new ChartEntry((float)g.Total)
+            if (grouped.Count == 0)
             {
-                Label = $"{g.Key} ({g.Count})",
-                ValueLabel = g.Total.ToString("C"),
-                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
-                Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}")
-            }).ToArray();
+                PaymentMethodSeries = new ObservableCollection<ISeries>();
+                return;
+            }
 
-            PaymentsTypeDonutChart = new DonutChart
+            var labelColor = GetTextColor();
+
+            var pieSeries = new ObservableCollection<ISeries>();
+
+            for (int i = 0; i < grouped.Count; i++)
             {
-                Entries = entries,
-                HoleRadius = 0.6f,
-                BackgroundColor = SKColors.Transparent,
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
-                LabelTextSize = ChartLabelFontSize,
-            };
-        }
-
-        /// <summary>
-        /// Creates a bar chart representing the total expenses associated with each tag.
-        /// </summary>
-        private void CreateTagsBarChart()
-        {
-            // divide amount on all the transaction tags, since a single transaction may contain more than one tag
-            var grouped = Transactions
-                .SelectMany(e => e.Tags?.Select(tag => new { Tag = tag, Amount = e.Amount / e.Tags.Count }) ?? [new { Tag = AppResources.NoTag, e.Amount }])
-                .GroupBy(x => x.Tag)
-                .Select(g => new
+                var slice = grouped[i];
+                pieSeries.Add(new PieSeries<ObservableValue>
                 {
-                    g.Key,
-                    Count = g.Count(),
-                    Total = g.Sum(x => x.Amount)
-                });
-
-            var entries = grouped.Select(g => new ChartEntry((float)g.Total)
-            {
-                Label = $"{g.Key} ({g.Count})",
-                ValueLabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
-                ValueLabel = g.Total.ToString("C"),
-                Color = SKColor.Parse($"#{new Random().Next(0x1000000):X6}"),
-            });
-
-            //if so, the barchart takes all width screen, reduce by adding dummy entries
-            if (entries.Count() == 1)
-            {
-                entries = entries.Prepend(new ChartEntry(0)
-                {
-                    Label = "",
-                    ValueLabel = "",
-                    Color = SKColor.Parse("#00FFFFFF")
-                });
-
-                entries = entries.Append(new ChartEntry(0)
-                {
-                    Label = "",
-                    ValueLabel = "",
-                    Color = SKColor.Parse("#00FFFFFF")
+                    Name = slice.PaymentMethod,
+                    Values = new ObservableCollection<ObservableValue> { new ObservableValue((double)slice.Total) },
+                    Fill = new SolidColorPaint(GetPaletteColor(i)),
+                    Stroke = new SolidColorPaint(SKColors.Transparent),
+                    Pushout = 2
                 });
             }
 
-            TagsBarChart = new BarChart
+            PaymentMethodSeries = pieSeries;
+        }
+
+        /// <summary>
+        /// Builds a column chart summarizing spend and transaction count by tag.
+        /// </summary>
+        private void CreateTagsBarChart()
+        {
+            if (Transactions is null || Transactions.Count == 0)
             {
-                Entries = entries,
-                BackgroundColor = SKColors.Transparent,
-                BarAreaAlpha = 0,
-                MaxValue = entries.Any() ? (float)(entries.Max(e => e.Value) * 1.1f) : 0f, // small padding above
-                LabelColor = IsDarkMode ? SKColors.White : SKColors.Black,
-                LabelTextSize = ChartLabelFontSize,
+                TagsSeries = new ObservableCollection<ISeries>();
+                TagsXAxes = Array.Empty<Axis>();
+                TagsYAxes = Array.Empty<Axis>();
+                return;
+            }
+
+            var grouped = Transactions
+                .SelectMany(t => t.Tags?.Select(tag => new { Tag = tag, Amount = t.Tags.Count > 0 ? t.Amount / t.Tags.Count : t.Amount }) ??
+                                   new[] { new { Tag = AppResources.NoTag, Amount = t.Amount } })
+                .GroupBy(x => x.Tag)
+                .Select(g => new TagChartEntry(g.Key, g.Sum(x => x.Amount), g.Count()))
+                .OrderByDescending(entry => entry.Total)
+                .ToList();
+
+            if (grouped.Count == 0)
+            {
+                TagsSeries = new ObservableCollection<ISeries>();
+                TagsXAxes = Array.Empty<Axis>();
+                TagsYAxes = Array.Empty<Axis>();
+                return;
+            }
+
+            var labelColor = GetTextColor();
+
+            var columnSeries = new ColumnSeries<ObservableValue>
+            {
+                Values = new ObservableCollection<ObservableValue>(grouped.Select(entry => new ObservableValue((double)entry.Total))),
+                Fill = new SolidColorPaint(TagsColor),
+                Stroke = new SolidColorPaint(SKColors.Transparent)
+            };
+
+            TagsSeries = new ObservableCollection<ISeries> { columnSeries };
+
+            TagsXAxes = new[]
+            {
+                new Axis
+                {
+                    Labels = grouped.Select(entry => entry.Tag).ToArray(),
+                    LabelsRotation = 90,
+                    LabelsPaint = new SolidColorPaint(labelColor),
+                    TextSize = 14
+                }
+            };
+
+            TagsYAxes = new[]
+            {
+                new Axis
+                {
+                    MinLimit = 0,
+                    Labeler = value => value.ToString("C0"),
+                    LabelsPaint = new SolidColorPaint(labelColor),
+                    TextSize = 14,
+                    SeparatorsPaint = new SolidColorPaint(GetSeparatorColor()) { StrokeThickness = 1 }
+                }
             };
         }
 
-
         /// <summary>
-        /// Get all expenses from the repository and populate the Expenses collection.
+        /// Retrieves transactions and updates the dashboard.
         /// </summary>
-        /// <returns></returns>
         [RelayCommand]
         private async Task GetTransactionsAsync()
         {
@@ -326,24 +424,22 @@ namespace AbeXP.ViewModels
                     {
                         Amount = 0,
                         Date = DateTime.Now,
-                        Description = "No inconmes found",
+                        Description = "No incomes found",
                         PaymentMethod = "N/A",
                         Type = TransactionType.Income,
                         Tags = new List<string> { "N/A" }
                     });
-
                 }
-
 
                 var minDate = transactions.MinBy(e => e.Date).Date;
                 var maxDate = transactions.MaxBy(e => e.Date).Date;
 
-                TotalExpensesAmount = transactions?.Where(t => t.Type == TransactionType.Expense).Sum(e => e.Amount);
-                TotalIncomeAmount = transactions?.Where(t => t.Type == TransactionType.Income).Sum(e => e.Amount);
+                TotalExpensesAmount = transactions.Where(t => t.Type == TransactionType.Expense).Sum(e => e.Amount);
+                TotalIncomeAmount = transactions.Where(t => t.Type == TransactionType.Income).Sum(e => e.Amount);
                 ExpensesMoreThanOneMonth = minDate.IsMoreThanOneMonthApart(maxDate);
                 Transactions = transactions.AsReadOnly();
             }
-            catch (Exception ex)
+            catch
             {
                 App.Alert.ShowAlert("Error", "Could not load data.");
             }
@@ -353,6 +449,6 @@ namespace AbeXP.ViewModels
             }
         }
 
-
+        
     }
 }

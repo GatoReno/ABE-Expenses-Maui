@@ -17,7 +17,7 @@ The solution follows an MVVM architecture backed by use cases and repositories t
 
 ## Key external dependencies
 - `CommunityToolkit.Maui` and `CommunityToolkit.Mvvm`: UI components, behaviors, and MVVM source generators.
-- `Microcharts.Maui` and `SkiaSharp.Extended.UI.Maui`: interactive charts for the analytics view.
+- `LiveChartsCore.SkiaSharpView.Maui`: interactive charts for the analytics view.
 - `FirebaseAuthentication.net`, `FirebaseDatabase.net`, `FirebaseStorage.net`: Firebase authentication and data access.
 - `FluentResults`: success/error wrapping for use case responses.
 - `Controls.UserDialogs.Maui` and `CommunityToolkit.Maui.Alerts`: dialogs and toast notifications.
@@ -52,7 +52,7 @@ The solution follows an MVVM architecture backed by use cases and repositories t
 - `TagModelLocalizer` and `PaymentMethodModelLocalizer` transform names using `Resources/Strings/AppResources`. The default culture is `es-MX`, configured via `SettingsService`.
 
 ### Financial charts
-- `FinantialChartsViewModel` builds income/expense line charts, payment-type donut charts, and tag bar charts with `Microcharts`.
+- `FinantialChartsViewModel` builds income/expense line, payment-type pie, and tag bar charts with LiveCharts 2.
 - The selected period (three days, week, month) uses `TimePeriod` and `DateTimeExtensions.GetPeriodStart`.
 
 ### Recent transactions widget (Android)

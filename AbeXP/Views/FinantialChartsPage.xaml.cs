@@ -1,6 +1,4 @@
 using AbeXP.ViewModels;
-using Microcharts.Maui;
-using System.ComponentModel;
 
 namespace AbeXP.Views;
 

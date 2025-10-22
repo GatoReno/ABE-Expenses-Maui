@@ -1,7 +1,8 @@
 ﻿using AbeXP.Extensions;
 using CommunityToolkit.Maui;
-using Microcharts.Maui;
+using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace AbeXP;
 
@@ -13,7 +14,8 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
-			.UseMicrocharts()
+            .UseSkiaSharp()
+            .UseLiveCharts()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
