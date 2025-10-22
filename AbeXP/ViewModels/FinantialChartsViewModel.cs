@@ -9,6 +9,7 @@ using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.Measure;
 using Microsoft.Maui.Controls;
 using SkiaSharp;
 using System.Collections.ObjectModel;
@@ -167,7 +168,7 @@ namespace AbeXP.ViewModels
                 IsBusy = true;
                 CreateTransactionLineChart();
                 CreatePaymentMethodsPieChart();
-                CreateTagsBarChart();
+                CreateTagsRowChart();
             }
             catch
             {
@@ -318,9 +319,9 @@ namespace AbeXP.ViewModels
         }
 
         /// <summary>
-        /// Builds a column chart summarizing spend and transaction count by tag.
+        /// Builds a row chart summarizing spend and transaction count by tag.
         /// </summary>
-        private void CreateTagsBarChart()
+        private void CreateTagsRowChart()
         {
             if (Transactions is null || Transactions.Count == 0)
             {
@@ -348,27 +349,22 @@ namespace AbeXP.ViewModels
 
             var labelColor = GetTextColor();
 
-            var columnSeries = new ColumnSeries<ObservableValue>
+            var rowSeries = new RowSeries<ObservableValue>
             {
                 Values = new ObservableCollection<ObservableValue>(grouped.Select(entry => new ObservableValue((double)entry.Total))),
                 Fill = new SolidColorPaint(TagsColor),
-                Stroke = new SolidColorPaint(SKColors.Transparent)
-            };
-
-            TagsSeries = new ObservableCollection<ISeries> { columnSeries };
-
-            TagsXAxes = new[]
-            {
-                new Axis
+                Stroke = new SolidColorPaint(SKColors.Transparent),
+                XToolTipLabelFormatter = (point) =>
                 {
-                    Labels = grouped.Select(entry => entry.Tag).ToArray(),
-                    LabelsRotation = 90,
-                    LabelsPaint = new SolidColorPaint(labelColor),
-                    TextSize = 14
+                    var index = (int)Math.Clamp(Math.Round(point.Coordinate.SecondaryValue), 0, grouped.Count - 1);
+                    var data = grouped[index];
+                    return $"{data.Tag}{Environment.NewLine}{data.Total:C}";
                 }
             };
 
-            TagsYAxes = new[]
+            TagsSeries = new ObservableCollection<ISeries> { rowSeries };
+
+            TagsXAxes = new[]
             {
                 new Axis
                 {
@@ -376,7 +372,19 @@ namespace AbeXP.ViewModels
                     Labeler = value => value.ToString("C0"),
                     LabelsPaint = new SolidColorPaint(labelColor),
                     TextSize = 14,
-                    SeparatorsPaint = new SolidColorPaint(GetSeparatorColor()) { StrokeThickness = 1 }
+                    SeparatorsPaint = new SolidColorPaint(GetSeparatorColor()) { StrokeThickness = 1 },
+                    LabelsRotation = 90,
+                    Position = AxisPosition.End
+                }
+            };
+
+            TagsYAxes = new[]
+            {
+                new Axis
+                {
+                    Labels = grouped.Select(entry => entry.Tag).ToArray(),
+                    LabelsPaint = new SolidColorPaint(labelColor),
+                    TextSize = 14
                 }
             };
         }
@@ -449,6 +457,6 @@ namespace AbeXP.ViewModels
             }
         }
 
-        
+
     }
 }

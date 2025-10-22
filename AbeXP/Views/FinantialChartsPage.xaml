@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
 
             <!--Expense total-->
-           <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
+            <Border BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" StrokeThickness="0" Padding="5, 15, 5, 15" Margin="10,0,10,10" StrokeShape="RoundRectangle 40,0,0,40">
                 <VerticalStackLayout VerticalOptions="Center">
                     <!--<Label Text="{x:Static resources:AppResources.Total}" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>-->
                     <Grid 
@@ -135,10 +135,10 @@
                 <!--Expenses by tags chart-->
                 <Label FontAttributes="Bold" Text="{x:Static resources:AppResources.TagsTypeChart}"/>
 
-                    <lvc:CartesianChart Series="{Binding TagsSeries}"
+                <lvc:CartesianChart Series="{Binding TagsSeries}"
                                     XAxes="{Binding TagsXAxes}"
                                     YAxes="{Binding TagsYAxes}"
-                                    LegendPosition="Hidden" />
+                                    LegendPosition="Hidden"/>
             </VerticalStackLayout>
         </Grid>
 

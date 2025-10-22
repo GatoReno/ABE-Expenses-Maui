@@ -52,7 +52,7 @@ The solution follows an MVVM architecture backed by use cases and repositories t
 - `TagModelLocalizer` and `PaymentMethodModelLocalizer` transform names using `Resources/Strings/AppResources`. The default culture is `es-MX`, configured via `SettingsService`.
 
 ### Financial charts
-- `FinantialChartsViewModel` builds income/expense line, payment-type pie, and tag bar charts with LiveCharts 2.
+- `FinantialChartsViewModel` builds income/expense line, payment-type pie, and tag row charts with LiveCharts 2.
 - The selected period (three days, week, month) uses `TimePeriod` and `DateTimeExtensions.GetPeriodStart`.
 
 ### Recent transactions widget (Android)
