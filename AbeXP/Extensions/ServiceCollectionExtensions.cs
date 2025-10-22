@@ -24,17 +24,17 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MainPageViewModel>();
         services.AddTransient<ExpenseFormViewModel>();
         services.AddTransient<IncomeFormViewModel>();
-        services.AddSingleton<FinantialChartsViewModel>();
+        services.AddTransient<FinantialChartsViewModel>();
         services.AddTransient<ProfileViewModel>();
         services.AddTransient<AppShellViewModel>();
 
 
         // Views
         services.AddTransient<LoginView>();
-        services.AddSingleton<MainPage>();
+        services.AddTransient<MainPage>();
         services.AddTransient<ExpenseFormView>();
         services.AddTransient<IncomeFormView>();
-        services.AddSingleton<FinantialChartsPage>();
+        services.AddTransient<FinantialChartsPage>();
         services.AddTransient<ProfilePage>();
         services.AddTransient<AppShell>();
 
@@ -53,11 +53,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IFibInstance, FibInstance>();
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<IUserSession, UserSession>();
-        services.AddSingleton<IExpenseRepository, ExpenseRepository>(sp =>
-        {
-            var fibInstanceService = sp.GetRequiredService<IFibInstance>();
-            return new ExpenseRepository(fibInstanceService, FirebaseConstants.EXPENSES_COLLECTION);
-        });
 
         services.AddSingleton<ITransactionsRepository, TransactionsRepository>(sp =>
         {
