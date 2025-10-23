@@ -20,7 +20,7 @@ namespace AbeXP.Services.CatalogCache
         private SQLiteAsyncConnection? _connection;
         private bool _isInitialized;
 
-        private static string CatalogTypeKey(CatalogType catalogType) => catalogType.ToString();
+        private static string CatalogTypeKey(CatalogType catalogType) => catalogType.ToStorageKey();
 
         private async Task InitializeAsync()
         {

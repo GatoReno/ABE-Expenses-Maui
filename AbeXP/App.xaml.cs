@@ -6,6 +6,7 @@ using AbeXP.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace AbeXP;
 
@@ -25,6 +26,7 @@ public partial class App : Application
         instance = this;
         Alert = _serviceProvider.GetService<IAlertService>();
 
+        WarmUpCatalogMetadata();
 
         // Temporary page while we check login
         MainPage = new ContentPage
@@ -80,6 +82,27 @@ public partial class App : Application
         var culture = new CultureInfo(settings.Culture);
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
+    }
+
+    private void WarmUpCatalogMetadata()
+    {
+        var metadataService = _serviceProvider.GetService<ICatalogMetadataService>();
+        if (metadataService is null)
+        {
+            return;
+        }
+
+        Task.Run(async () =>
+        {
+            try
+            {
+                await metadataService.WarmUpAsync();
+            }
+            catch
+            {
+                // ignore warm-up failures; catalog use cases will handle fallback
+            }
+        });
     }
 
     protected override void OnResume()

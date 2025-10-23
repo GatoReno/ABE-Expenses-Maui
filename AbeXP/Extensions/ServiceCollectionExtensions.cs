@@ -55,6 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<IUserSession, UserSession>();
         services.AddSingleton<ICatalogCacheService, CatalogCacheService>();
+        services.AddSingleton<ICatalogMetadataService, CatalogMetadataService>();
 
         services.AddSingleton<ITransactionsRepository, TransactionsRepository>(sp =>
         {
