@@ -24,7 +24,6 @@ namespace AbeXP.UseCases
             try
             {
                 var tags = await _tagsRepository.GetAllAsync();
-                throw new Exception("testing firebase analitycs on android, uppppsss!!!");
                 return Result.Ok<IEnumerable<TagModel>>(tags.ToLocalizeList());
             }
             catch (Exception ex)

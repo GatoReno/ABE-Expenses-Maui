@@ -4,4 +4,6 @@
 
 	<!-- your new string -->
 	<string name="select_tags">Select Tags</string>
+
+	<string name="com.crashlytics.android.build_id">1</string>
 </resources>
