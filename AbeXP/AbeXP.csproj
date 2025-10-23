@@ -145,16 +145,4 @@
 	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
-
-	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-		<SevenZipDownloadPath>$(MSBuildProjectDirectory)\tools\7za.exe</SevenZipDownloadPath>
-		<SevenZipArchivePath>$(MSBuildProjectDirectory)\tools\7za.zip</SevenZipArchivePath>
-		<XamarinBuildDownloadUser7ZipPath>$(SevenZipDownloadPath)</XamarinBuildDownloadUser7ZipPath>
-	</PropertyGroup>
-
-	<Target Name="EnsureSevenZip" BeforeTargets="PrepareForBuild" Condition="'$(OS)' == 'Windows_NT'">
-		<MakeDir Directories="$(MSBuildProjectDirectory)\tools" />
-		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;if (!(Test-Path '$(SevenZipDownloadPath)')) { Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7za920.zip' -OutFile '$(SevenZipArchivePath)'; Expand-Archive -LiteralPath '$(SevenZipArchivePath)' -DestinationPath '$(MSBuildProjectDirectory)\tools' -Force; Remove-Item '$(SevenZipArchivePath)' }&quot;" />
-	</Target>
-
 </Project>
