@@ -13,5 +13,6 @@ namespace AbeXP.Common.Constants
 		public const string LOANS_COLLECTION = "loans";
 		public const string TAGS_COLLECTION = "tags";
 		public const string PAYMENT_METHODS_COLLECTION = "payment_methods";
+        public const string CATALOG_METADATA_COLLECTION = "catalog_metadata";
     }
 }
