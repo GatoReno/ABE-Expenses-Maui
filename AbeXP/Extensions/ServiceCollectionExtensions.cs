@@ -69,16 +69,32 @@ public static class ServiceCollectionExtensions
             return new IncomeRepository(fibInstanceService, FirebaseConstants.INCOMES_COLLECTION);
         });
 
-        services.AddSingleton<ITagsRepository, TagsRepository>(sp =>
+        services.AddSingleton<TagsRepository>(sp =>
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
             return new TagsRepository(fibInstanceService, FirebaseConstants.TAGS_COLLECTION);
         });
 
-        services.AddSingleton<IPaymentMethodsRepository, PaymentMethodsRepository>(sp =>
+        services.AddSingleton<ITagsRepository>(sp =>
+        {
+            var inner = sp.GetRequiredService<TagsRepository>();
+            var cacheService = sp.GetRequiredService<ICatalogCacheService>();
+            var metadataService = sp.GetRequiredService<ICatalogMetadataService>();
+            return new CachedTagsRepository(inner, cacheService, metadataService);
+        });
+
+        services.AddSingleton<PaymentMethodsRepository>(sp =>
         {
             var fibInstanceService = sp.GetRequiredService<IFibInstance>();
             return new PaymentMethodsRepository(fibInstanceService, FirebaseConstants.PAYMENT_METHODS_COLLECTION);
+        });
+
+        services.AddSingleton<IPaymentMethodsRepository>(sp =>
+        {
+            var inner = sp.GetRequiredService<PaymentMethodsRepository>();
+            var cacheService = sp.GetRequiredService<ICatalogCacheService>();
+            var metadataService = sp.GetRequiredService<ICatalogMetadataService>();
+            return new CachedPaymentMethodsRepository(inner, cacheService, metadataService);
         });
 
         // Use cases

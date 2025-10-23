@@ -88,7 +88,7 @@ namespace AbeXP.Services.CatalogCache
                     .Where(entry => entry.isValid && entry.version is not null)
                     .ToDictionary(entry => entry.catalogType, entry => entry.version!);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new Dictionary<CatalogType, string>();
             }

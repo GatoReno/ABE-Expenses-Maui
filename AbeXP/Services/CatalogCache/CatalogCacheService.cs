@@ -55,8 +55,9 @@ namespace AbeXP.Services.CatalogCache
         public async Task<IReadOnlyList<TagModel>> GetTagsAsync(CancellationToken cancellationToken = default)
         {
             var connection = await GetConnectionAsync().ConfigureAwait(false);
+            var catalogKey = CatalogTypeKey(CatalogType.Tags);
             var rows = await connection.Table<CatalogItemEntity>()
-                .Where(row => row.CatalogType == CatalogTypeKey(CatalogType.Tags))
+                .Where(row => row.CatalogType == catalogKey)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
@@ -70,8 +71,9 @@ namespace AbeXP.Services.CatalogCache
         public async Task<IReadOnlyList<PaymentMethod>> GetPaymentMethodsAsync(CancellationToken cancellationToken = default)
         {
             var connection = await GetConnectionAsync().ConfigureAwait(false);
+            var catalogKey = CatalogTypeKey(CatalogType.PaymentMethods);
             var rows = await connection.Table<CatalogItemEntity>()
-                .Where(row => row.CatalogType == CatalogTypeKey(CatalogType.PaymentMethods))
+                .Where(row => row.CatalogType == catalogKey)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
@@ -162,8 +164,9 @@ namespace AbeXP.Services.CatalogCache
         private async Task<CatalogMetadataEntity?> GetMetadataAsync(CatalogType catalogType)
         {
             var connection = await GetConnectionAsync().ConfigureAwait(false);
+            var catalogKey = CatalogTypeKey(catalogType);
             return await connection.Table<CatalogMetadataEntity>()
-                .Where(meta => meta.CatalogType == CatalogTypeKey(catalogType))
+                .Where(meta => meta.CatalogType == catalogKey)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
         }
