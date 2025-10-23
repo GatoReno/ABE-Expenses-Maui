@@ -1,25 +1,59 @@
-using FluentResults;
+using AbeXP.Common.Enum;
 using AbeXP.Extensions;
 using AbeXP.Interfaces;
 using AbeXP.Models;
 using AbeXP.UseCases.Interfaces;
+using FluentResults;
 
 namespace AbeXP.UseCases
 {
     public class GetAllTagsUseCase : IGetTagsUseCase
     {
         private readonly ITagsRepository _tagsRepository;
+        private readonly ICatalogCacheService _catalogCacheService;
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(12);
 
-        public GetAllTagsUseCase(ITagsRepository tagsRepository)
+        public GetAllTagsUseCase(ITagsRepository tagsRepository, ICatalogCacheService catalogCacheService)
         {
             _tagsRepository = tagsRepository;
+            _catalogCacheService = catalogCacheService;
         }
 
         public async Task<Result<IEnumerable<TagModel>>> ExecuteAsync()
         {
-            var tags = await _tagsRepository.GetAllAsync();
+            var cached = await _catalogCacheService.GetTagsAsync();
+            var hasCache = cached.Count > 0;
 
-            return tags.ToLocalizeList();
+            if (!hasCache || await _catalogCacheService.ShouldRefreshAsync(CatalogType.Tags, CacheDuration))
+            {
+                var refreshResult = await TryFetchTagsFromRemoteAsync();
+                if (refreshResult.IsSuccess)
+                {
+                    return Result.Ok<IEnumerable<TagModel>>(refreshResult.Value.ToLocalizeList());
+                }
+
+                if (!hasCache)
+                {
+                    return Result.Fail<IEnumerable<TagModel>>(refreshResult.Errors);
+                }
+            }
+
+            return Result.Ok<IEnumerable<TagModel>>(cached.ToLocalizeList());
+        }
+
+        private async Task<Result<List<TagModel>>> TryFetchTagsFromRemoteAsync()
+        {
+            try
+            {
+                var remote = (await _tagsRepository.GetAllAsync()).ToList();
+                var checksum = remote.ComputeChecksum();
+                await _catalogCacheService.SaveTagsAsync(remote, checksum);
+                return Result.Ok(remote);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<List<TagModel>>(new ExceptionalError(ex));
+            }
         }
     }
 }

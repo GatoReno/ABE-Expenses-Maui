@@ -3,6 +3,7 @@ using AbeXP.Abstractions.Services;
 using AbeXP.Common.Constants;
 using AbeXP.Interfaces;
 using AbeXP.Services;
+using AbeXP.Services.CatalogCache;
 using AbeXP.UseCases;
 using AbeXP.UseCases.Interfaces;
 using AbeXP.UseCases.Plugins;
@@ -53,6 +54,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IFibInstance, FibInstance>();
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<IUserSession, UserSession>();
+        services.AddSingleton<ICatalogCacheService, CatalogCacheService>();
 
         services.AddSingleton<ITransactionsRepository, TransactionsRepository>(sp =>
         {
