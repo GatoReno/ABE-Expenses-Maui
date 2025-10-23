@@ -56,6 +56,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IUserSession, UserSession>();
         services.AddSingleton<ICatalogCacheService, CatalogCacheService>();
         services.AddSingleton<ICatalogMetadataService, CatalogMetadataService>();
+        services.AddSingleton<IAnalyticsService, FirebaseAnalyticsService>();
 
         services.AddSingleton<ITransactionsRepository, TransactionsRepository>(sp =>
         {

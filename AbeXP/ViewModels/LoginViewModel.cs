@@ -1,6 +1,7 @@
-ï»¿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using AbeXP.Abstractions.Interfaces;
 using AbeXP.Interfaces;
 
@@ -11,29 +12,33 @@ public partial class LoginViewModel : ObservableObject
     private readonly IFibAuthLog _authService;
     private readonly IWidgetUpdater _widgetUpdater;
     private readonly INavigationService _navigationService;
+    private readonly IAnalyticsService _analyticsService;
 
-    public LoginViewModel(IFibAuthLog authService, IWidgetUpdater widgetUpdater, INavigationService navigationService)
+    public LoginViewModel(
+        IFibAuthLog authService,
+        IWidgetUpdater widgetUpdater,
+        INavigationService navigationService,
+        IAnalyticsService analyticsService)
     {
         _authService = authService;
         _widgetUpdater = widgetUpdater;
         _navigationService = navigationService;
+        _analyticsService = analyticsService;
     }
 
-    [ObservableProperty] private string email;
-    [ObservableProperty] private string password;
-    [ObservableProperty] private string confirmPassword;
+    [ObservableProperty] private string email = string.Empty;
+    [ObservableProperty] private string password = string.Empty;
+    [ObservableProperty] private string confirmPassword = string.Empty;
     [ObservableProperty] private bool isBusy;
-    [ObservableProperty] private string errorMessage;
+    [ObservableProperty] private string errorMessage = string.Empty;
     [ObservableProperty] private bool isLoginMode = true;
 
-    // Propiedades calculadas
-    public string TitleText => IsLoginMode ? "Inicia SesiÃ³n" : "Crea tu cuenta";
-    public string PrimaryButtonText => IsLoginMode ? "Iniciar sesiÃ³n" : "Registrarme";
-    public string SwitchButtonText => IsLoginMode ? "Â¿No tienes cuenta? RegÃ­strate" : "Â¿Ya tienes cuenta? Inicia sesiÃ³n";
+    public string TitleText => IsLoginMode ? "Inicia Sesión" : "Crea tu cuenta";
+    public string PrimaryButtonText => IsLoginMode ? "Iniciar sesión" : "Registrarme";
+    public string SwitchButtonText => IsLoginMode ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión";
     public bool IsSignUpMode => !IsLoginMode;
     public bool IsNotBusy => !IsBusy;
 
-    // ðŸ”¹ Comando principal (Login o Registro)
     [RelayCommand]
     private async Task ExecutePrimaryActionAsync()
     {
@@ -43,7 +48,6 @@ public partial class LoginViewModel : ObservableObject
             await LoginAsync();
     }
 
-    // ðŸ”¹ Login
     private async Task LoginAsync()
     {
         try
@@ -51,12 +55,30 @@ public partial class LoginViewModel : ObservableObject
             IsBusy = true;
             ErrorMessage = string.Empty;
 
-            var user = await _authService.SignInWithEmailAndPass(Email, Password);
+            await _analyticsService.LogEventAsync("login_attempt", new Dictionary<string, string>
+            {
+                ["method"] = "email_password",
+                ["has_email"] = (!string.IsNullOrWhiteSpace(Email)).ToString().ToLowerInvariant()
+            });
+
+            await _authService.SignInWithEmailAndPass(Email, Password);
+
+            await _analyticsService.LogEventAsync("login_success", new Dictionary<string, string>
+            {
+                ["method"] = "email_password"
+            });
+
             _widgetUpdater.Redraw();
             App.Instance.SetNewShellPage();
         }
         catch (Exception ex)
         {
+            await _analyticsService.LogEventAsync("login_failure", new Dictionary<string, string>
+            {
+                ["method"] = "email_password",
+                ["error"] = ex.Message
+            });
+
             await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
         }
         finally
@@ -65,26 +87,47 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    // ðŸ”¹ Registro
     private async Task SignUpAsync()
     {
         try
         {
             if (Password != ConfirmPassword)
             {
-                ErrorMessage = "Las contraseÃ±as no coinciden";
+                ErrorMessage = "Las contraseñas no coinciden";
+                await _analyticsService.LogEventAsync("signup_validation_failed", new Dictionary<string, string>
+                {
+                    ["reason"] = "password_mismatch"
+                });
                 return;
             }
 
             IsBusy = true;
             ErrorMessage = string.Empty;
 
-            var token = await _authService.CreateUserWithEmailAndPass(Email, Password);
+            await _analyticsService.LogEventAsync("signup_attempt", new Dictionary<string, string>
+            {
+                ["method"] = "email_password",
+                ["has_email"] = (!string.IsNullOrWhiteSpace(Email)).ToString().ToLowerInvariant()
+            });
+
+            await _authService.CreateUserWithEmailAndPass(Email, Password);
+
+            await _analyticsService.LogEventAsync("signup_success", new Dictionary<string, string>
+            {
+                ["method"] = "email_password"
+            });
+
             _widgetUpdater.Redraw();
             App.Instance.SetNewShellPage();
         }
         catch (Exception ex)
         {
+            await _analyticsService.LogEventAsync("signup_failure", new Dictionary<string, string>
+            {
+                ["method"] = "email_password",
+                ["error"] = ex.Message
+            });
+
             await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
         }
         finally
@@ -93,7 +136,6 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    // ðŸ”¹ Recuperar contraseÃ±a (simulada)
     [RelayCommand]
     private async Task RecoverPasswordAsync()
     {
@@ -101,17 +143,31 @@ public partial class LoginViewModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(Email))
             {
-                ErrorMessage = "Ingresa tu email para recuperar contraseÃ±a.";
+                ErrorMessage = "Ingresa tu email para recuperar contraseña.";
+                await _analyticsService.LogEventAsync("password_recovery_failed", new Dictionary<string, string>
+                {
+                    ["reason"] = "missing_email"
+                });
                 return;
             }
 
             IsBusy = true;
-            await Task.Delay(1000); // simulaciÃ³n
-            ErrorMessage = "Si existe la cuenta, se enviarÃ¡ un email de recuperaciÃ³n.";
+            await Task.Delay(1000);
+            ErrorMessage = "Si existe la cuenta, se enviará un email de recuperación.";
+
+            await _analyticsService.LogEventAsync("password_recovery_requested", new Dictionary<string, string>
+            {
+                ["status"] = "simulated"
+            });
         }
         catch (Exception ex)
         {
             ErrorMessage = ex.Message;
+            await _analyticsService.LogEventAsync("password_recovery_failed", new Dictionary<string, string>
+            {
+                ["reason"] = "exception",
+                ["error"] = ex.Message
+            });
         }
         finally
         {
@@ -119,7 +175,6 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    // ðŸ”¹ Cambiar modo Login/SignUp
     [RelayCommand]
     private void SwitchMode()
     {
