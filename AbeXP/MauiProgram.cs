@@ -16,6 +16,7 @@ public static class MauiProgram
 			.UseMauiCommunityToolkit()
             .UseSkiaSharp()
             .UseLiveCharts()
+			.RegisterFirebase()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
